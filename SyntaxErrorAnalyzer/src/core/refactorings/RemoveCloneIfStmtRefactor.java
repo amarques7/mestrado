@@ -1,0 +1,812 @@
+package core.refactorings;
+
+import tree.ArrayAccess;
+import tree.AssignExpr;
+import tree.AtomicAbstractDeclarator;
+import tree.AtomicNamedDeclarator;
+import tree.AutoSpecifier;
+import tree.BreakStatement;
+import tree.CaseStatement;
+import tree.CharSpecifier;
+import tree.Choice;
+import tree.CompoundStatement;
+import tree.ConditionalExpr;
+import tree.ConstSpecifier;
+import tree.Constant;
+import tree.ContinueStatement;
+import tree.DeclArrayAccess;
+import tree.DeclIdentifierList;
+import tree.DeclParameterDeclList;
+import tree.Declaration;
+import tree.DeclarationStatement;
+import tree.DefaultStatement;
+import tree.DefineDirective;
+import tree.DoStatement;
+import tree.DoubleSpecifier;
+import tree.ElifStatement;
+import tree.EnumSpecifier;
+import tree.Enumerator;
+import tree.ExprList;
+import tree.ExprStatement;
+import tree.ExternSpecifier;
+import tree.FloatSpecifier;
+import tree.ForStatement;
+import tree.FunctionCall;
+import tree.FunctionDef;
+import tree.Id;
+import tree.IfStatement;
+import tree.InitDeclaratorI;
+import tree.Initializer;
+import tree.IntSpecifier;
+import tree.LcurlyInitializer;
+import tree.LongSpecifier;
+import tree.NAryExpr;
+import tree.NArySubExpr;
+import tree.NestedNamedDeclarator;
+import tree.Node;
+import tree.One;
+import tree.Opt;
+import tree.ParameterDeclarationAD;
+import tree.ParameterDeclarationD;
+import tree.Pointer;
+import tree.PointerCreationExpr;
+import tree.PointerDerefExpr;
+import tree.PointerPostfixSuffix;
+import tree.PostfixExpr;
+import tree.RegisterSpecifier;
+import tree.ReturnStatement;
+import tree.ShortSpecifier;
+import tree.SimplePostfixSuffix;
+import tree.SizeOfExprT;
+import tree.SizeOfExprU;
+import tree.Some;
+import tree.StaticSpecifier;
+import tree.StringLit;
+import tree.StructDeclaration;
+import tree.StructDeclarator;
+import tree.StructOrUnionSpecifier;
+import tree.SwitchStatement;
+import tree.TranslationUnit;
+import tree.TypeDefTypeSpecifier;
+import tree.TypeName;
+import tree.TypedefSpecifier;
+import tree.UnaryExpr;
+import tree.UnaryOpExpr;
+import tree.UnsignedSpecifier;
+import tree.VarArgs;
+import tree.VoidSpecifier;
+import tree.VolatileSpecifier;
+import tree.WhileStatement;
+import tree.visitor.Visitor;
+import tree.visitor.VisitorPrinterToString;
+import core.Refactor;
+
+public class RemoveCloneIfStmtRefactor implements Visitor{
+	@Override
+	public void run(Choice node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+	
+	@Override
+	public void run(AtomicNamedDeclarator node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(ElifStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(CompoundStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(DeclIdentifierList node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(TranslationUnit node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(ExprList node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+	
+	@Override
+	public void run(DeclParameterDeclList node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(ParameterDeclarationD node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(StructDeclaration node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(StructDeclarator node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(AtomicAbstractDeclarator node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(Pointer node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(ParameterDeclarationAD node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(FunctionDef node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(Opt node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(Initializer node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(InitDeclaratorI node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(TypeName node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(One node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(Some node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(SimplePostfixSuffix node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(PostfixExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(AssignExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+	
+	public String getIfStmtCondition(IfStatement ifStmt){
+		String condition = "";
+		
+		if (ifStmt.getChildren().size() > 0){
+			Node one = ifStmt.getChildren().get(0);
+			
+			if (one instanceof Choice && one.getChildren().size() > 0){
+				one = one.getChildren().get(0);
+			}
+			
+			if (one instanceof One){
+				VisitorPrinterToString printerStr = new VisitorPrinterToString();
+				one.accept(printerStr);
+				
+				condition = printerStr.getSourceCode();
+			}
+		}
+		
+		return condition;
+	}
+	
+	@Override
+	public void run(IfStatement node) {
+		Node parent = node.getParent();
+		if (parent instanceof Opt){
+			int count = 1;
+			
+			Node grandParent = parent.getParent();
+			int index = grandParent.getChildren().indexOf(parent);
+			int firstOptNodeIndex = index;
+			
+			String condition = this.getIfStmtCondition(node);
+			
+			// Count the number of Opt nodes that we clone..
+			while (index < (grandParent.getChildren().size() - 1)){
+				index++;
+				if (grandParent.getChildren().get(index) instanceof Opt){
+					// Checking the if statements with the same body..
+					if (grandParent.getChildren().get(index).getChildren().get(0) instanceof IfStatement && !condition.equals(this.getIfStmtCondition( ((IfStatement) grandParent.getChildren().get(index).getChildren().get(0)) ))){
+						
+						VisitorPrinterToString visitorPrinterStr1 = new VisitorPrinterToString();
+						Node auxIfStmt = grandParent.getChildren().get(index).getChildren().get(0);
+						Node auxCompoundStmt = auxIfStmt.getChildren().get(auxIfStmt.getChildren().size()-1).getChildren().get(0);
+						auxCompoundStmt.accept(visitorPrinterStr1);
+						String auxCompoundStmtStr = visitorPrinterStr1.getSourceCode();
+						
+						VisitorPrinterToString visitorPrinterStr2 = new VisitorPrinterToString();
+						Node compoundStmt = node.getChildren().get(node.getChildren().size()-1).getChildren().get(0);
+						compoundStmt.accept(visitorPrinterStr2);
+						String compoundStmtStr = visitorPrinterStr2.getSourceCode();
+						
+						// They have the same body?
+						if (compoundStmtStr.equals(auxCompoundStmtStr)){	
+							count++;
+						}
+						
+					// If statement wrapper..
+					} else if (grandParent.getChildren().get(index).getChildren().get(0) instanceof CompoundStatement){
+						VisitorPrinterToString visitorPrinterStr1 = new VisitorPrinterToString();
+						Node auxCompoundStmt = grandParent.getChildren().get(index).getChildren().get(0);
+						auxCompoundStmt.accept(visitorPrinterStr1);
+						String auxCompoundStmtStr = visitorPrinterStr1.getSourceCode();
+						
+						VisitorPrinterToString visitorPrinterStr2 = new VisitorPrinterToString();
+						Node compoundStmt = node.getChildren().get(node.getChildren().size()-1).getChildren().get(0);
+						compoundStmt.accept(visitorPrinterStr2);
+						String compoundStmtStr = visitorPrinterStr2.getSourceCode();
+						
+						// They have the same body?
+						if (compoundStmtStr.equals(auxCompoundStmtStr)){	
+							count++;
+						}
+					}
+				}
+			}
+			
+			// Getting the condition of the if statements.. We must have at least two opt with the different conditions..
+			if (count > 1){
+				
+				Node ifStmtClone = null;
+				
+				// If statement wrapper..
+				Node ifStmtCloneAux = null;
+				
+				
+				// Removing the original nodes and adding our clones..
+				Refactor refactor = new Refactor();
+				for (int i = 0; i < count; i++){
+					Node optClone = refactor.cloneNode(grandParent.getChildren().get(firstOptNodeIndex));
+					ifStmtClone = optClone.getChildren().get(0);
+					
+					String cond = "";
+					if (ifStmtClone instanceof IfStatement){
+						ifStmtCloneAux = refactor.cloneNode(ifStmtClone);
+						cond = this.getIfStmtCondition( (IfStatement) ifStmtClone);
+						
+					// If statement wrapper..
+					} else if (ifStmtClone instanceof CompoundStatement){
+						cond = "1";
+					}
+					
+					// Removing the if statement..
+					optClone.getChildren().remove(0);
+					
+					Id id = new Id();
+					id.setName(cond);
+					Node declStmt = refactor.createDeclarationStatement("test", new IntSpecifier(), id);
+					
+					
+					declStmt.setParent(optClone);
+					optClone.getChildren().add(declStmt);
+					
+					grandParent.getChildren().remove(firstOptNodeIndex);
+					grandParent.getChildren().add(firstOptNodeIndex, optClone);
+					optClone.setParent(grandParent);
+					firstOptNodeIndex++;
+				}
+				
+				// Adding the test condition to the if statement..
+				if (ifStmtCloneAux.getChildren().size() > 0){
+					Node one = ifStmtCloneAux.getChildren().get(0);
+					
+					if (one instanceof Choice && one.getChildren().size() > 0){
+						one = one.getChildren().get(0);
+					}
+					
+					if (one instanceof One){
+						for (int i = 0; i < one.getChildren().size(); i++){
+							one.getChildren().remove(i);
+						}
+						Id id = new Id();
+						id.setName(" ( test ) ");
+						id.setParent(one);
+						one.getChildren().add(id);
+						grandParent.getChildren().add(firstOptNodeIndex, ifStmtCloneAux);
+						ifStmtCloneAux.setParent(grandParent);
+					}
+				}
+			}
+		}
+			
+		
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(WhileStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(SizeOfExprT node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(SizeOfExprU node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(NestedNamedDeclarator node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+	
+	@Override
+	public void run(FunctionCall node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	
+	@Override
+	public void run(ExprStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(TypeDefTypeSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(DeclArrayAccess node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(ForStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(NAryExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(NArySubExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(DoStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(CaseStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(SwitchStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(DefaultStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+	
+	@Override
+	public void run(DeclarationStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(Declaration node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(Constant node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(Id node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(VoidSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(IntSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(DoubleSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(UnsignedSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(VolatileSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(ConstSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(ExternSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(TypedefSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(AutoSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(BreakStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(CharSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(VarArgs node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(PointerPostfixSuffix node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(PointerDerefExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(UnaryExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(ContinueStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(RegisterSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(StaticSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(FloatSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(ReturnStatement node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+
+	@Override
+	public void run(ShortSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}	
+	}
+
+	@Override
+	public void run(LongSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+
+	@Override
+	public void run(StructOrUnionSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+	
+	@Override
+	public void run(PointerCreationExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(UnaryOpExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+		
+	}
+	
+	@Override
+	public void run(ArrayAccess node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(LcurlyInitializer node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(StringLit node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(ConditionalExpr node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(DefineDirective node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(EnumSpecifier node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void run(Enumerator node) {
+		for (int i = 0; i < node.getChildren().size(); i++){
+			node.getChildren().get(i).accept(this);
+		}
+	}
+}
