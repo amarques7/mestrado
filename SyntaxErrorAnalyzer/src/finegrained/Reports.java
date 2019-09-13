@@ -19,6 +19,7 @@ import analysis.core.Function;
 import analysis.core.ProgramElement;
 import analysis.core.Variable;
 import main.Main;
+import mestrado.core.Runner;
 import metrics.Metrics;
 import xtc.lang.blink.agent.GenerateJNIFunctionProxy;
 
@@ -34,7 +35,7 @@ public class Reports extends Metrics {
 	
 	public static void Dependencies() throws InterruptedException{
 		
-		if(!Main.analyseThisTime){
+		if(!Runner.analyseThisTime){
 			//adding the current dps to previous dps
 			previousDependenciesList = new HashSet<Dependency>(allDependencies.size());
 			previousVariabilitiesList = new HashSet<Variability>(allVariabilities.size());
@@ -48,7 +49,7 @@ public class Reports extends Metrics {
 			}
 			rindex = Main.getIndexOfPastAnalysis() + 1;
 			Main.analyseThisTime = true;
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RINDEX     "+rindex);
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RINDEX     "+ rindex);
 			return;
 		}
 		
@@ -58,19 +59,19 @@ public class Reports extends Metrics {
 			PrintWriter printImpact = null;
 			PrintWriter printVar = null;
 			FileWriter arqvar = null; FileWriter coarsearq = null; FileWriter fineFile = null; FileWriter impactFile = null;
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\PermanentsDependencies").mkdirs();
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities").mkdirs();
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\AllVariabilities").mkdirs();
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\ImpactVariabilities").mkdirs();
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\AllDependencies").mkdirs();
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\AllDependenciesChanged").mkdirs();
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\ProgramWeight").mkdirs();
+			new File(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\PermanentsDependencies").mkdirs();
+			new File(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities").mkdirs();
+			new File(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\AllVariabilities").mkdirs();
+			new File(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\ImpactVariabilities").mkdirs();
+			new File(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\AllDependencies").mkdirs();
+			new File(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\AllDependenciesChanged").mkdirs();
+			new File(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\ProgramWeight").mkdirs();
 			
 			
-			impactFile = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\PermanentsDependencies\\"+"_Impact_" + ".csv",true);
-			fineFile = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\PermanentsDependencies\\"+"_FineGrained_" + ".csv",true);
-			coarsearq = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\PermanentsDependencies\\"+"_CoarseGrained_"+ ".csv",true);
-			arqvar = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\"+"variabilities"+ ".csv",true);
+			impactFile = new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\PermanentsDependencies\\"+"_Impact_" + ".csv",true);
+			fineFile = new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\PermanentsDependencies\\"+"_FineGrained_" + ".csv",true);
+			coarsearq = new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\PermanentsDependencies\\"+"_CoarseGrained_"+ ".csv",true);
+			arqvar = new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\"+"variabilities"+ ".csv",true);
 			
 			printCoarse = new PrintWriter(coarsearq);
 			printFine = new PrintWriter(fineFile);
@@ -232,7 +233,7 @@ public class Reports extends Metrics {
 		
 		Set<Variability> variabilityAnalyzedAll = new HashSet<Variability>(allVariabilities.size());
 		try {
-			PrintWriter printVaRALL = new PrintWriter(new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\AllVariabilities\\"+rindex+"_All_Variabilities"+ ".csv",true));
+			PrintWriter printVaRALL = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\AllVariabilities\\"+rindex+"_All_Variabilities"+ ".csv",true));
 			for (Variability var: allVariabilities) {
 				printVaRALL.println(var.getName()+",");
 				if(!containsVariability(variabilityAnalyzedAll, var)) {
@@ -293,7 +294,7 @@ public class Reports extends Metrics {
 
 		try {
 			if(preservedDependencies.size() > 0) {
-				PrintWriter printDepALL = new PrintWriter(new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\AllDependencies\\"+rindex+"_All_Dependencies"+ ".csv",true));
+				PrintWriter printDepALL = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\AllDependencies\\"+rindex+"_All_Dependencies"+ ".csv",true));
 				for(Dependency dep: preservedDependencies) {			
 					printDepALL.println(dep.getVariabilityA().getName()+","+dep.getVariabilityB().getName());	
 				}
@@ -301,7 +302,7 @@ public class Reports extends Metrics {
 			}
 
 			if(changedDependencies.size() > 0) {
-				PrintWriter printDepCh = new PrintWriter(new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\AllDependenciesChanged\\"+rindex+"_All_Dependencies_Changed"+ ".csv",true));
+				PrintWriter printDepCh = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\AllDependenciesChanged\\"+rindex+"_All_Dependencies_Changed"+ ".csv",true));
 				for(Dependency dep: changedDependencies) {			
 					printDepCh.println(dep.getVariabilityA().getName()+","+dep.getVariabilityB().getName());	
 				}
@@ -355,7 +356,7 @@ public class Reports extends Metrics {
 		String category = null;
 		Set<ProgramElement> pes = howmany();
 		try {
-			PrintWriter printPeW = new PrintWriter(new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\ProgramWeight\\"+rindex+"pe"+ ".csv",true));
+			PrintWriter printPeW = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\ProgramWeight\\"+rindex+"pe"+ ".csv",true));
 			for(ProgramElement pe: pes) {
 					if (pe.id == ID.Function) {
 						category = "function";
@@ -379,7 +380,7 @@ public class Reports extends Metrics {
 		
 		try {
 			if(fi.getGeneralVariability().size() > 0) {
-				PrintWriter printVar = new PrintWriter(new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\ImpactVariabilities\\"+rindex+"_impact_variabilities"+ ".csv",true));
+				PrintWriter printVar = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\ImpactVariabilities\\"+rindex+"_impact_variabilities"+ ".csv",true));
 				for (Variability var: fi.getGeneralVariability()) {
 					printVar.println(var.getName()+",");
 				}
@@ -387,7 +388,7 @@ public class Reports extends Metrics {
 			}
 			
 			if(fi.getPossibleImpactVariability().size() > 0) {
-				PrintWriter printVarDep = new PrintWriter(new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\csv\\Variabilities\\"+rindex+"_impact_variabilities_dependee"+ ".csv",true));
+				PrintWriter printVarDep = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.currentProject + "\\results\\csv\\Variabilities\\"+rindex+"_impact_variabilities_dependee"+ ".csv",true));
 				for (Impact imp: fi.getImpactVariability()) {	
 					if(imp.getFromProgramElement().id == null)
 						System.out.println("393 >>>> "+imp.getFromProgramElement().getName()+"   is   "+imp.getFromProgramElement().id);

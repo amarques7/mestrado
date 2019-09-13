@@ -31,12 +31,17 @@ public class Runner {
 	static String repoList = "";
 	static String dir_projeto;
 	static String dir_result;
+	public static String path =  " ";
 	static int i;
 	static public String listaProjetos = "a";
 	static public String dir_plugin;
 	public static String currentProject;
-	public static boolean noChangesInCFiles = false;
 	public static FileReader arquivoLeitura;
+	public static boolean noChangesInCFiles = false;
+	public static boolean analyseThisTime = true;
+	private static IniciarDiretorio iniciarDiretorio;
+	
+	
 
 	public static BufferedReader setReader() {
 		// Carrega o buffer com os arquivos do info.txt
@@ -52,26 +57,17 @@ public class Runner {
 
 	}
 
-	// public static void main(String[] args) throws IOException,
-	// InterruptedException {
 	public static void start(String runTimeWorkspacePath) throws IOException, InterruptedException {
-		String path = runTimeWorkspacePath;
+		path = runTimeWorkspacePath;
 		
-		System.out.println("entrei aqui");
-		BufferedReader reader = setReader();
-
-//		try {
-//			arquivoLeitura = new FileReader();
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
-		// BufferedReader leitorArquivo = new BufferedReader(arquivoLeitura);
+		iniciarDiretorio = new IniciarDiretorio("C:/Users/amarq/git/mestrado/SyntaxErrorAnalyzer/diretorios.txt");
+		
+//		BufferedReader reader = setReader();
+		
+		BufferedReader reader = iniciarDiretorio.getReader();
 		try {
 			dir_projeto = reader.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		dir_result = reader.readLine();
@@ -142,7 +138,6 @@ public class Runner {
 								System.out.println("arqui mod: " + arquivoMod);
 								
 								noChangesInCFiles = true;
-
 								MoveFile.copyFileUsingChannel(file, (new File(
 										dir_plugin + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c")));
 								// chamar o cproje
@@ -164,9 +159,9 @@ public class Runner {
 							System.out.println("não há arquivos alterado  no commit: " + count);
 						}
 						// ClearDirectory.remover(new File(dir_plugin +"analysis"));
-						if (count == 5) {
-							System.exit(0);
-						}
+//						if (count == 5) {
+//							System.exit(0);
+//						}
 
 					}
 				}

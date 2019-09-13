@@ -15,6 +15,7 @@ import analysis.core.ProgramElement;
 import analysis.core.Variable;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 import finegrained.Reports;
+import mestrado.core.Runner;
 import metrics.Metrics;
 import tree.FunctionCall;
 import tree.FunctionDef;
@@ -37,7 +38,7 @@ public class Analyser {
 	
 	public List<Dependency> setDps(Map<FunctionDef, Function> functions, List<Variable> globals, List<Variable> useOfGlobals, List<Call> calls) throws InterruptedException{
 		System.out.println("-----");
-		if(main.Main.noChangesInCFiles) {
+		if(Runner.noChangesInCFiles) {
 			//Metrics.write();
 			Reports.Dependencies();
 		}

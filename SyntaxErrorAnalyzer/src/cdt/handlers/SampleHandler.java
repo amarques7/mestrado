@@ -252,7 +252,7 @@ public class SampleHandler extends AbstractHandler {
 			
 			toTheNextFile = false;
 		}
-		
+		//Preenche as plataform.h e stub.h
 		writeTypesToPlatformHeader();
 		
 		macros = new ArrayList<String>(macros.size());
@@ -430,7 +430,7 @@ public class SampleHandler extends AbstractHandler {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+		//comentar essa linha
 		new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "include").mkdir();
 		File header = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "include" + File.separator + "stubs.h");
 		File headerPlatform = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "platform.h");

@@ -116,9 +116,9 @@ public class Project {
 		this.globals = globals;
 	}
 
-	public void createAst(String[] filesToCreateAst) {
+	public void createAst(ArrayList<String> filesToAnalyze) {
 
-		for (String file : filesToCreateAst) {
+		for (String file : filesToAnalyze) {
 			Ast ast = new Ast(new File(file), new File(getStubsPath()));
 			GenerationStatus generationStatus = null;
 			do {
@@ -387,7 +387,7 @@ public class Project {
 		this.functions = new HashMap<FunctionDef, Function>(this.functions.size());
 
 		cleanAst(filesToAnalyze);
-		//createAst(filesToAnalyze);
+		createAst(filesToAnalyze);
 
 //		FileWriter writer;
 //		try {
