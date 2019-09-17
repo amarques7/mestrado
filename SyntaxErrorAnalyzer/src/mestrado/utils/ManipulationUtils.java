@@ -7,11 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class ManipulationUtils {
 	
 	private static ArrayList<String> reposURI = new ArrayList<String>();
-	
 	
 	public static ArrayList<String> loadRepos(String file){
 		
@@ -23,18 +21,14 @@ public class ManipulationUtils {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
 		
 		while(input.hasNext()) {		    
 			String repoURI = input.nextLine();
-			
 			reposURI.add(repoURI);
 		}
-		
 		input.close();
 		
 		return reposURI;
-		
 	}
 	
 	public static void writeinFile(File f, ArrayList<String> content) throws IOException{
@@ -44,10 +38,6 @@ public class ManipulationUtils {
 		for (String line:content)			
 			fileWriter.write(line + "\n");
 				
-	    fileWriter.close();
-	    
-		
+	    fileWriter.close();	
 	}
-
-	
 }

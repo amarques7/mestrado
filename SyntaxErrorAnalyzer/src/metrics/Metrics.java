@@ -14,6 +14,7 @@ import analysis.Variability;
 import analysis.core.Call;
 import git.AllCommit;
 import main.Main;
+import mestrado.core.Runner;
 
 public class Metrics {
 	
@@ -44,9 +45,9 @@ public class Metrics {
 			for(Dependency currentDp : allDependencies){
 				previousDependenciesList.add(currentDp);
 			}
-			index = Main.getIndexOfPastAnalysis() + 1;
+			index = Runner.getIndexOfPastAnalysis() + 1;
 			exportFunctionCalls.ExportNumberOfCalls.i = index - 1;
-			Main.analyseThisTime = true;
+			Runner.analyseThisTime = true;
 			return;
 		}
 		

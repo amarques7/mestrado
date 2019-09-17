@@ -19,6 +19,7 @@ import analysis.core.ProgramElement;
 import analysis.core.Variable;
 import git.AllCommit;
 import main.Main;
+import mestrado.core.Runner;
 import metrics.Metrics;
 import util.LoadParameters;
 
@@ -83,7 +84,7 @@ public class DetailedReports extends Metrics{
 			for(Dependency currentDp : allDependencies){
 				previousDependenciesList.add(currentDp);
 			}
-			rindex = Main.getIndexOfPastAnalysis() + 1;
+			rindex = Runner.getIndexOfPastAnalysis() + 1;
 			Main.analyseThisTime = true;
 			return;
 		}
@@ -121,7 +122,7 @@ public class DetailedReports extends Metrics{
 				printDeadDependencies(getAllDeadDependencies(),gravarArqd);
 			}
 			if(rindex <= 1){
-				//Primeira vez todas as dependencias são novas
+				//Primeira vez todas as dependencias sï¿½o novas
 				printNewDependencies(allDependencies,gravarArqn);
 			}
 			gravarArq.println(rindex + "," + AllCommit.commitsIdToAnalyse.size()+","+allVariabilities.size());
@@ -220,7 +221,7 @@ public class DetailedReports extends Metrics{
 	}
 	
 	public static void reportCoarseGrained(PrintWriter gravarArq) {
-		//Evolução	Variabilities	DependenciesTotal	DependenciesExcluded	DependenciesNew	  Dependenciespreserved		DependenciesChanged
+		//Evoluï¿½ï¿½o	Variabilities	DependenciesTotal	DependenciesExcluded	DependenciesNew	  Dependenciespreserved		DependenciesChanged
 		//csvcaller ="Evolution, Variabilities, TotalDependencies, DependenciesDeleted, DependenciesAdditions, DependenciesPreserved, DependenciesChanged";
 		gravarArq.println("Evolution, Variabilities, TotalDependencies, DependenciesDeleted, DependenciesAdditions, DependenciesPreserved, DependenciesChanged");
 		gravarArq.println("Evolution"+","+allVariabilities.size()+","+allDependencies.size()+","+getAllDeadDependencies().size()+","+getAllNewDependencies().size()+","+preservedDependencies.size()+","+changedDependencies.size());

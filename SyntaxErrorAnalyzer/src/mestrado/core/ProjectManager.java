@@ -7,11 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.xml.stream.events.StartElement;
-
-import org.apache.poi.xslf.model.geom.Path;
-import org.apache.tools.ant.taskdefs.optional.Rpm;
-
 import cdt.handlers.SampleHandler;
 import main.Starter;
 import mestrado.git.Commit;
@@ -21,39 +16,113 @@ import mestrado.utils.CreateDirectory;
 import mestrado.utils.ManipulationUtils;
 import mestrado.utils.MoveFile;
 
-public class Runner {
-
-	static File TEMP;
-	static int TEMP2;
-//	static ArrayList<Repo> listofRepos = new ArrayList<Repo>();
-//	public static ArrayList<String> modFiles = new ArrayList<String>();
-	public static String path = " ";
-	public static String currentCommit = "";
-	static int i;
-	static public String listaProjetos = "a";
-	public static String currentProject;
-	public static FileReader arquivoLeitura;
-	public static boolean noChangesInCFiles = false;
-	public static boolean analyseThisTime = true;
-	public static ProjectManager projectManager;
-
-	public static void start(String runTimeWorkspacePath) throws IOException, InterruptedException {
-		path = runTimeWorkspacePath;
-		projectManager = new ProjectManager("C:/Users/amarq/git/mestrado/SyntaxErrorAnalyzer/diretorios.txt");
-		projectManager.loadRepos();
-		projectManager.generateVariabilities();
-//		loadRepos(ManipulationUtils.loadRepos(projectManager.getRepoList()));
-//		generateVariabilities();
+public class ProjectManager {
+	
+	private String dirProjetct;
+	private String dirResult;
+	private String dirPlugin;
+	private String repoList;
+	private ArrayList<Repo> listofRepos;
+	private String currentProject;
+	private String listaProjetos;
+	private BufferedReader reader;
+	
+	public ProjectManager( String pathFrom) {
+		super();
 		
+		listofRepos = new ArrayList<Repo>();
+		currentProject = null;
+		listaProjetos = "a";
+		try {
+			generateReader(pathFrom);	
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}				
+
+	private void generateReader(String pathFrom) throws IOException{
+		try {
+			reader = new BufferedReader(new FileReader(pathFrom));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}	
+		
+		dirProjetct = reader.readLine();
+		dirResult  = reader.readLine();
+		dirPlugin = reader.readLine();
+		repoList  = reader.readLine();
+	}
+	
+	public BufferedReader getReader() {
+		return reader;
+	}
+	
+	public void setReader(BufferedReader reader) {
+		this.reader = reader;
+	}
+	
+	public String getDirProjetct() {
+		return dirProjetct;
 	}
 
-	private static void generateVariabilities() throws IOException, InterruptedException {
+	public void setDirProjetct(String dirProjetct) {
+		this.dirProjetct = dirProjetct;
+	}
+
+	public String getDirResult() {
+		return dirResult;
+	}
+
+	public void setDirResult(String dirResult) {
+		this.dirResult = dirResult;
+	}
+
+	public String getDirPlugin() {
+		return dirPlugin;
+	}
+
+	public void setDirPlugin(String dirPlugin) {
+		this.dirPlugin = dirPlugin;
+	}
+
+	public String getRepoList() {
+		return repoList;
+	}
+
+	public void setRepoList(String repoList) {
+		this.repoList = repoList;
+	}
+
+	public void loadRepos() {
+		ArrayList<String> repos = ManipulationUtils.loadRepos(repoList);
+		
+		for (String repoURI : repos)
+		{
+			try {
+				Repo a = new Repo(repoURI, dirProjetct);
+				listofRepos.add(a);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+//			listofRepos.add(new Repo(repoURI, dirProjetct));	
+		}
+	}
+
+	public boolean listaRepositorioVazia() {
+		return listofRepos.isEmpty();
+	}
+
+	public ArrayList<Repo> getListaRepos() {
+		// TODO Auto-generated method stub
+		return listofRepos;
+	}
+
+	public void generateVariabilities() {
 
 		int count = 0;
-		currentProject = null;
-		// CreateDirectory.setWriter(dir_plugin + "analysis");
-		if (!projectManager.listaRepositorioVazia()){
-			for (Repo r : projectManager.getListaRepos()) {
+		
+		if (!listaRepositorioVazia()){
+			for (Repo r : listofRepos) {
 
 				count = 0;
 				System.out.println();
@@ -61,9 +130,9 @@ public class Runner {
 				currentProject = r.getName();
 				SampleHandler.PROJECT = currentProject;
 				// CreateDirectory.setWriter(dir_plugin + currentProject);
-				CreateDirectory.setWriter(projectManager.getDirPlugin() + currentProject + "\\analysis");
+				CreateDirectory.setWriter(dirPlugin + currentProject + "\\analysis");
 				// essa função cria os arquivos platform.h e stubs.h
-				Starter analyser = new Starter(projectManager.getDirPlugin() + currentProject + "\\", false);
+				Starter analyser = new Starter(dirPlugin + currentProject + "\\", false);
 
 				if (listaProjetos.equals("a")) {
 					listaProjetos = r.getName();
@@ -74,7 +143,7 @@ public class Runner {
 
 				if (!r.getCommitList().isEmpty()) {
 
-					File diretorio = new File((projectManager.getDirResult()+ System.getProperty("file.separator") + r.getName()
+					File diretorio = new File((dirResult + System.getProperty("file.separator") + r.getName()
 							+ System.getProperty("file.separator")));
 					diretorio.mkdirs();
 
@@ -138,25 +207,7 @@ public class Runner {
 
 		System.out.println("acabei");
 
-	}
 
-//	private static void loadRepos(ArrayList<String> repos) {
-//		for (String repoURI : repos)
-//			listofRepos.add(new Repo(repoURI, projectManager.getDirProjetct()));
-//
-//	}
-	public static int getIndexOfPastAnalysis() throws InterruptedException {
-		File  pathToErro =  new File(path + "/results/csv/Variabilities/ProgramWeight");
-
-		File[] allAnalysis =pathToErro.listFiles();
-
-		System.out.println("AAL :" + allAnalysis);
 		
-		if (allAnalysis == null) {
-			return -1;
-		} else {
-			return allAnalysis.length;
-		}
-
 	}
 }

@@ -1,4 +1,4 @@
 C:\Projeto\
 C:\Analise\
 C:\Users\amarq\runtime-EclipseApplication\
-C:\Users\amarq\git\mestrado\SyntaxErrorAnalyzer\repos.txt
+C:\Users\amarq\git\mst\SyntaxErrorAnalyzer\repos.txt

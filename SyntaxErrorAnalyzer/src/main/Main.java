@@ -437,20 +437,7 @@ public class Main {
 //		return settings;
 //	}
 
-	public static int getIndexOfPastAnalysis() throws InterruptedException {
-		File  pathToErro =  new File(downloadPath + "/results/csv/Variabilities/ProgramWeight");
-
-		File[] allAnalysis =pathToErro.listFiles();
-
-		System.out.println("AAL :" + allAnalysis);
-		
-		if (allAnalysis == null) {
-			return -1;
-		} else {
-			return allAnalysis.length;
-		}
-
-	}
+	
 
 	private static void deleteAllFromAnalysisFolder() {
 		try {

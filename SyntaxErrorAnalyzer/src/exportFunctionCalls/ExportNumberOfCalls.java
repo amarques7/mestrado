@@ -7,6 +7,7 @@ import java.util.List;
 
 import analysis.core.Function;
 import analysis.core.Project;
+import mestrado.core.Runner;
 import util.CreateFile;
 
 public class ExportNumberOfCalls {
@@ -15,10 +16,11 @@ public class ExportNumberOfCalls {
 	
 	public static void receive(List<Project.Pair> allPairs){
 		try {
-			//new File(main.Main.downloadPath + "results/functionCalls").mkdirs();
-			CreateFile.create(main.Main.downloadPath, "results/functionCalls" );
+			new File(Runner.path + Runner.currentProject +"/results/functionCalls" ).mkdirs();
+		//	esse é o meu cara
+		//	CreateFile.create(Runner.path, "results/functionCalls" );
 			
-			FileWriter writer = new FileWriter(new File(main.Main.downloadPath + "results/functionCalls/" + i + "_"+ main.Main.currentCommit + ".txt"));
+			FileWriter writer = new FileWriter(new File(Runner.path + Runner.currentProject  +"/results/functionCalls/" + i + "_"+ Runner.currentCommit + ".txt"));
 			
 			for(Project.Pair pair : allPairs) {
 				String toWrite = pair.getFunction().getName() + ";";

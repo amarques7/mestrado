@@ -35,7 +35,7 @@ public class Reports extends Metrics {
 	
 	public static void Dependencies() throws InterruptedException{
 		
-		if(!Runner.analyseThisTime){
+		if(!Runner.analyseThisTime){//verificar o valor no outro codigo
 			//adding the current dps to previous dps
 			previousDependenciesList = new HashSet<Dependency>(allDependencies.size());
 			previousVariabilitiesList = new HashSet<Variability>(allVariabilities.size());
@@ -47,7 +47,7 @@ public class Reports extends Metrics {
 			for(Dependency currentDp : allDependencies){
 				previousDependenciesList.add(currentDp);
 			}
-			rindex = Main.getIndexOfPastAnalysis() + 1;
+			rindex = Runner.getIndexOfPastAnalysis() + 1;
 			Main.analyseThisTime = true;
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RINDEX     "+ rindex);
 			return;
