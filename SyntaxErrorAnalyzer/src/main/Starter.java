@@ -9,6 +9,7 @@ import analysis.core.Project;
 import analysis.core.ResultsLogger;
 import cdt.handlers.SampleHandler;
 import git.ModifiedFileList;
+import mestrado.core.ProjectManager;
 import mestrado.core.Runner;
 import util.CProject;
 import util.CreateDirectory;
@@ -19,7 +20,7 @@ public class Starter {
 	String downloadPath = "";
 	static boolean noStubs = false;
 	static Project project;
-	
+	public static ProjectManager projectManager;
 	//just to register
 	public static int numberOfCFiles = 0;
 	
@@ -42,7 +43,7 @@ public class Starter {
 		} else {
 			project = new Project(downloadPath + "analysis", downloadPath + "platform.h");
 		}
-		project.setName(main.Main.currentProject);
+		project.setName(SampleHandler.PROJECT); // project.Manager.getCurrentProject()
 	}
 	
 //	public String[] defineFiles(String[] filesToAnalyze){ posso apagar
@@ -92,7 +93,7 @@ public class Starter {
 	//
 	public static void createStubs(ArrayList<String> files){
 		//creating CProject to create include/stubs.h and platform.h
-		CProject.createCProject(Runner.currentProject);
+		CProject.createCProject(Runner.projectManager.getCurrentProject()); // projectManager.getCurrentProject()
 		
 		try {
 			//creating platform.h and include/stubs.h // CIRAR UM MODULO SEPARADO.

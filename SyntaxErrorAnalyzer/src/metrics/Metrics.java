@@ -14,6 +14,7 @@ import analysis.Variability;
 import analysis.core.Call;
 import git.AllCommit;
 import main.Main;
+import mestrado.core.ProjectManager;
 import mestrado.core.Runner;
 
 public class Metrics {
@@ -30,6 +31,8 @@ public class Metrics {
 	public static Set<Variability> previousVariabilitiesList = new HashSet<Variability>(500);
 	
 	public static List<Call> calls;
+	public static ProjectManager projectManager;
+	
 	
 	public static void write() throws InterruptedException{
 		System.out.println("Writing dependencies.txt...");
@@ -51,13 +54,14 @@ public class Metrics {
 			return;
 		}
 		
-		try {
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\dependencies").mkdirs();
+		try {			//Main.PATH									 Main.currentProject 
+			new File(projectManager.getDirPlugin() + "\\" + projectManager.getCurrentProject() + "\\results\\dependencies").mkdirs();
 			FileWriter arq = null;
 			if(AllCommit.currentTag.size() == 0)
-				arq = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\dependencies\\"+index+"_dependencies_" + Main.allCommitsThisAnalysis.get(index-1) + ".txt",true);
-			else
-				arq = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\dependencies\\"+index+"_dependencies_" + AllCommit.currentTag.get(index-1) + ".txt",true);
+										//Main.PATH									 Main.currentProject
+				arq = new FileWriter(projectManager.getDirPlugin() + "\\" + projectManager.getCurrentProject() + "\\results\\dependencies\\"+index+"_dependencies_" + Main.allCommitsThisAnalysis.get(index-1) + ".txt",true);
+			else						//Main.PATH									 Main.currentProject
+				arq = new FileWriter(projectManager.getDirPlugin() + "\\" + projectManager.getCurrentProject() + "\\results\\dependencies\\"+index+"_dependencies_" + AllCommit.currentTag.get(index-1) + ".txt",true);
 			
 			PrintWriter writer = new PrintWriter(arq);
 			

@@ -28,10 +28,10 @@ public class Runner {
 //	static ArrayList<Repo> listofRepos = new ArrayList<Repo>();
 //	public static ArrayList<String> modFiles = new ArrayList<String>();
 	public static String path = " ";
-	public static String currentCommit = "";
+//	public static String currentCommit = "";
 	static int i;
 	static public String listaProjetos = "a";
-	public static String currentProject;
+	//public static String currentProject;
 	public static FileReader arquivoLeitura;
 	public static boolean noChangesInCFiles = false;
 	public static boolean analyseThisTime = true;
@@ -46,7 +46,7 @@ public class Runner {
 //		generateVariabilities();
 		
 	}
-
+/*
 	private static void generateVariabilities() throws IOException, InterruptedException {
 
 		int count = 0;
@@ -81,7 +81,7 @@ public class Runner {
 					// traz os commit
 					for (Commit c : r.getCommitList()) {
 						count++;
-						currentCommit = c.getId();
+			//			currentCommit = c.getId();
 						r.checkoutCommit(c.getId());
 						System.out.println("Análise commit: " + count);
 						String arquivoMod = null;
@@ -138,7 +138,7 @@ public class Runner {
 
 		System.out.println("acabei");
 
-	}
+	}*/
 
 //	private static void loadRepos(ArrayList<String> repos) {
 //		for (String repoURI : repos)

@@ -26,6 +26,49 @@ public class ProjectManager {
 	private String currentProject;
 	private String listaProjetos;
 	private BufferedReader reader;
+	private String currentCommit;
+	private boolean noChangesInCFiles;
+	
+	public ArrayList<Repo> getListofRepos() {
+		return listofRepos;
+	}
+
+	public void setListofRepos(ArrayList<Repo> listofRepos) {
+		this.listofRepos = listofRepos;
+	}
+
+	public String getCurrentProject() {
+		return currentProject;
+	}
+
+	public void setCurrentProject(String currentProject) {
+		this.currentProject = currentProject;
+	}
+
+	public String getListaProjetos() {
+		return listaProjetos;
+	}
+
+	public void setListaProjetos(String listaProjetos) {
+		this.listaProjetos = listaProjetos;
+	}
+
+	public String getCurrentCommit() {
+		return currentCommit;
+	}
+
+	public void setCurrentCommit(String currentCommit) {
+		this.currentCommit = currentCommit;
+	}
+
+	public boolean isNoChangesInCFiles() {
+		return noChangesInCFiles;
+	}
+
+	public void setNoChangesInCFiles(boolean noChangesInCFiles) {
+		this.noChangesInCFiles = noChangesInCFiles;
+	}
+
 	
 	public ProjectManager( String pathFrom) {
 		super();
@@ -33,6 +76,9 @@ public class ProjectManager {
 		listofRepos = new ArrayList<Repo>();
 		currentProject = null;
 		listaProjetos = "a";
+		currentCommit = "";
+		noChangesInCFiles = false;
+		
 		try {
 			generateReader(pathFrom);	
 		}catch (Exception e) {
@@ -117,7 +163,7 @@ public class ProjectManager {
 		return listofRepos;
 	}
 
-	public void generateVariabilities() {
+	public void generateVariabilities() throws IOException, InterruptedException {
 
 		int count = 0;
 		
@@ -128,9 +174,10 @@ public class ProjectManager {
 				System.out.println();
 				System.out.println("Analyzing " + r.getName() + "... ");
 				currentProject = r.getName();
-				SampleHandler.PROJECT = currentProject;
+				SampleHandler.PROJECT = r.getName();
 				// CreateDirectory.setWriter(dir_plugin + currentProject);
 				CreateDirectory.setWriter(dirPlugin + currentProject + "\\analysis");
+				CreateDirectory.setWriter(dirPlugin + currentProject +"\\results");
 				// essa função cria os arquivos platform.h e stubs.h
 				Starter analyser = new Starter(dirPlugin + currentProject + "\\", false);
 
@@ -165,13 +212,11 @@ public class ProjectManager {
 								File file = new File(f.getPath().replace("/", "\\"));
 								System.out.println("file:" + file);
 								// modFiles.add(f.getPath().replace("/","\\"));
-								modFiles.add(
-										projectManager.getDirPlugin() + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c");
+								modFiles.add(dirPlugin + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c");
 								System.out.println("arqui mod: " + arquivoMod);
 
 								noChangesInCFiles = true;
-								MoveFile.copyFileUsingChannel(file, (new File(
-										projectManager.getDirPlugin() + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c")));
+								MoveFile.copyFileUsingChannel(file, (new File(dirPlugin + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c")));
 								// chamar o cproje
 
 							}
