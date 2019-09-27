@@ -8,7 +8,7 @@ import java.util.List;
 import analysis.core.Project;
 import analysis.core.ResultsLogger;
 import cdt.handlers.SampleHandler;
-import git.ModifiedFileList;
+import git_Deletar.ModifiedFileList;
 import mestrado.core.ProjectManager;
 import mestrado.core.Runner;
 import util.CProject;
@@ -25,7 +25,7 @@ public class Starter {
 	public static int numberOfCFiles = 0;
 	
 	public Starter(String downloadPath, boolean noStubs){
-		this.noStubs = noStubs;
+		Starter.noStubs = noStubs;
 		this.downloadPath = downloadPath;
 		//defining arrays for the Metrics
 		
@@ -43,7 +43,7 @@ public class Starter {
 		} else {
 			project = new Project(downloadPath + "analysis", downloadPath + "platform.h");
 		}
-		project.setName(SampleHandler.PROJECT); // project.Manager.getCurrentProject()
+		project.setName(Runner.projectManager.getCurrentProject()); // project.Manager.getCurrentProject()
 	}
 	
 //	public String[] defineFiles(String[] filesToAnalyze){ posso apagar
@@ -71,8 +71,8 @@ public class Starter {
 //	}
 	
 //	
-	public static Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
-		
+	//public static Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
+	public  Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
 		//String[] files = filesToAnalyze;
 		
 		//creating include/stubs.h and platform.h
@@ -84,14 +84,15 @@ public class Starter {
 		return startAnalyser(filesToAnalyze);
 	}
 	
-	public static Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
-
+//	public static Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
+	public  Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
 		//start the analyzer
 		project.analyze(filesToAnalyze);
 		return project;
 	}
 	//
 	public static void createStubs(ArrayList<String> files){
+		
 		//creating CProject to create include/stubs.h and platform.h
 		CProject.createCProject(Runner.projectManager.getCurrentProject()); // projectManager.getCurrentProject()
 		
@@ -99,6 +100,7 @@ public class Starter {
 			//creating platform.h and include/stubs.h // CIRAR UM MODULO SEPARADO.
 			SampleHandler.analyzeFilesInSrc(files);
 		} catch (Exception e1) {
+			
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}

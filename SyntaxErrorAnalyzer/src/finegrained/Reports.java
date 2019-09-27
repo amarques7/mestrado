@@ -35,7 +35,7 @@ public class Reports extends Metrics {
 	
 	public static void Dependencies() throws InterruptedException{
 		
-		if(!Runner.analyseThisTime){//verificar o valor no outro codigo
+		if(!Runner.projectManager.isAnalyseThisTime()){//verificar o valor no outro codigo
 			//adding the current dps to previous dps
 			previousDependenciesList = new HashSet<Dependency>(allDependencies.size());
 			previousVariabilitiesList = new HashSet<Variability>(allVariabilities.size());
@@ -47,7 +47,7 @@ public class Reports extends Metrics {
 			for(Dependency currentDp : allDependencies){
 				previousDependenciesList.add(currentDp);
 			}
-			rindex = Runner.getIndexOfPastAnalysis() + 1;
+			rindex = Runner.projectManager.getIndexOfPastAnalysis() + 1;
 			Main.analyseThisTime = true;
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RINDEX     "+ rindex);
 			return;
@@ -59,19 +59,19 @@ public class Reports extends Metrics {
 			PrintWriter printImpact = null;
 			PrintWriter printVar = null;
 			FileWriter arqvar = null; FileWriter coarsearq = null; FileWriter fineFile = null; FileWriter impactFile = null;
-			new File(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies").mkdirs();
-			new File(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities").mkdirs();
-			new File(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllVariabilities").mkdirs();
-			new File(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ImpactVariabilities").mkdirs();
-			new File(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependencies").mkdirs();
-			new File(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependenciesChanged").mkdirs();
-			new File(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ProgramWeight").mkdirs();
+			new File(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies").mkdirs();
+			new File(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities").mkdirs();
+			new File(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllVariabilities").mkdirs();
+			new File(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ImpactVariabilities").mkdirs();
+			new File(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependencies").mkdirs();
+			new File(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependenciesChanged").mkdirs();
+			new File(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ProgramWeight").mkdirs();
 			
 			
-			impactFile = new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies\\"+"_Impact_" + ".csv",true);
-			fineFile = new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies\\"+"_FineGrained_" + ".csv",true);
-			coarsearq = new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies\\"+"_CoarseGrained_"+ ".csv",true);
-			arqvar = new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\"+"variabilities"+ ".csv",true);
+			impactFile = new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies\\"+"_Impact_" + ".csv",true);
+			fineFile = new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies\\"+"_FineGrained_" + ".csv",true);
+			coarsearq = new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\PermanentsDependencies\\"+"_CoarseGrained_"+ ".csv",true);
+			arqvar = new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\"+"variabilities"+ ".csv",true);
 			
 			printCoarse = new PrintWriter(coarsearq);
 			printFine = new PrintWriter(fineFile);
@@ -94,7 +94,8 @@ public class Reports extends Metrics {
 			//Found Preserved Dependencies
 			if(rindex > 1){//this analysis occurred once
 				
-				System.out.println(DATE_FORMAT.format(Main.commitDate));
+//				System.out.println(DATE_FORMAT.format(Main.commitDate));
+				System.out.println(Runner.projectManager.getReturnCurrentCommit());
 				foundPreservedDependencies(foundChanges, foundImpact);
 				printVariabilities(printVar);
 				reportCoarseGrained(printCoarse);
@@ -233,7 +234,8 @@ public class Reports extends Metrics {
 		
 		Set<Variability> variabilityAnalyzedAll = new HashSet<Variability>(allVariabilities.size());
 		try {
-			PrintWriter printVaRALL = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllVariabilities\\"+rindex+"_All_Variabilities"+ ".csv",true));
+			System.out.println("Runner.projectManagen.getPath" + Runner.projectManager.getPath());
+			PrintWriter printVaRALL = new PrintWriter(new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllVariabilities\\"+rindex+"_All_Variabilities"+ ".csv",true));
 			for (Variability var: allVariabilities) {
 				printVaRALL.println(var.getName()+",");
 				if(!containsVariability(variabilityAnalyzedAll, var)) {
@@ -294,7 +296,7 @@ public class Reports extends Metrics {
 
 		try {
 			if(preservedDependencies.size() > 0) {
-				PrintWriter printDepALL = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependencies\\"+rindex+"_All_Dependencies"+ ".csv",true));
+				PrintWriter printDepALL = new PrintWriter(new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependencies\\"+rindex+"_All_Dependencies"+ ".csv",true));
 				for(Dependency dep: preservedDependencies) {			
 					printDepALL.println(dep.getVariabilityA().getName()+","+dep.getVariabilityB().getName());	
 				}
@@ -302,7 +304,7 @@ public class Reports extends Metrics {
 			}
 
 			if(changedDependencies.size() > 0) {
-				PrintWriter printDepCh = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependenciesChanged\\"+rindex+"_All_Dependencies_Changed"+ ".csv",true));
+				PrintWriter printDepCh = new PrintWriter(new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllDependenciesChanged\\"+rindex+"_All_Dependencies_Changed"+ ".csv",true));
 				for(Dependency dep: changedDependencies) {			
 					printDepCh.println(dep.getVariabilityA().getName()+","+dep.getVariabilityB().getName());	
 				}
@@ -314,7 +316,7 @@ public class Reports extends Metrics {
 			e.printStackTrace();
 		}
 		
-		gravarArq.println(DATE_FORMAT.format(Main.commitDate)+","+rindex+","+allVariabilities.size()+","+allDependencies.size()+","+getAllDeadDependencies().size()+","+getAllNewDependencies().size()+","+preservedDependencies.size()+","+changedDependencies.size());
+		gravarArq.println(Runner.projectManager.getReturnCurrentCommit()+","+rindex+","+allVariabilities.size()+","+allDependencies.size()+","+getAllDeadDependencies().size()+","+getAllNewDependencies().size()+","+preservedDependencies.size()+","+changedDependencies.size());
 	}
 	
 	public static void reportFineGrained(PrintWriter printFile, FoundChanges changes) {
@@ -325,7 +327,7 @@ public class Reports extends Metrics {
 			nfunctionCh += dep.getFuncChanged().size();
 			nvariableCh += dep.getVarChanged().size();
 		}
-		printFile.println(DATE_FORMAT.format(Main.commitDate)+","+rindex+","+nfunctionCh+","+nvariableCh+","+changes.funch.get_Insert()+","+changes.varch.get_Insert()+","+changes.funch.get_Removal()+","+changes.varch.get_Removal()+","+changes.varch.modifierchanges.get_total()+","+changes.varch.specifierchanges.get_total()+","+changes.varch.qualifierchanges.get_total()+","+changes.varch.typeschanges.get_total()+","+changes.funch.typeschanges.get_total()+","+changes.funch.modifierchanges.get_total()+","+changes.funch.specifierchanges.get_total()+","+changes.funch.qualifierchanges.get_total()+","+changes.cont_change_parameter);
+		printFile.println(Runner.projectManager.getReturnCurrentCommit()+","+rindex+","+nfunctionCh+","+nvariableCh+","+changes.funch.get_Insert()+","+changes.varch.get_Insert()+","+changes.funch.get_Removal()+","+changes.varch.get_Removal()+","+changes.varch.modifierchanges.get_total()+","+changes.varch.specifierchanges.get_total()+","+changes.varch.qualifierchanges.get_total()+","+changes.varch.typeschanges.get_total()+","+changes.funch.typeschanges.get_total()+","+changes.funch.modifierchanges.get_total()+","+changes.funch.specifierchanges.get_total()+","+changes.funch.qualifierchanges.get_total()+","+changes.cont_change_parameter);
 		
 		nfunctionCh = 0;
 		nvariableCh = 0;
@@ -356,7 +358,7 @@ public class Reports extends Metrics {
 		String category = null;
 		Set<ProgramElement> pes = howmany();
 		try {
-			PrintWriter printPeW = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ProgramWeight\\"+rindex+"pe"+ ".csv",true));
+			PrintWriter printPeW = new PrintWriter(new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ProgramWeight\\"+rindex+"pe"+ ".csv",true));
 			for(ProgramElement pe: pes) {
 					if (pe.id == ID.Function) {
 						category = "function";
@@ -376,11 +378,11 @@ public class Reports extends Metrics {
 	
 	public static void reportPointImpact(PrintWriter printFile, FoundImpact fi) {
 		
-		printFile.println(DATE_FORMAT.format(Main.commitDate)+","+rindex+","+changedDependencies.size()+","+fi.getPossibleImpactVariability().size()+","+fi.getImpactVariability().size()+","+fi.getImpactPoints()+","+fi.getGeneralVariability().size()+","+fi.getImpactProgramElement().size()+","+fi.getImpactFunctions()+","+fi.getImpactVariables()); 		
+		printFile.println(Runner.projectManager.getReturnCurrentCommit()+","+rindex+","+changedDependencies.size()+","+fi.getPossibleImpactVariability().size()+","+fi.getImpactVariability().size()+","+fi.getImpactPoints()+","+fi.getGeneralVariability().size()+","+fi.getImpactProgramElement().size()+","+fi.getImpactFunctions()+","+fi.getImpactVariables()); 		
 		
 		try {
 			if(fi.getGeneralVariability().size() > 0) {
-				PrintWriter printVar = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ImpactVariabilities\\"+rindex+"_impact_variabilities"+ ".csv",true));
+				PrintWriter printVar = new PrintWriter(new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\ImpactVariabilities\\"+rindex+"_impact_variabilities"+ ".csv",true));
 				for (Variability var: fi.getGeneralVariability()) {
 					printVar.println(var.getName()+",");
 				}
@@ -388,7 +390,7 @@ public class Reports extends Metrics {
 			}
 			
 			if(fi.getPossibleImpactVariability().size() > 0) {
-				PrintWriter printVarDep = new PrintWriter(new FileWriter(Runner.path + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\"+rindex+"_impact_variabilities_dependee"+ ".csv",true));
+				PrintWriter printVarDep = new PrintWriter(new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\"+rindex+"_impact_variabilities_dependee"+ ".csv",true));
 				for (Impact imp: fi.getImpactVariability()) {	
 					if(imp.getFromProgramElement().id == null)
 						System.out.println("393 >>>> "+imp.getFromProgramElement().getName()+"   is   "+imp.getFromProgramElement().id);

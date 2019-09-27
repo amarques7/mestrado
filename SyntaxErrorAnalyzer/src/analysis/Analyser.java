@@ -38,7 +38,7 @@ public class Analyser {
 	
 	public List<Dependency> setDps(Map<FunctionDef, Function> functions, List<Variable> globals, List<Variable> useOfGlobals, List<Call> calls) throws InterruptedException{
 		System.out.println("-----");
-		if(Runner.noChangesInCFiles) {
+		if(Runner.projectManager.isNoChangesInCFiles()) {//confirmar aqui
 			//Metrics.write();
 			Reports.Dependencies();
 		}
@@ -86,8 +86,9 @@ public class Analyser {
 			Metrics.allDependencies.addAll(dependencies);
 			
 			//Raiza
-			//Reports.preservedDependencies = new HashSet<Dependency>(dependencies.size());
-			//Reports.changedDependencies = new HashSet<Dependency>(dependencies.size());
+			Reports.preservedDependencies = new HashSet<Dependency>(dependencies.size());
+			Reports.changedDependencies = new HashSet<Dependency>(dependencies.size());
+			//Adriano
 			Metrics.calls = calls;
 			Metrics.write();
 			//Reports.Dependencies();

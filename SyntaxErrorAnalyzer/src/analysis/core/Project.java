@@ -373,7 +373,7 @@ public class Project {
 
 	public void analyze(ArrayList<String> filesToAnalyze) throws InterruptedException {
 
-		if (Runner.noChangesInCFiles) {
+		if (!Runner.projectManager.isNoChangesInCFiles()) {
 			exportDirectives();
 			return;
 		}
@@ -590,7 +590,10 @@ public class Project {
 	}
 
 	public void exportDirectives() throws InterruptedException {
+		
+
 		setDependencies(new Analyser().setDps(getFunctions(), globals, useOfGlobalVariables, calls));
+		//esse é o meu
 		exportFunctionCalls.ExportNumberOfCalls.receive(allPairs);
 	}
 

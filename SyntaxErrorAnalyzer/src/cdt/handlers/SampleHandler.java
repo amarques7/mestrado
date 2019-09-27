@@ -201,7 +201,7 @@ public class SampleHandler extends AbstractHandler {
 //	}
 	
 	public static void analyzeFilesInSrc(ArrayList<String> files) throws Exception{
-		ICProject project = CoreModel.getDefault().getCModel().getCProject(SampleHandler.PROJECT);
+		ICProject project = CoreModel.getDefault().getCModel().getCProject(SampleHandler.PROJECT);//trocar por Runner.projectManager.getCurrentProject()
 		project.getProject().refreshLocal(IResource.DEPTH_ZERO, null);
 		String thePath = project.getPath().toString();
 		System.out.println(thePath);
@@ -430,7 +430,7 @@ public class SampleHandler extends AbstractHandler {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		//comentar essa linha
+		//comentar essa linha a pasta include ja existe
 		new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "include").mkdir();
 		File header = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "include" + File.separator + "stubs.h");
 		File headerPlatform = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "platform.h");

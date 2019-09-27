@@ -43,8 +43,8 @@ import analysis.core.Project;
 import analysis.core.ResultsLogger;
 import cdt.handlers.SampleHandler;
 import finegrained.Reports;
-import git.AllCommit;
-import git.DownloadGit;
+import git_Deletar.AllCommit;
+import git_Deletar.DownloadGit;
 import metrics.Metrics;
 import util.CreateDirectory;
 import util.LoadParameters;
@@ -65,7 +65,7 @@ public class Main {
 
 	public static List<String> projectPaths = new ArrayList<String>();
 
-	public static String downloadPath = "";
+	//public static String downloadPath = "";
 
 	// git refer
 	//static Git git;
@@ -106,7 +106,7 @@ public class Main {
 	// decide if Analyser.java will run this time
 	public static boolean noChangesInCFiles = false;
 
-	public static Date commitDate;
+	//public static Date commitDate;
 
 	public static List<String> allCommitsThisAnalysis;
 

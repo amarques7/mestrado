@@ -1,4 +1,4 @@
-package git;
+package git_Deletar;
 import java.util.Date;
 import java.util.List;
 
@@ -160,7 +160,7 @@ public class GitMetrics {
 			FileWriter arq = new FileWriter(Main.PATH + "\\GitMetrics\\"+projectID+".csv");
 			PrintWriter gravarArq = new PrintWriter(arq);
 			//escrevendo dados
-			gravarArq.println("Primeiro Commit,Ultimo Commit,Quantidade de Releases,Quantidade de Commits,Total de Arquivos Modificados,Total de Diferenças");
+			gravarArq.println("Primeiro Commit,Ultimo Commit,Quantidade de Releases,Quantidade de Commits,Total de Arquivos Modificados,Total de Diferenï¿½as");
 			gravarArq.println(firstdate+","+lastdate+","+allListTags.size()+","+numberOfCommits+","+totalFilesChanges.size()+","+totalDifferences);
 			for (String file: totalFilesChanges) {
 				gravarArq.println(file);
