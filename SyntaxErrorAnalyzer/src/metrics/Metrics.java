@@ -13,7 +13,6 @@ import analysis.Link;
 import analysis.Variability;
 import analysis.core.Call;
 //import git_Deletar.AllCommit;
-import main.Main;
 import mestrado.core.ProjectManager;
 import mestrado.core.Runner;
 import mestrado.git.Commit;

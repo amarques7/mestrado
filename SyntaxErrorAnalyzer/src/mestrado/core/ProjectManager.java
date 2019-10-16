@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 
 import analysis.core.AstLogger;
 import analysis.core.Project;
+import analysis.core.ResultsLogger;
 import cdt.handlers.SampleHandler;
 import main.Starter;
 import mestrado.git.Commit;
@@ -28,7 +29,7 @@ import mestrado.utils.MoveFile;
 public class ProjectManager {
 
 	private String dirProjetct;
-	private String dirResult;
+//	private String dirResult;
 	private String dirPlugin;
 	private String repoList;
 	private ArrayList<Repo> listofRepos;
@@ -43,11 +44,12 @@ public class ProjectManager {
 	private int numberOfAnalysisOcurred;
 	private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	private List<String> allCommitsThisAnalysis;
+	private List<String> listModFile;
 	public Repo repo;
 	private long startTime;
-	
+
 	private List<String> commitsIdToAnalyse;
-	
+
 	public Commit getCommitAtual() {
 		return commitAtual;
 	}
@@ -115,12 +117,21 @@ public class ProjectManager {
 		analyseThisTime = true;
 		path = runTimeWorkspacePath;
 		numberOfAnalysisOcurred = 0;
+		listModFile = new ArrayList<String>();
 
 		try {
 			generateReader(pathFrom);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	public List<String> getListModFile() {
+		return listModFile;
+	}
+
+	public void setListModFile(List<String> listModFile) {
+		this.listModFile = listModFile;
 	}
 
 	private void generateReader(String pathFrom) throws IOException {
@@ -131,7 +142,7 @@ public class ProjectManager {
 		}
 
 		dirProjetct = reader.readLine();
-		dirResult = reader.readLine();
+		//dirResult = reader.readLine();
 		dirPlugin = reader.readLine();
 		repoList = reader.readLine();
 	}
@@ -152,13 +163,13 @@ public class ProjectManager {
 		this.dirProjetct = dirProjetct;
 	}
 
-	public String getDirResult() {
-		return dirResult;
-	}
+//	public String getDirResult() {
+//		return dirResult;
+//	}
 
-	public void setDirResult(String dirResult) {
-		this.dirResult = dirResult;
-	}
+//	public void setDirResult(String dirResult) {
+//		this.dirResult = dirResult;
+//	}
 
 	public String getDirPlugin() {
 		return dirPlugin;
@@ -175,7 +186,7 @@ public class ProjectManager {
 	public void setRepoList(String repoList) {
 		this.repoList = repoList;
 	}
-	
+
 	public boolean isAnalyseThisTime() {
 		return analyseThisTime;
 	}
@@ -208,31 +219,31 @@ public class ProjectManager {
 	}
 
 	public void generateVariabilities() throws IOException, InterruptedException {
-		
-		//int count = 0;
+
+		// int count = 0;
 		commitsIdToAnalyse = new ArrayList<String>();
-		
+
 		if (!listaRepositorioVazia()) {
-			
-			
+
 			for (Repo r : listofRepos) {
 				startTime = System.nanoTime();
-				
+
 				numberOfAnalysisOcurred = 0;
 				System.out.println();
-				System.out.println("Analyzing " + r.getName() + "... "); 
-				//System.out.println("-1 Number of commits: "+ repo.getNumberofCommits());
+				System.out.println("Analyzing " + r.getName() + "... ");
+				// System.out.println("-1 Number of commits: "+ repo.getNumberofCommits());
 				currentProject = r.getName();
 				SampleHandler.PROJECT = r.getName();
 				// CreateDirectory.setWriter(dir_plugin + currentProject);
+
 				CreateDirectory.setWriter(dirPlugin + currentProject + "\\analysis");
 				CreateDirectory.setWriter(dirPlugin + currentProject + "\\results");
 				CreateDirectory.setWriter(dirPlugin + currentProject + "\\results\\errorPath");
+				// ResultsLogger.write("Number of commitsId: " +
+				// Runner.projectManager.repo.getChronologicalorderCommits().size());
 				// essa função cria os arquivos platform.h e stubs.h
 				Starter analyser = new Starter(dirPlugin + currentProject + "\\", false);
-				//new Starter(dirPlugin + currentProject + "\\", false);
-		//		System.out.println("-1 Number of commits: "+ repo.getNumberofCommits());
-				
+
 				if (listaProjetos.equals("a")) {
 					listaProjetos = r.getName();
 				} else {
@@ -241,50 +252,47 @@ public class ProjectManager {
 				System.out.println();
 
 				if (!r.getCommitList().isEmpty()) {
-					
-					File diretorio = new File((dirResult + System.getProperty("file.separator") + r.getName()
-							+ System.getProperty("file.separator")));
-					diretorio.mkdirs();
-//					for (Commit c : r.getCommitList()) {
-//						commitsIdToAnalyse.add(c.getId());					
-//						System.out.println("ciommi: " + commitsIdToAnalyse);
-//					}
 
+//					File diretorio = new File((dirResult + System.getProperty("file.separator") + r.getName()
+//							+ System.getProperty("file.separator")));
+//					diretorio.mkdirs();
+					numberOfAnalysisOcurred = 0;
 					// traz os commit
 					for (Commit c : r.getCommitList()) {
-						numberOfAnalysisOcurred ++;
+
+						numberOfAnalysisOcurred++;
 						commitAtual = c;
-						AstLogger.write("\nAnalysis number:" + numberOfAnalysisOcurred );
+						AstLogger.write("\nAnalysis number:" + numberOfAnalysisOcurred);
+						ResultsLogger.write("Commit: " + c.getId());
 						currentCommit = c.getId();
 						r.checkoutCommit(c.getId());
-						System.out.println("teste na projectMa id:" + c.getId());
+						// System.out.println("teste na projectMa id:" + c.getId());
 						System.out.println("Análise commit: " + numberOfAnalysisOcurred);
 						String arquivoMod = null;
 						ArrayList<String> modFiles = new ArrayList<String>();
-						
+
 						try {
 							// this file needs to be deleted for the next analysis
-							System.out.println(dirPlugin + currentProject + "\\temp2.c");
-							Files.delete(new File(dirPlugin + currentCommit + "\\temp2.c")
-									.toPath());
+							// System.out.println(dirPlugin + currentProject + "\\temp2.c");
+							Files.delete(new File(dirPlugin + currentCommit + "\\temp2.c").toPath());
 						} catch (Exception e) {
 							// in case of the file doesnt exist
+							System.out.println("O arquivo tem nao existe" + e.getMessage());
 						}
-						
+
 						for (RepoFile f : c.getTouchedFiles()) {
 							if (f.getExtension().equals("c")) {
 
 								arquivoMod = f.getPath().replace("/", "\\");
-
+								listModFile.add(arquivoMod);
 								File file = new File(f.getPath().replace("/", "\\"));
-								System.out.println("file:" + file);
+								// System.out.println("file:" + file);
 								// modFiles.add(f.getPath().replace("/","\\"));
-								modFiles.add(
-										dirPlugin + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c");
+								modFiles.add(dirPlugin + currentProject + System.getProperty("file.separator") + "analysis" + System.getProperty("file.separator") + f.getName() + ".c");
 								System.out.println("arqui mod: " + arquivoMod);
 
 								this.noChangesInCFiles = true;// por causa dessa variavel nao estou entrando no anlayser
-								
+
 								MoveFile.copyFileUsingChannel(file, (new File(
 										dirPlugin + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c")));
 								// chamar o cproje
@@ -295,26 +303,24 @@ public class ProjectManager {
 						// verificar o pq a copia de arquivo ta dando ruim.
 
 //						if (noChangesInCFiles) {
-							System.out.println("qtd modFiles: " + modFiles.size());
-							System.out.println("Copiado os arquivos do commit: " + numberOfAnalysisOcurred);
-							// MoveFile.copy(modFiles, dir_plugin + "analysis");
-							// ClearDirectory.remover(new File(dir_projeto + r.getName()));
-							
-							Project project = null;
-							project = analyser.start(modFiles);// esta assim no codigo velho, será que o project é um objeto??
-							//Starter.start(modFiles);
-							noChangesInCFiles = false;
-							
-							deleteAllFromAnalysisFolder();
-//						} else {
-//							System.out.println("não há arquivos alterado  no commit: " + numberOfAnalysisOcurred);
-//						}
-						// ClearDirectory.remover(new File(dir_plugin +"analysis"));
-//						if (count == 5) {
-//							System.exit(0);
-//						}
+						System.out.println("qtd modFiles: " + modFiles.size());
+						System.out.println("Copiado os arquivos do commit: " + numberOfAnalysisOcurred);
+						// MoveFile.copy(modFiles, dir_plugin + "analysis");
+						// ClearDirectory.remover(new File(dir_projeto + r.getName()));
+
+						Project project = null;
+						project = analyser.start(modFiles);// esta assim no codigo velho, será que o project é um
+															// objeto??
+						// Starter.start(modFiles);
+						noChangesInCFiles = false;
+
+						deleteAllFromAnalysisFolder();
+						listModFile.clear();
+					//	Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
+					//  Files.delete(new File(dirPlugin + currentProject + "\\include" + "\\stubs.h").toPath());
 
 					}
+
 				}
 
 			}
@@ -344,31 +350,33 @@ public class ProjectManager {
 			return allAnalysis.length;
 		}
 	}
+
 	public String getReturnCurrentCommit() {
 		String data = "";
-	
+
 		try {
-			data =DATE_FORMAT.format(Runner.projectManager.getCommitAtual().getTimestamp());
+			data = DATE_FORMAT.format(Runner.projectManager.getCommitAtual().getTimestamp());
 		} catch (Exception e) {
 			data = e.getMessage();
-		} 
-		
+		}
+
 		return data;
-		
+
 	}
-		
-	private static void deleteAllFromAnalysisFolder() {
+
+	public static void deleteAllFromAnalysisFolder() {
 		try {
-			String x = Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis";
-			System.out.println(x); 
-			
-			FileUtils.cleanDirectory(new File(Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis"));
+			// String x = Runner.projectManager.dirPlugin +
+			// Runner.projectManager.currentProject + "/analysis";
+			// System.out.println(x);
+
+			FileUtils.cleanDirectory(
+					new File(Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis"));
+
 		} catch (IOException e) {
 			System.out.println("Analysis folder not found to delete!");
 		}
 	}
-
-
 
 	public List<String> getAllCommitsThisAnalysis() {
 		return allCommitsThisAnalysis;

@@ -80,7 +80,7 @@ public class ASTGenerator {
 	
 	// This method receives the translation units from TypeChef and my Translation Unit (tree.TranslationUnit).
 	public void generate(Product node, Node parent){
-		//try {
+		try {
 			for (int i = 0; i < node.productArity(); i++){
 				if (node.productElement(i) instanceof Product){
 					Node myNode = this.getNode( (Product) node.productElement(i));
@@ -94,9 +94,11 @@ public class ASTGenerator {
 				} 
 			}
 		
-		/*} catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+			System.out.println("java.lang.NullPointerException, salvo pelo try da linha 83: " + e.getMessage());
+			
+		}
 		
 	}
 	

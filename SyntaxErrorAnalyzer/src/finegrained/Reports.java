@@ -18,7 +18,6 @@ import analysis.Variability;
 import analysis.core.Function;
 import analysis.core.ProgramElement;
 import analysis.core.Variable;
-import main.Main;
 import mestrado.core.Runner;
 import metrics.Metrics;
 import xtc.lang.blink.agent.GenerateJNIFunctionProxy;
@@ -48,7 +47,7 @@ public class Reports extends Metrics {
 				previousDependenciesList.add(currentDp);
 			}
 			rindex = Runner.projectManager.getIndexOfPastAnalysis() + 1;
-			Main.analyseThisTime = true;
+			Runner.projectManager.setAnalyseThisTime(true);
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> RINDEX     "+ rindex);
 			return;
 		}
@@ -95,7 +94,7 @@ public class Reports extends Metrics {
 			if(rindex > 1){//this analysis occurred once
 				
 //				System.out.println(DATE_FORMAT.format(Main.commitDate));
-				System.out.println(Runner.projectManager.getReturnCurrentCommit());
+			//	System.out.println(Runner.projectManager.getReturnCurrentCommit());
 				foundPreservedDependencies(foundChanges, foundImpact);
 				printVariabilities(printVar);
 				reportCoarseGrained(printCoarse);
@@ -234,7 +233,7 @@ public class Reports extends Metrics {
 		
 		Set<Variability> variabilityAnalyzedAll = new HashSet<Variability>(allVariabilities.size());
 		try {
-			System.out.println("Runner.projectManagen.getPath" + Runner.projectManager.getPath());
+	//		System.out.println("Runner.projectManagen.getPath" + Runner.projectManager.getPath());
 			PrintWriter printVaRALL = new PrintWriter(new FileWriter(Runner.projectManager.getPath() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\csv\\Variabilities\\AllVariabilities\\"+rindex+"_All_Variabilities"+ ".csv",true));
 			for (Variability var: allVariabilities) {
 				printVaRALL.println(var.getName()+",");

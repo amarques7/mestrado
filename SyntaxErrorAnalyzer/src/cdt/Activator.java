@@ -1,5 +1,7 @@
 package cdt;
 
+import java.io.PrintStream;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -28,6 +30,14 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
  		super.start(context);
 		plugin = this;
+try {
+			
+		//	System.setOut(new PrintStream("C:/erro/saidaConsole.txt"));
+			System.setErr(new PrintStream("C:/erro/erroConsole.txt"));
+		}
+		catch (Exception e) {
+			System.out.println("Activator.start(): " + e.getMessage());
+		}
 	}
 
 	/*

@@ -18,8 +18,8 @@ public class ExportNumberOfCalls {
 //	public static ProjectManager projectManager;
 	public static void receive(List<Project.Pair> allPairs) {
 		try {
-			System.out.println(Runner.projectManager.getPath() + Runner.projectManager.getCurrentProject()
-					+ "/results/functionCalls");
+		//	System.out.println(Runner.projectManager.getPath() + Runner.projectManager.getCurrentProject()
+	//				+ "/results/functionCalls");
 
 			new File(Runner.projectManager.getPath() + Runner.projectManager.getCurrentProject()
 					+ "/results/functionCalls").mkdirs();
@@ -51,7 +51,7 @@ public class ExportNumberOfCalls {
 			i++;
 			writer.close();
 		} catch (IOException e) {
-
+			System.out.println(e.getMessage());
 		}
 
 	}

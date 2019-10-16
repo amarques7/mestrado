@@ -1,11 +1,7 @@
 package finegrained;
 
-//import java.io.File;
 import java.io.FileWriter;
-//import java.io.IOException;
 import java.io.PrintWriter;
-//import java.text.SimpleDateFormat;
-//import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,15 +13,10 @@ import analysis.Variability;
 import analysis.core.Function;
 import analysis.core.ProgramElement;
 import analysis.core.Variable;
-//import git_Deletar.AllCommit;/
-//import main.Main;
 import mestrado.core.Runner;
-//import mestrado.git.Repo;
 import metrics.Metrics;
-//import util.LoadParameters;
 
-
-public class DetailedReportsPossoApagar extends Metrics{
+public class DetailedReports extends Metrics{
 	public static int rindex = 1;
 	public static Set<Dependency> preservedDependencies = new HashSet<Dependency>(500);
 	public static Set<Dependency> changedDependencies = new HashSet<Dependency>(500);

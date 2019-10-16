@@ -1,14 +1,14 @@
 package main;
 
 import java.io.File;
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 
 import analysis.core.Project;
-import analysis.core.ResultsLogger;
+//import analysis.core.ResultsLogger;
 import cdt.handlers.SampleHandler;
-import git_Deletar.ModifiedFileList;
+//import git_Deletar.ModifiedFileList;
 import mestrado.core.ProjectManager;
 import mestrado.core.Runner;
 import util.CProject;
@@ -71,8 +71,8 @@ public class Starter {
 //	}
 	
 //	
-	//public static Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
-	public  Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
+	public static Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
+	//public  Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
 		//String[] files = filesToAnalyze;
 		
 		//creating include/stubs.h and platform.h
@@ -84,8 +84,8 @@ public class Starter {
 		return startAnalyser(filesToAnalyze);
 	}
 	
-//	public static Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
-	public  Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
+	public static Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
+//	public  Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
 		//start the analyzer
 		project.analyze(filesToAnalyze);
 		return project;

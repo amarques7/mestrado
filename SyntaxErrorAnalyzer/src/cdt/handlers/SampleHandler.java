@@ -13,48 +13,48 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.core.dom.IPDOMManager;
+//import org.eclipse.cdt.core.dom.IPDOMManager;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorMacroDefinition;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.index.IIndex;
-import org.eclipse.cdt.core.index.IIndexManager;
+//import org.eclipse.cdt.core.index.IIndexManager;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.ITranslationUnit;
-import org.eclipse.cdt.core.settings.model.CSourceEntry;
-import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
-import org.eclipse.cdt.core.settings.model.ICProjectDescription;
-import org.eclipse.cdt.core.settings.model.ICSettingEntry;
-import org.eclipse.cdt.core.settings.model.ICSourceEntry;
+//import org.eclipse.cdt.core.settings.model.CSourceEntry;
+//import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+//import org.eclipse.cdt.core.settings.model.ICProjectDescription;
+//import org.eclipse.cdt.core.settings.model.ICSettingEntry;
+//import org.eclipse.cdt.core.settings.model.ICSourceEntry;
 import org.eclipse.cdt.internal.core.dom.parser.c.CASTTypedefNameSpecifier;
-import org.eclipse.cdt.managedbuilder.core.BuildException;
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
-import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
-import org.eclipse.cdt.managedbuilder.core.IManagedProject;
-import org.eclipse.cdt.managedbuilder.core.IToolChain;
-import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+//import org.eclipse.cdt.managedbuilder.core.BuildException;
+//import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+//import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
+//import org.eclipse.cdt.managedbuilder.core.IManagedProject;
+//import org.eclipse.cdt.managedbuilder.core.IToolChain;
+//import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
+//import org.eclipse.core.resources.IFolder;
+//import org.eclipse.core.resources.IProject;
+//import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
+//import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
+//import org.eclipse.core.runtime.IProgressMonitor;
+//import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import analysis.core.AstLogger;
-import main.Main;
 import mestrado.core.Runner;
+import mestrado.utils.MoveFile;
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
  * @see org.eclipse.core.commands.IHandler
@@ -283,7 +283,7 @@ public class SampleHandler extends AbstractHandler {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("ANALYSIS ERROR. TRYING AGAIN");
+			System.out.println("ANALYSIS ERROR. TRYING AGAIN : " + e.getMessage());
 			index.releaseReadLock();
 			return ERROR;
 		}finally {
@@ -298,7 +298,7 @@ public class SampleHandler extends AbstractHandler {
 		FileWriter fstreamout = new FileWriter(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c");
 		BufferedWriter out = new BufferedWriter(fstreamout);
 		  
-		//out.write("#include \"stubs.h\"\n");
+	//	out.write("#include \"stubs.h\"\n");
 		
 		FileInputStream fstream = new FileInputStream(file);
 		// Get the object of DataInputStream
@@ -329,7 +329,7 @@ public class SampleHandler extends AbstractHandler {
 	  	
 	  	File temp2 = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c");
 	  	
-	  	main.Main.copyFileUsingChannel(temp2, original);
+	  	MoveFile.copyFileUsingChannel(temp2, original);
 	  	
 //	  	Files.copy(temp2.toPath(),original.toPath(),StandardCopyOption.REPLACE_EXISTING);
 		  
@@ -429,6 +429,7 @@ public class SampleHandler extends AbstractHandler {
 			platform.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
+			System.out.println("erro ao criar platmor.h em samplehander: " + e1.getMessage());
 		}
 		//comentar essa linha a pasta include ja existe
 		new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "include").mkdir();
@@ -470,6 +471,7 @@ public class SampleHandler extends AbstractHandler {
 			writerPlatform.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("erro ao escrever em platmor.h em samplehander: " + e.getMessage());
 		}
 		
 	}

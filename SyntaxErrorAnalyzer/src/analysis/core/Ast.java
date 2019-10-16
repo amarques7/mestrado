@@ -77,8 +77,7 @@ public class Ast {
 		
 
 		
-		String[] parameterArray = parameters
-				.toArray(new String[parameters.size()]);
+		String[] parameterArray = parameters.toArray(new String[parameters.size()]);
 		
 		try {
 			System.out.print("Trying to parse options for file " + getSource().getPath() + "... ");

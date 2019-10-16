@@ -153,7 +153,8 @@ public class Project {
 		// removing all the deleted files from ast list
 		int indexToRemove = 0;
 		List<Integer> allIndexToRemove = new ArrayList<Integer>(filesToRemove.size());
-		for (String fileToClean : main.Main.filesToDeleteFromAnalysisFolder) {
+		//for (String fileToClean : main.Main.filesToDeleteFromAnalysisFolder) {
+		for (String fileToClean : Runner.projectManager.getListModFile()) {
 			indexToRemove = 0;
 			for (Ast ast : getAsts()) {
 				String fileFromAST = ast.getSource().getName();
@@ -401,7 +402,7 @@ public class Project {
 //			e.printStackTrace();
 //		}
 		
-		System.out.println("ASTs: " + asts.size());
+		System.out.println("Tamanho ASTs: " + asts.size());
 	//	System.exit(0);
 		this.allPairs = new ArrayList<Pair>();
 		for (Ast ast : this.asts) {
