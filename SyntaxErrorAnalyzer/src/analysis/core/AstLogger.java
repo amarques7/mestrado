@@ -28,5 +28,15 @@ public class AstLogger {
 		}
 		
 	}
-	
+		
+	public static void writeaST(String toWrite, String path, String nameFile){
+		try {
+			PrintWriter writer = new PrintWriter(new FileWriter(path + File.separator + nameFile, true));
+			writer.println(toWrite);
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

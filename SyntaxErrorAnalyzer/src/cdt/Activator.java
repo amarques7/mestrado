@@ -32,8 +32,8 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 try {
 			
-		//	System.setOut(new PrintStream("C:/erro/saidaConsole.txt"));
-			System.setErr(new PrintStream("C:/erro/erroConsole.txt"));
+			//System.setOut(new PrintStream("C:/erro/Console.txt"));
+			System.setErr(new PrintStream("C:/erro/Console.txt"));
 		}
 		catch (Exception e) {
 			System.out.println("Activator.start(): " + e.getMessage());

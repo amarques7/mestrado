@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -23,13 +22,13 @@ import mestrado.git.Commit;
 import mestrado.git.Repo;
 import mestrado.git.RepoFile;
 import mestrado.utils.CreateDirectory;
+import mestrado.utils.ListFilesC;
 import mestrado.utils.ManipulationUtils;
 import mestrado.utils.MoveFile;
 
 public class ProjectManager {
 
-	private String dirProjetct;
-//	private String dirResult;
+	private String dirProject;
 	private String dirPlugin;
 	private String repoList;
 	private ArrayList<Repo> listofRepos;
@@ -47,6 +46,25 @@ public class ProjectManager {
 	private List<String> listModFile;
 	public Repo repo;
 	private long startTime;
+	private String logControl;
+	private int totalArqPro;
+
+	
+	public int getTotalArqPro() {
+		return totalArqPro;
+	}
+
+	public void setTotalArqPro(int totalArqPro) {
+		this.totalArqPro = totalArqPro;
+	}
+
+	public String getLogControl() {
+		return logControl;
+	}
+
+	public void setLogControl(String logControl) {
+		this.logControl = logControl;
+	}
 
 	private List<String> commitsIdToAnalyse;
 
@@ -118,11 +136,12 @@ public class ProjectManager {
 		path = runTimeWorkspacePath;
 		numberOfAnalysisOcurred = 0;
 		listModFile = new ArrayList<String>();
-
+		totalArqPro = 0;
+		
 		try {
 			generateReader(pathFrom);
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("error em generateReader" + e.getMessage());
 		}
 	}
 
@@ -141,8 +160,7 @@ public class ProjectManager {
 			e.printStackTrace();
 		}
 
-		dirProjetct = reader.readLine();
-		//dirResult = reader.readLine();
+		dirProject = reader.readLine();
 		dirPlugin = reader.readLine();
 		repoList = reader.readLine();
 	}
@@ -156,20 +174,12 @@ public class ProjectManager {
 	}
 
 	public String getDirProjetct() {
-		return dirProjetct;
+		return dirProject;
 	}
 
 	public void setDirProjetct(String dirProjetct) {
-		this.dirProjetct = dirProjetct;
+		this.dirProject = dirProjetct;
 	}
-
-//	public String getDirResult() {
-//		return dirResult;
-//	}
-
-//	public void setDirResult(String dirResult) {
-//		this.dirResult = dirResult;
-//	}
 
 	public String getDirPlugin() {
 		return dirPlugin;
@@ -200,10 +210,10 @@ public class ProjectManager {
 
 		for (String repoURI : repos) {
 			try {
-				Repo a = new Repo(repoURI, dirProjetct);
+				Repo a = new Repo(repoURI, dirProject);
 				listofRepos.add(a);
 			} catch (Exception e) {
-				// TODO: handle exception
+				System.out.println("Erro add listfRepo: " + e.getMessage());
 			}
 //			listofRepos.add(new Repo(repoURI, dirProjetct));	
 		}
@@ -220,7 +230,6 @@ public class ProjectManager {
 
 	public void generateVariabilities() throws IOException, InterruptedException {
 
-		// int count = 0;
 		commitsIdToAnalyse = new ArrayList<String>();
 
 		if (!listaRepositorioVazia()) {
@@ -236,13 +245,15 @@ public class ProjectManager {
 				SampleHandler.PROJECT = r.getName();
 				// CreateDirectory.setWriter(dir_plugin + currentProject);
 
-				CreateDirectory.setWriter(dirPlugin + currentProject + "\\analysis");
-				CreateDirectory.setWriter(dirPlugin + currentProject + "\\results");
-				CreateDirectory.setWriter(dirPlugin + currentProject + "\\results\\errorPath");
+				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "analysis");
+				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "results");
+				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "results"+ File.separator + "errorPath");
+				AstLogger.writeaST(" COMMIT HASH " + "," + " NUMERO DE ARQUIVOS .C "+ "," + " NOME ARQUIVO ANALISADO " + "," + " TOTAL NUMERO DE ARQUIVOS .C "+ "," + " STATUS AST "
+				+ "," + " ERROR ", Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results"+ File.separator, "logAst.csv");
 				// ResultsLogger.write("Number of commitsId: " +
 				// Runner.projectManager.repo.getChronologicalorderCommits().size());
 				// essa função cria os arquivos platform.h e stubs.h
-				Starter analyser = new Starter(dirPlugin + currentProject + "\\", false);
+				Starter analyser = new Starter(dirPlugin + currentProject + File.separator, false);
 
 				if (listaProjetos.equals("a")) {
 					listaProjetos = r.getName();
@@ -270,16 +281,17 @@ public class ProjectManager {
 						System.out.println("Análise commit: " + numberOfAnalysisOcurred);
 						String arquivoMod = null;
 						ArrayList<String> modFiles = new ArrayList<String>();
+						ListFilesC contArq = new ListFilesC();
+						File fileI = new File(dirProject + currentProject);
+						int QtdArq = contArq.contarArquivos(fileI, "c");
 
-						try {
-							// this file needs to be deleted for the next analysis
-							// System.out.println(dirPlugin + currentProject + "\\temp2.c");
-							Files.delete(new File(dirPlugin + currentCommit + "\\temp2.c").toPath());
-						} catch (Exception e) {
-							// in case of the file doesnt exist
-							System.out.println("O arquivo tem nao existe" + e.getMessage());
-						}
+						System.out.println(
+								"a quantidade de arquivo no commit " + numberOfAnalysisOcurred + ", é: " + QtdArq);
 
+						logControl = numberOfAnalysisOcurred + "_" + c.getId() + " , " + QtdArq + ","
+								+ " ";
+						totalArqPro = totalArqPro + QtdArq;
+						
 						for (RepoFile f : c.getTouchedFiles()) {
 							if (f.getExtension().equals("c")) {
 
@@ -288,14 +300,15 @@ public class ProjectManager {
 								File file = new File(f.getPath().replace("/", "\\"));
 								// System.out.println("file:" + file);
 								// modFiles.add(f.getPath().replace("/","\\"));
-								modFiles.add(dirPlugin + currentProject + System.getProperty("file.separator") + "analysis" + System.getProperty("file.separator") + f.getName() + ".c");
+
+								modFiles.add(dirPlugin + currentProject + System.getProperty("file.separator")
+										+ "analysis" + System.getProperty("file.separator") + f.getName() + ".c");
 								System.out.println("arqui mod: " + arquivoMod);
 
 								this.noChangesInCFiles = true;// por causa dessa variavel nao estou entrando no anlayser
 
 								MoveFile.copyFileUsingChannel(file, (new File(
-										dirPlugin + currentProject + "\\" + "analysis" + "\\" + f.getName() + ".c")));
-								// chamar o cproje
+										dirPlugin + currentProject + File.separator + "analysis" + File.separator + f.getName() + ".c")));
 
 							}
 
@@ -316,8 +329,23 @@ public class ProjectManager {
 
 						deleteAllFromAnalysisFolder();
 						listModFile.clear();
-					//	Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
-					//  Files.delete(new File(dirPlugin + currentProject + "\\include" + "\\stubs.h").toPath());
+						try {
+							// this file needs to be deleted for the next analysis
+//							System.out.println("Arquivo a ser deletado: " + dirPlugin + currentProject + "\\temp2.c");
+							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
+							System.out.println("//------------------------------//");
+						} catch (Exception e) {
+							// in case of the file doesnt exist
+							System.out.println("O arquivo não existe: " + e.getMessage());
+						}
+
+//						if (numberOfAnalysisOcurred == 28) {
+//							System.out.println("fim.. morreuu");
+//							System.exit(0);
+//						}
+						// Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
+						// Files.delete(new File(dirPlugin + currentProject + "\\include" +
+						// "\\stubs.h").toPath());
 
 					}
 

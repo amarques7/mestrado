@@ -15,6 +15,7 @@ import de.fosd.typechef.parser.c.CParser;
 import de.fosd.typechef.parser.c.CToken;
 import de.fosd.typechef.parser.c.CTypeContext;
 import de.fosd.typechef.parser.c.ParserMain;
+import mestrado.core.Runner;
 import tree.Node;
 import tree.TranslationUnit;
 import tree.visitor.VisitorASTOrganizer;
@@ -24,6 +25,7 @@ public class Ast {
 	private File source;
 	private File stubs;
 	private Node node;
+	private String logAst;
 
 	
 	public Ast(File source, File stubs) {
@@ -90,6 +92,9 @@ public class Ast {
 			System.out.println("ERROR");
 			AstLogger.write(getSource().getAbsolutePath());
 			AstLogger.write(e.getMessage());
+			
+			logAst = Runner.projectManager.getLogControl() + getSource().getName() + "," + Runner.projectManager.getTotalArqPro() + "," + "ERROR1" + ","+ e.getMessage();
+			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", "logAst.csv");
 			e.printStackTrace();
 			return GenerationStatus.OPTIONS_EXCEPTION;
 		}
@@ -106,20 +111,33 @@ public class Ast {
 		try {
 			System.out.print("Trying to generate AST for file " + getSource().getPath() + "... ");
 			new ASTGenerator().generate(ast, myAst);
+			
+			logAst =  Runner.projectManager.getLogControl() + getSource().getName() + "," + Runner.projectManager.getTotalArqPro() + ","+ " OK "+ "," + "-" ;
+			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", "logAst.csv");
+			
 		} catch (Exception e) {
 			AstLogger.write(getSource().getAbsolutePath());
 			AstLogger.write(e.getMessage());
-			System.out.println("ERROR");
+			System.out.println("ERROR2");
+			
+			logAst =  Runner.projectManager.getLogControl() + getSource().getName() + "," + Runner.projectManager.getTotalArqPro() + "," + "ERROR2" + "," + e.getMessage();
+			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", "logAst.csv");
+			
+		//	System.out.println("logAst: " + logAst);
 			e.printStackTrace();
+			
 			return GenerationStatus.BAD_AST;
 		}
 		System.out.println("OK");
+		
 		// Optimize AST
 		myAst.accept(new VisitorASTOrganizer());
 		// Get the presence condition for all nodes of the tree
 		myAst.accept(new PresenceConditionVisitor());
 		setNode(myAst);
 		return GenerationStatus.OK;
+		
+		
 	}
-	
+
 }
