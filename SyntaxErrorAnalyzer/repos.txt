@@ -1,1 +1,1 @@
-https://github.com/tgl-dogg/BCC-2s13-PI2-Codigo-de-Honra.git
+https://github.com/libusb/libusb.git
