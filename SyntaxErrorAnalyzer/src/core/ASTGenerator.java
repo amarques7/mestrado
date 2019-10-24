@@ -1,5 +1,8 @@
 package core;
 
+import java.io.File;
+
+import analysis.core.AstLogger;
 import de.fosd.typechef.conditional.Choice;
 import de.fosd.typechef.conditional.One;
 import de.fosd.typechef.conditional.Opt;
@@ -8,6 +11,7 @@ import de.fosd.typechef.parser.c.ConditionalExpr;
 import de.fosd.typechef.parser.c.LcurlyInitializer;
 import de.fosd.typechef.parser.c.UnaryOpExpr;
 import de.fosd.typechef.parser.c.VoidSpecifier;
+import mestrado.core.Runner;
 import scala.Product;
 import scala.Some;
 import tree.AssignExpr;
@@ -77,6 +81,7 @@ import tree.WhileStatement;
 public class ASTGenerator {
 	
 	private String specifier = "", qualifier = "", modifier = "", type = "";
+	String logAst; 
 	
 	// This method receives the translation units from TypeChef and my Translation Unit (tree.TranslationUnit).
 	public void generate(Product node, Node parent){
@@ -95,6 +100,8 @@ public class ASTGenerator {
 			}
 		
 		} catch (Exception e) {
+			logAst = Runner.projectManager.getLogControl() + Runner.projectManager.getCurrentFile()+ "," + Runner.projectManager.getTotalArqPro() + "," + "ERROR" + ","+ e.getMessage();
+			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", "logAst.csv");
 			e.printStackTrace();
 			System.out.println("java.lang.NullPointerException, salvo pelo try da linha 83: " + e.getMessage());
 			

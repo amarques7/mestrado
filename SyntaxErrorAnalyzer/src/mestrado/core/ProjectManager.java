@@ -48,8 +48,16 @@ public class ProjectManager {
 	private long startTime;
 	private String logControl;
 	private int totalArqPro;
+	private String currentFile;
 
-	
+	public String getCurrentFile() {
+		return currentFile;
+	}
+
+	public void setCurrentFile(String currentFile) {
+		this.currentFile = currentFile;
+	}
+
 	public int getTotalArqPro() {
 		return totalArqPro;
 	}
@@ -137,7 +145,8 @@ public class ProjectManager {
 		numberOfAnalysisOcurred = 0;
 		listModFile = new ArrayList<String>();
 		totalArqPro = 0;
-		
+		currentFile = null;
+
 		try {
 			generateReader(pathFrom);
 		} catch (Exception e) {
@@ -247,9 +256,15 @@ public class ProjectManager {
 
 				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "analysis");
 				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "results");
-				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "results"+ File.separator + "errorPath");
-				AstLogger.writeaST(" COMMIT HASH " + "," + " NUMERO DE ARQUIVOS .C "+ "," + " NOME ARQUIVO ANALISADO " + "," + " TOTAL NUMERO DE ARQUIVOS .C "+ "," + " STATUS AST "
-				+ "," + " ERROR ", Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results"+ File.separator, "logAst.csv");
+				CreateDirectory.setWriter(
+						dirPlugin + currentProject + File.separator + "results" + File.separator + "errorPath");
+				AstLogger.writeaST(
+						" COMMIT HASH " + "," + " NUMERO DE ARQUIVOS .C " + "," + " NOME ARQUIVO ANALISADO " + ","
+								+ " TOTAL NUMERO DE ARQUIVOS .C " + "," + " STATUS AST " + "," + " ERROR ",
+						Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
+								+ File.separator + "results" + File.separator,
+						"logAst.csv");
+
 				// ResultsLogger.write("Number of commitsId: " +
 				// Runner.projectManager.repo.getChronologicalorderCommits().size());
 				// essa função cria os arquivos platform.h e stubs.h
@@ -288,10 +303,9 @@ public class ProjectManager {
 						System.out.println(
 								"a quantidade de arquivo no commit " + numberOfAnalysisOcurred + ", é: " + QtdArq);
 
-						logControl = numberOfAnalysisOcurred + "_" + c.getId() + " , " + QtdArq + ","
-								+ " ";
+						logControl = numberOfAnalysisOcurred + "_" + c.getId() + " , " + QtdArq + "," + " ";
 						totalArqPro = totalArqPro + QtdArq;
-						
+
 						for (RepoFile f : c.getTouchedFiles()) {
 							if (f.getExtension().equals("c")) {
 
@@ -304,11 +318,11 @@ public class ProjectManager {
 								modFiles.add(dirPlugin + currentProject + System.getProperty("file.separator")
 										+ "analysis" + System.getProperty("file.separator") + f.getName() + ".c");
 								System.out.println("arqui mod: " + arquivoMod);
-
+								currentFile = f.getName() + ".c";
 								this.noChangesInCFiles = true;// por causa dessa variavel nao estou entrando no anlayser
 
-								MoveFile.copyFileUsingChannel(file, (new File(
-										dirPlugin + currentProject + File.separator + "analysis" + File.separator + f.getName() + ".c")));
+								MoveFile.copyFileUsingChannel(file, (new File(dirPlugin + currentProject
+										+ File.separator + "analysis" + File.separator + f.getName() + ".c")));
 
 							}
 
@@ -330,8 +344,7 @@ public class ProjectManager {
 						deleteAllFromAnalysisFolder();
 						listModFile.clear();
 						try {
-							// this file needs to be deleted for the next analysis
-//							System.out.println("Arquivo a ser deletado: " + dirPlugin + currentProject + "\\temp2.c");
+
 							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
 							System.out.println("//------------------------------//");
 						} catch (Exception e) {
@@ -343,9 +356,9 @@ public class ProjectManager {
 							System.out.println("fim.. morreuu");
 							System.exit(0);
 						}
-						// Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
-						// Files.delete(new File(dirPlugin + currentProject + "\\include" +
-						// "\\stubs.h").toPath());
+						 Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
+						 Files.delete(new File(dirPlugin + currentProject + "\\include" +
+						 "\\stubs.h").toPath());
 
 					}
 
@@ -358,9 +371,6 @@ public class ProjectManager {
 		}
 		System.out.println();
 		System.out.println("Analise dos projetos: " + listaProjetos + ", foi concluido com sucesso!!!");
-//		for(String x : modFiles)
-		// System.out.println(x);
-
 		System.out.println("acabei");
 
 	}
@@ -394,10 +404,6 @@ public class ProjectManager {
 
 	public static void deleteAllFromAnalysisFolder() {
 		try {
-			// String x = Runner.projectManager.dirPlugin +
-			// Runner.projectManager.currentProject + "/analysis";
-			// System.out.println(x);
-
 			FileUtils.cleanDirectory(
 					new File(Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis"));
 
