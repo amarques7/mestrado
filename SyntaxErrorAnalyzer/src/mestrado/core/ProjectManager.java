@@ -352,13 +352,13 @@ public class ProjectManager {
 							System.out.println("O arquivo não existe: " + e.getMessage());
 						}
 
-						if (numberOfAnalysisOcurred == 28) {
+						if (numberOfAnalysisOcurred == 1) {
 							System.out.println("fim.. morreuu");
 							System.exit(0);
 						}
-						 Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
-						 Files.delete(new File(dirPlugin + currentProject + "\\include" +
-						 "\\stubs.h").toPath());
+						// Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
+						// Files.delete(new File(dirPlugin + currentProject + "\\include" +
+						// "\\stubs.h").toPath());
 
 					}
 

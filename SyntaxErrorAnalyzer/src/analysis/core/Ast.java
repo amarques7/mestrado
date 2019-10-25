@@ -95,7 +95,9 @@ public class Ast {
 			
 			logAst = Runner.projectManager.getLogControl() + getSource().getName() + "," + Runner.projectManager.getTotalArqPro() + "," + "ERROR1" + ","+ e.getMessage();
 			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", "logAst.csv");
+			
 			e.printStackTrace();
+			
 			return GenerationStatus.OPTIONS_EXCEPTION;
 		}
 		System.out.println("OK");

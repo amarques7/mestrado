@@ -102,6 +102,7 @@ public class ASTGenerator {
 		} catch (Exception e) {
 			logAst = Runner.projectManager.getLogControl() + Runner.projectManager.getCurrentFile()+ "," + Runner.projectManager.getTotalArqPro() + "," + "ERROR" + ","+ e.getMessage();
 			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", "logAst.csv");
+		
 			e.printStackTrace();
 			System.out.println("java.lang.NullPointerException, salvo pelo try da linha 83: " + e.getMessage());
 			
