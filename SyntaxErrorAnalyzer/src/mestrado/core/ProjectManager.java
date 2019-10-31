@@ -311,7 +311,7 @@ public class ProjectManager {
 
 								arquivoMod = f.getPath().replace("/", "\\");
 								listModFile.add(arquivoMod);
-								File file = new File(f.getPath().replace("/", "\\"));
+								File file = new File(f.getPath().replace("/", "\\"));// testar ele comentado
 								// System.out.println("file:" + file);
 								// modFiles.add(f.getPath().replace("/","\\"));
 

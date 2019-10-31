@@ -6,7 +6,9 @@ import java.io.PrintStream;
 
 public class Runner {
 
+//	public static ProjectManager projectManager;
 	public static ProjectManager projectManager;
+
 
 
 	public static void start(String runTimeWorkspacePath) throws IOException, InterruptedException {
