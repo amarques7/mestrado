@@ -16,7 +16,12 @@ public class Commit {
 		this.timestamp = timestamp;
 		
 		this.touchedFiles = new ArrayList<RepoFile>();
-	}
+		
+		for (RepoFile f : getTouchedFiles()) {
+			System.out.println("f.getName():  "+ f.getName());
+			
+		}
+}
 
 	public String getId() {
 		return id;

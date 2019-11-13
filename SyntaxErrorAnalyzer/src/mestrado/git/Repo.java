@@ -28,7 +28,7 @@ public class Repo {
 	private String name;
 
 	private Repository repositorio;
-	private Git git;
+	private static Git git;
 
 	private HashMap<String, Commit> commitList;
 	ArrayList<Commit> chronologicalorderCommits;// = new ArrayList<Commit>();
@@ -77,10 +77,7 @@ public class Repo {
 		Git.open(getLocalPath());
 		setRepo(getGit().getRepository());
 		System.out.println(" OK!");
-		// x.close();
-
-		// obterMemoria();
-
+	
 		Runtime.getRuntime().runFinalization();
 		Runtime.getRuntime().gc();
 
@@ -233,7 +230,7 @@ public class Repo {
 		this.numberofCommits = numberofCommits;
 	}
 
-	public Git getGit() {
+	public static Git getGit() {
 		return git;
 	}
 

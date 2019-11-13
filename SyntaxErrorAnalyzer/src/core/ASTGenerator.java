@@ -82,10 +82,11 @@ public class ASTGenerator {
 	
 	private String specifier = "", qualifier = "", modifier = "", type = "";
 	String logAst; 
+	int cont;
 	
 	// This method receives the translation units from TypeChef and my Translation Unit (tree.TranslationUnit).
-	public void generate(Product node, Node parent){
-		try {
+	public void generate(Product node, Node parent) throws Exception{
+	//	try {
 			for (int i = 0; i < node.productArity(); i++){
 				if (node.productElement(i) instanceof Product){
 					Node myNode = this.getNode( (Product) node.productElement(i));
@@ -98,16 +99,17 @@ public class ASTGenerator {
 					}		
 				} 
 			}
-		
-		} catch (Exception e) {
 			
-			logAst = Runner.projectManager.getLogControl() + Runner.projectManager.getCurrentFile()+ "," + Runner.projectManager.getTotalArqPro() + "," + "ERROR" + ","+ e.getMessage();
-			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", "logAst.csv");
-		
-			e.printStackTrace();
-			System.out.println("java.lang.NullPointerException, salvo pelo try da linha 83: " + e.getMessage());
+	//	} catch (Exception e) {
+			//"ERROR_Gene" = 1
+//			logAst = Runner.projectManager.getLogControl() + Runner.projectManager.getCurrentFile()+ ";"+ Runner.projectManager.getTotalArqPro() + ";" + "ERROR_Gene 1" + ";"+ e.getMessage();
+//			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", Runner.projectManager.getCurrentProject()+".csv");
+//		
+		//	e.printStackTrace();
+	//		System.out.println("java.lang.NullPointerException, salvo pelo try da linha 108: " + e.getMessage());
 			
-		}
+			
+	//	}
 		
 	}
 	

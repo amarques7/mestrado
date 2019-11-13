@@ -35,7 +35,7 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 		try {
 
-			PrintStream fp = new PrintStream("C:/erro/Console.txt");
+			PrintStream fp = new PrintStream("C:/error/Console.txt");
 			System.setOut(fp);
 			System.setErr(fp);
 

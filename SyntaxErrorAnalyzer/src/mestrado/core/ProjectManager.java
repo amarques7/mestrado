@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import analysis.core.AstLogger;
 import analysis.core.Project;
@@ -19,6 +20,7 @@ import analysis.core.ResultsLogger;
 import cdt.handlers.SampleHandler;
 import main.Starter;
 import mestrado.git.Commit;
+import mestrado.git.DiffFilesGit;
 import mestrado.git.Repo;
 import mestrado.git.RepoFile;
 import mestrado.utils.CreateDirectory;
@@ -49,6 +51,8 @@ public class ProjectManager {
 	private String logControl;
 	private int totalArqPro;
 	private String currentFile;
+	private String data = "";
+	private String lastCommitAnalysed = "";
 
 	public String getCurrentFile() {
 		return currentFile;
@@ -259,15 +263,17 @@ public class ProjectManager {
 				CreateDirectory.setWriter(
 						dirPlugin + currentProject + File.separator + "results" + File.separator + "errorPath");
 				AstLogger.writeaST(
-						" COMMIT HASH " + "," + " NUMERO DE ARQUIVOS .C " + "," + " NOME ARQUIVO ANALISADO " + ","
-								+ " TOTAL NUMERO DE ARQUIVOS .C " + "," + " STATUS AST " + "," + " ERROR ",
+						" COMMIT" + ";" + "HASH " + ";" + "QUANTIDADE DE ARQUIVO.C COMMIT " + ";"
+								+ "QUANTIDADE DE ARQUIVO.C ANALISADO " + ";" + "AQUIVOS.C" + ";"
+								+ "TOTAL DE ARQUIVO.C ANALISADO " + ";" + "StatusAst" + ";" + "Error",
 						Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
 								+ File.separator + "results" + File.separator,
-						"logAst.csv");
+						Runner.projectManager.getCurrentProject() + ".csv");
 
 				// ResultsLogger.write("Number of commitsId: " +
 				// Runner.projectManager.repo.getChronologicalorderCommits().size());
 				// essa função cria os arquivos platform.h e stubs.h
+
 				Starter analyser = new Starter(dirPlugin + currentProject + File.separator, false);
 
 				if (listaProjetos.equals("a")) {
@@ -284,6 +290,7 @@ public class ProjectManager {
 //					diretorio.mkdirs();
 					numberOfAnalysisOcurred = 0;
 					// traz os commit
+					lastCommitAnalysed = "";
 					for (Commit c : r.getCommitList()) {
 
 						numberOfAnalysisOcurred++;
@@ -292,41 +299,105 @@ public class ProjectManager {
 						ResultsLogger.write("Commit: " + c.getId());
 						currentCommit = c.getId();
 						r.checkoutCommit(c.getId());
-						// System.out.println("teste na projectMa id:" + c.getId());
+
 						System.out.println("Análise commit: " + numberOfAnalysisOcurred);
 						String arquivoMod = null;
 						ArrayList<String> modFiles = new ArrayList<String>();
+						ArrayList<String> fileModified = new ArrayList<String>();
 						ListFilesC contArq = new ListFilesC();
+
 						File fileI = new File(dirProject + currentProject);
-						int QtdArq = contArq.contarArquivos(fileI, "c");
 
-						System.out.println(
-								"a quantidade de arquivo no commit " + numberOfAnalysisOcurred + ", é: " + QtdArq);
+						int QtdArqOfCommit = contArq.findFiles(fileI, ".*\\.c").size();
 
-						logControl = numberOfAnalysisOcurred + "_" + c.getId() + " , " + QtdArq + "," + " ";
-						totalArqPro = totalArqPro + QtdArq;
+						System.out.println("a quantidade de arquivo no commit " + numberOfAnalysisOcurred + ", é: "
+								+ QtdArqOfCommit);
 
-						for (RepoFile f : c.getTouchedFiles()) {
-							if (f.getExtension().equals("c")) {
+						if (!lastCommitAnalysed.equals("")) {
+							List<String> filesModifiedRightPath = new ArrayList<String>();
+							// get the difference between the last commit and the new
+							try {
+								filesModifiedRightPath.clear();
+								filesModifiedRightPath = DiffFilesGit.diffFilesInCommits(lastCommitAnalysed,
+										currentCommit);
 
-								arquivoMod = f.getPath().replace("/", "\\");
-								listModFile.add(arquivoMod);
-								File file = new File(f.getPath().replace("/", "\\"));// testar ele comentado
-								// System.out.println("file:" + file);
-								// modFiles.add(f.getPath().replace("/","\\"));
+								// adding only the new files to the analysis directory
+//								for(modFiles:fileModified){
+//									String file = new File(fileModified).getName();
+//									modFiles.add(file);
+//								}
+								List<File> file = contArq.findFiles(fileI, ".*\\.c");
 
-								modFiles.add(dirPlugin + currentProject + System.getProperty("file.separator")
-										+ "analysis" + System.getProperty("file.separator") + f.getName() + ".c");
-								System.out.println("arqui mod: " + arquivoMod);
-								currentFile = f.getName() + ".c";
-								this.noChangesInCFiles = true;// por causa dessa variavel nao estou entrando no anlayser
+//								for(File k: file) {
+//									System.out.println("k: " + k);
+//									System.out.println("k: " + k.getName());
+//									
+//								
+//								}
+//								System.exit(0);
 
-								MoveFile.copyFileUsingChannel(file, (new File(dirPlugin + currentProject
-										+ File.separator + "analysis" + File.separator + f.getName() + ".c")));
+								for (String x : filesModifiedRightPath) {
+									File y = new File(x);
 
+									for (File k : file) {
+										if (y.getName().equals(k.getName())) {
+											this.noChangesInCFiles = true;
+											modFiles.add(dirPlugin + currentProject + File.separator + "analysis"
+													+ File.separator + y.getName());
+											MoveFile.copyFileUsingChannel(k, (new File(dirPlugin + currentProject
+													+ File.separator + "analysis" + File.separator + y.getName())));
+											currentFile = y.getName();
+
+										}
+									}
+								}
+							} catch (GitAPIException e) {
+								e.printStackTrace();
 							}
+							lastCommitAnalysed = currentCommit;
+//							filesInAnalysis(downloadPath);
+//							return filesModifiedRightPath;
+						} else {
 
+							List<File> file = contArq.findFiles(fileI, ".*\\.c");
+							modFiles.clear();
+
+							for (File x : file) {
+								modFiles.add(dirPlugin + currentProject + File.separator + "analysis" + File.separator
+										+ x.getName());
+								MoveFile.copyFileUsingChannel(x, (new File(dirPlugin + currentProject + File.separator
+										+ "analysis" + File.separator + x.getName())));
+								currentFile = x.getName();
+							}
+							this.noChangesInCFiles = true;
+							lastCommitAnalysed = currentCommit;
 						}
+
+//						for (RepoFile f : c.getTouchedFiles()) {
+//							
+//							if (f.getExtension().equals("c")) {
+//
+//								arquivoMod = f.getPath().replace("/", "\\");
+//								listModFile.add(arquivoMod);
+//			do					File file = new File(f.getPath().replace("/", "\\"));// testar ele comentado
+//							
+//
+//		proffesspor						modFiles.add(dirPlugin + currentProject + System.getProperty("file.separator")
+//										+ "analysis" + System.getProperty("file.separator") + f.getName() + ".c");
+//								System.out.println("arqui mod: " + arquivoMod);
+//								currentFile = f.getName() + ".c";
+//								this.noChangesInCFiles = true;// por causa dessa variavel nao estou entrando no anlayser
+//
+//								MoveFile.copyFileUsingChannel(file, (new File(dirPlugin + currentProject
+//										+ File.separator + "analysis" + File.separator + f.getName() + ".c")));
+//
+//							}
+//
+//						}
+
+						logControl = numberOfAnalysisOcurred + ";" + c.getId() + ";" + QtdArqOfCommit + ";"
+								+ modFiles.size() + ";";
+						totalArqPro = totalArqPro + QtdArqOfCommit;
 						// verificar o pq a copia de arquivo ta dando ruim.
 
 //						if (noChangesInCFiles) {
@@ -335,9 +406,13 @@ public class ProjectManager {
 						// MoveFile.copy(modFiles, dir_plugin + "analysis");
 						// ClearDirectory.remover(new File(dir_projeto + r.getName()));
 
-						Project project = null;
-						project = analyser.start(modFiles);// esta assim no codigo velho, será que o project é um
-															// objeto??
+						// Project project = null;
+						for (String x : modFiles)
+							System.out.println("modFiles:" + x);
+
+						Project project = analyser.start(modFiles);// esta assim no codigo velho, será que o project é
+																	// um
+						// objeto??
 						// Starter.start(modFiles);
 						noChangesInCFiles = false;
 
@@ -352,13 +427,15 @@ public class ProjectManager {
 							System.out.println("O arquivo não existe: " + e.getMessage());
 						}
 
-						if (numberOfAnalysisOcurred == 1) {
-							System.out.println("fim.. morreuu");
-							System.exit(0);
-						}
-						// Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
-						// Files.delete(new File(dirPlugin + currentProject + "\\include" +
-						// "\\stubs.h").toPath());
+//						if (numberOfAnalysisOcurred == 39) {
+//							System.out.println("fim.. morreuu");
+//							long elapsedTime = System.nanoTime() - startTime;
+//							System.out.println("Analysis ended in "
+//									+ TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " seconds.");
+//							System.exit(0);
+//						}
+						Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
+						Files.delete(new File(dirPlugin + currentProject + "\\include" + "\\stubs.h").toPath());
 
 					}
 
@@ -380,8 +457,6 @@ public class ProjectManager {
 		pathToErro.mkdirs();
 		File[] allAnalysis = pathToErro.listFiles();
 
-		System.out.println("AAL :" + allAnalysis);
-
 		if (allAnalysis == null) {
 			return -1;
 		} else {
@@ -390,7 +465,7 @@ public class ProjectManager {
 	}
 
 	public String getReturnCurrentCommit() {
-		String data = "";
+		data = "";
 
 		try {
 			data = DATE_FORMAT.format(Runner.projectManager.getCommitAtual().getTimestamp());
@@ -426,5 +501,13 @@ public class ProjectManager {
 
 	public void setNumberOfAnalysisOcurred(int numberOfAnalysisOcurred) {
 		this.numberOfAnalysisOcurred = numberOfAnalysisOcurred;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 }

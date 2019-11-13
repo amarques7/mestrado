@@ -121,9 +121,11 @@ public class Project {
 		for (String file : filesToAnalyze) {
 			Ast ast = new Ast(new File(file), new File(getStubsPath()));
 			GenerationStatus generationStatus = null;
-			do {
+	
+		//	do {
 				generationStatus = ast.generate();
-			} while (generationStatus == GenerationStatus.OPTIONS_EXCEPTION);
+		//	} while (generationStatus == GenerationStatus.OPTIONS_EXCEPTION);
+			
 			if (generationStatus == GenerationStatus.OK) {
 				setTotalSuccessfulFiles(getTotalSuccessfulFiles() + 1);
 

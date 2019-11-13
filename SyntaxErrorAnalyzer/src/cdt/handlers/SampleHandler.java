@@ -117,88 +117,7 @@ public class SampleHandler extends AbstractHandler {
 		Runner.start(RUNTIME_WORKSPACE_PATH);
 	} 
 	
-//	public static void createCProject(String name){ posso apagar
-//		
-//	
-//		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-//        
-//		try {
-//			projectHandle.clearHistory(new NullProgressMonitor());
-//			IProgressMonitor monitor = new NullProgressMonitor();
-//			//projectHandle.open(monitor);
-//			IProjectDescription description = projectHandle.getWorkspace().newProjectDescription(name);
-//			description.setLocationURI(projectHandle.getLocationURI() );
-//			
-//			IProject project = CCorePlugin.getDefault().createCDTProject(description, projectHandle, monitor);
-//			IManagedBuildInfo buildInfo = ManagedBuildManager.createBuildInfo(project);
-//			try {
-//				IManagedProject projectManaged = ManagedBuildManager
-//				    .createManagedProject(project, 
-//				                          ManagedBuildManager.getExtensionProjectType("cdt.managedbuild.target.gnu.mingw.exe"));
-//				 
-//			    List<IConfiguration> configs = getValidConfigsForPlatform();
-//			    IConfiguration config = 
-//				        projectManaged.createConfiguration(
-//				                configs.get(0), 
-//				                ManagedBuildManager.calculateChildId(configs.get(0).getId(), null));
-//			    
-//			    ICProjectDescription cDescription = 
-//				        CoreModel.getDefault().getProjectDescriptionManager().createProjectDescription(project, false);
-//			    
-//			    ICConfigurationDescription cConfigDescription = 
-//				        cDescription.createConfiguration(ManagedBuildManager.CFG_DATA_PROVIDER_ID, config.getConfigurationData());
-//			    
-//			    cDescription.setActiveConfiguration(cConfigDescription);
-//			    cConfigDescription.setSourceEntries(null);
-//			    IFolder srcFolder = project.getFolder("analysis");
-//			    
-//			    ICSourceEntry srcFolderEntry = new CSourceEntry(srcFolder, null, ICSettingEntry.RESOLVED);
-//			    cConfigDescription.setSourceEntries(new ICSourceEntry[] { srcFolderEntry });
-//			
-//			    buildInfo.setManagedProject(projectManaged);
-//			
-//			    cDescription.setCdtProjectCreated();
-//			
-//			    IIndexManager indexMgr = CCorePlugin.getIndexManager();
-//			    ICProject cProject = CoreModel.getDefault().getCModel().getCProject(project.getName() );
-//			    indexMgr.setIndexerId(cProject, IPDOMManager.ID_FAST_INDEXER);
-//			
-//			    CoreModel.getDefault().setProjectDescription(project, cDescription);
-//			
-//			    ManagedBuildManager.setDefaultConfiguration(project, config );
-//			    ManagedBuildManager.setSelectedConfiguration(project, config );
-//			
-//			    ManagedBuildManager.setNewProjectVersion(project);
-//			
-//			    ManagedBuildManager.saveBuildInfo(project, true);
-//			} catch (BuildException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		   
-//		    
-//		} catch (CoreException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} 
-//	}
-//	
-//	public static List<IConfiguration> getValidConfigsForPlatform() {
-//	    List<IConfiguration> configurations = 
-//	        new ArrayList<IConfiguration>();
-//	
-//	    for (IConfiguration cfg : ManagedBuildManager.getExtensionConfigurations() ) {
-//	        IToolChain currentToolChain =
-//	            cfg.getToolChain();
-//	
-//	        if ( (currentToolChain != null )                           && 
-//	             (ManagedBuildManager.isPlatformOk(currentToolChain) ) &&
-//	             (currentToolChain.isSupported() )                     ) {
-//	        	configurations.add(cfg);
-//	        }
-//	    }
-//	    return configurations;
-//	}
+
 	
 	public static void analyzeFilesInSrc(ArrayList<String> files) throws Exception{
 		ICProject project = CoreModel.getDefault().getCModel().getCProject(SampleHandler.PROJECT);//trocar por Runner.projectManager.getCurrentProject()
@@ -208,17 +127,7 @@ public class SampleHandler extends AbstractHandler {
 		
 		IIndex index = CCorePlugin.getIndexManager().getIndex(project);
 		
-//		for(IIndexFile a :  index.getAllFiles()){
-//			System.out.println("* " + a.getLocation());
-//			for(IIndexInclude i : index.findIncludedBy(a, IIndex.DEPTH_INFINITE)){
-//				System.out.println(i.getIncludesLocation());
-//				System.out.println(i.isResolved());
-//			}
-//			for(IIndexMacro x : a.getMacros()){
-//				System.out.println(x.getName());
-//			}
-//		}
-		
+
 		// It gets all C files from the ANALYSIS path to analyze.
 		List<File> filesInSrcArray = new ArrayList<File>(files.size());
 		for(String file : files){
