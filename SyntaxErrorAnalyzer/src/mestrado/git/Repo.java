@@ -39,9 +39,9 @@ public class Repo {
 
 		this.URI = repoURI;
 		this.name = repoURI.substring(repoURI.lastIndexOf("/") + 1).replace(".git", "");
-		// this.localPath = new File(System.getProperty("user.dir") +
-		// System.getProperty("file.separator") + "repo" +
-		// System.getProperty("file.separator") + name);
+		 this.localPath = new File(System.getProperty("user.dir") +
+		 System.getProperty("file.separator") + "repo" +
+		 System.getProperty("file.separator") + name);
 
 		this.localPath = new File(dir_projeto + System.getProperty("file.separator") + name);
 		// this.localPath = new File("C:" + System.getProperty("file.separator") +
@@ -89,7 +89,6 @@ public class Repo {
 		Git g = Git.cloneRepository().setURI(getURI()).setDirectory(getLocalPath()).call();
 		setGit(g);
 		g.close();
-
 		setRepo(getGit().getRepository());
 
 		System.out.println(" OK!");

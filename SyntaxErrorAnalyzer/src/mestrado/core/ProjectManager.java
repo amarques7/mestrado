@@ -53,6 +53,7 @@ public class ProjectManager {
 	private String currentFile;
 	private String data = "";
 	private String lastCommitAnalysed = "";
+	private String logAst;
 
 	public String getCurrentFile() {
 		return currentFile;
@@ -253,7 +254,7 @@ public class ProjectManager {
 				numberOfAnalysisOcurred = 0;
 				System.out.println();
 				System.out.println("Analyzing " + r.getName() + "... ");
-				// System.out.println("-1 Number of commits: "+ repo.getNumberofCommits());
+				// System.out.println("Number of commits: "+ repo.getNumberofCommits());
 				currentProject = r.getName();
 				SampleHandler.PROJECT = r.getName();
 				// CreateDirectory.setWriter(dir_plugin + currentProject);
@@ -263,15 +264,15 @@ public class ProjectManager {
 				CreateDirectory.setWriter(
 						dirPlugin + currentProject + File.separator + "results" + File.separator + "errorPath");
 				AstLogger.writeaST(
-						" COMMIT" + ";" + "HASH " + ";" + "QUANTIDADE DE ARQUIVO.C COMMIT " + ";"
-								+ "QUANTIDADE DE ARQUIVO.C ANALISADO " + ";" + "AQUIVOS.C" + ";"
-								+ "TOTAL DE ARQUIVO.C ANALISADO " + ";" + "StatusAst" + ";" + "Error",
+						"COMMIT" + ";" + "HASH " + ";" + "ARQUIVOS.C" + ";" + "ARQUIVO.C ALTERADO " + ";" + "ERRO",
 						Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
 								+ File.separator + "results" + File.separator,
 						Runner.projectManager.getCurrentProject() + ".csv");
 
 				// ResultsLogger.write("Number of commitsId: " +
 				// Runner.projectManager.repo.getChronologicalorderCommits().size());
+				// System.out.println(" total de commit "+
+				// Runner.projectManager.repo.getNumberofCommits());
 				// essa função cria os arquivos platform.h e stubs.h
 
 				Starter analyser = new Starter(dirPlugin + currentProject + File.separator, false);
@@ -285,9 +286,6 @@ public class ProjectManager {
 
 				if (!r.getCommitList().isEmpty()) {
 
-//					File diretorio = new File((dirResult + System.getProperty("file.separator") + r.getName()
-//							+ System.getProperty("file.separator")));
-//					diretorio.mkdirs();
 					numberOfAnalysisOcurred = 0;
 					// traz os commit
 					lastCommitAnalysed = "";
@@ -373,9 +371,13 @@ public class ProjectManager {
 							lastCommitAnalysed = currentCommit;
 						}
 
-//						for (RepoFile f : c.getTouchedFiles()) {
-//							
-//							if (f.getExtension().equals("c")) {
+						for (RepoFile f : c.getTouchedFiles()) {
+
+							if (f.getExtension().equals("c")) {
+
+								System.out.println("nome Arqu:" + f.getName() + ".c");
+							}
+						}
 //
 //								arquivoMod = f.getPath().replace("/", "\\");
 //								listModFile.add(arquivoMod);
@@ -395,9 +397,7 @@ public class ProjectManager {
 //
 //						}
 
-						logControl = numberOfAnalysisOcurred + ";" + c.getId() + ";" + QtdArqOfCommit + ";"
-								+ modFiles.size() + ";";
-						totalArqPro = totalArqPro + QtdArqOfCommit;
+						logControl = numberOfAnalysisOcurred + ";" + c.getId();
 						// verificar o pq a copia de arquivo ta dando ruim.
 
 //						if (noChangesInCFiles) {
@@ -406,17 +406,68 @@ public class ProjectManager {
 						// MoveFile.copy(modFiles, dir_plugin + "analysis");
 						// ClearDirectory.remover(new File(dir_projeto + r.getName()));
 
-						// Project project = null;
-						for (String x : modFiles)
-							System.out.println("modFiles:" + x);
+						if (modFiles.size() == 0) {
+							if (numberOfAnalysisOcurred == 1) {
+								logAst = numberOfAnalysisOcurred + ";" + c.getId() + ";" + " " + ";" + "0" + ";" + "0";
+								AstLogger.writeaST(logAst,
+										Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
+												+ File.separator + "results",
+										Runner.projectManager.getCurrentProject() + ".csv");
+							} else {
+								for (RepoFile f : c.getTouchedFiles()) {
+									if (f.getExtension().equals("c")) {
+										logAst = numberOfAnalysisOcurred + ";" + c.getId() + ";" + f.getName() + ".c"
+												+ ";" + "0" + ";" + "0";
+										AstLogger.writeaST(logAst,
+												Runner.projectManager.getDirPlugin()
+														+ Runner.projectManager.getCurrentProject() + File.separator
+														+ "results",
+												Runner.projectManager.getCurrentProject() + ".csv");
+									}
+								}
+							}
+						} else {
+							ArrayList<String> notModFilesaux = new ArrayList<String>();
+							ArrayList<String> notModFiles = new ArrayList<String>();
+							List<File> file2 = contArq.findFiles(fileI, ".*\\.c");
+							for (File file : file2)
+								notModFilesaux.add(file.getName());
 
-						Project project = analyser.start(modFiles);// esta assim no codigo velho, será que o project é
-																	// um
+							for (String x : modFiles) {
+								for (File file : file2) {
+									File y = new File(x);
+									if ((file.getName().equals(y.getName()))) {
+										notModFilesaux.remove(file.getName());
+										// System.out.println("d-> " + file.getName() + " x-> " + y.getName());
+
+									}
+
+								}
+							}
+
+							for (String f : notModFilesaux) {
+
+								logAst = numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "0";
+								AstLogger.writeaST(logAst,
+										Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
+												+ File.separator + "results",
+										Runner.projectManager.getCurrentProject() + ".csv");
+
+							}
+						}
+
+						// Project project = null;
+//						for (String x : modFiles)
+//							System.out.println("modFiles:" + x);
+
+						Project project = analyser.start(modFiles);// esta assim no codigo velho,
+						// será que o project é
+						// um
 						// objeto??
 						// Starter.start(modFiles);
 						noChangesInCFiles = false;
 
-						deleteAllFromAnalysisFolder();
+						// deleteAllFromAnalysisFolder();
 						listModFile.clear();
 						try {
 
@@ -427,7 +478,7 @@ public class ProjectManager {
 							System.out.println("O arquivo não existe: " + e.getMessage());
 						}
 
-//						if (numberOfAnalysisOcurred == 39) {
+//						if (numberOfAnalysisOcurred == 5) {
 //							System.out.println("fim.. morreuu");
 //							long elapsedTime = System.nanoTime() - startTime;
 //							System.out.println("Analysis ended in "
@@ -440,16 +491,15 @@ public class ProjectManager {
 					}
 
 				}
-
+				long elapsedTime = System.nanoTime() - startTime;
+				System.out.println("Analysis ended in " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
+						+ " seconds.");
 			}
-			long elapsedTime = System.nanoTime() - startTime;
-			System.out.println(
-					"Analysis ended in " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " seconds.");
-		}
-		System.out.println();
-		System.out.println("Analise dos projetos: " + listaProjetos + ", foi concluido com sucesso!!!");
-		System.out.println("acabei");
+			System.out.println();
+			System.out.println("Analise dos projetos: " + listaProjetos + ", foi concluido com sucesso!!!");
+			System.out.println("acabei");
 
+		}
 	}
 
 	public int getIndexOfPastAnalysis() throws InterruptedException {

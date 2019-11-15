@@ -95,8 +95,8 @@ public class Ast {
 			AstLogger.write(getSource().getAbsolutePath());
 			AstLogger.write(e.getMessage());
 			//"ERROR_AST_Trying to parse options for file" = 1
-			
-			logAst = Runner.projectManager.getLogControl() + getSource().getName() + ";" + Runner.projectManager.getTotalArqPro() + ";" + "ERROR_AST_Trying to parse options for file: "+ e.getMessage() + ";"+  "1";
+			logAst = Runner.projectManager.getLogControl() + ";" + getSource().getName()+";" + "1"+ ";" +"1";
+			//logAst = Runner.projectManager.getLogControl() + getSource().getName() + ";" + Runner.projectManager.getTotalArqPro() + ";" + "ERROR_AST_Trying to parse options for file: "+ e.getMessage() + ";"+  "1";
 			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", Runner.projectManager.getCurrentProject()+".csv");
 			
 			e.printStackTrace();
@@ -118,7 +118,9 @@ public class Ast {
 			System.out.print("Trying to generate AST for file " + getSource().getName() + "... ");
 			new ASTGenerator().generate(ast, myAst);
 			//OK_AST_generate AST for file = 0
-			logAst =  Runner.projectManager.getLogControl() + getSource().getName() + ";" + Runner.projectManager.getTotalArqPro() + ";"+ " OK_AST_generate AST for file"+ ";" + "0" ;
+			
+			logAst = Runner.projectManager.getLogControl() + ";" + getSource().getName()+";" + "1"+ ";" +"0";
+		//	logAst =  Runner.projectManager.getLogControl() + getSource().getName() + ";" + Runner.projectManager.getTotalArqPro() + ";"+ " OK_AST_generate AST for file"+ ";" + "0" ;
 			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", Runner.projectManager.getCurrentProject()+".csv");
 			
 		} catch (Exception e) {
@@ -126,7 +128,8 @@ public class Ast {
 			AstLogger.write(e.getMessage());
 			//ERROR_AST_generate AST for file = 1 
 			System.out.println("ERROR_AST");
-			logAst =  Runner.projectManager.getLogControl() + getSource().getName() + ";" + Runner.projectManager.getTotalArqPro() + ";" + "ERROR_AST_generate AST for file" + ";" + "1";
+			logAst = Runner.projectManager.getLogControl() + ";" + getSource().getName()+";" + "1"+ ";" +"1";
+			//logAst =  Runner.projectManager.getLogControl() + getSource().getName() + ";" + Runner.projectManager.getTotalArqPro() + ";" + "ERROR_AST_generate AST for file" + ";" + "1";
 			AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + File.separator + "results", Runner.projectManager.getCurrentProject()+".csv");
 			
 		//	
