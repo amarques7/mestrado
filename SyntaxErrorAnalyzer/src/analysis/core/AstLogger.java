@@ -34,6 +34,7 @@ public class AstLogger {
 			PrintWriter writer = new PrintWriter(new FileWriter(path + File.separator + nameFile, true));
 			writer.println(toWrite);
 			writer.close();
+			System.gc();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

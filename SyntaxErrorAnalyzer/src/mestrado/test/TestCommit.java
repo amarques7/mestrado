@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Stack;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoFilepatternException;
+
 import mestrado.git.Commit;
 import mestrado.git.Repo;
 import mestrado.git.RepoFile;
@@ -24,7 +27,7 @@ public class TestCommit {
 	static String arquivo;
 	static int linha;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoFilepatternException, GitAPIException {
 		
 		repository = new Repo("https://github.com/tgl-dogg/BCC-2s13-PI2-Codigo-de-Honra.git", null);
 		

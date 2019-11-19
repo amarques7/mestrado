@@ -148,6 +148,7 @@ public class Project {
 				if (!replaced)
 					getAsts().add(ast);
 			}
+			System.gc();
 		}
 	}
 

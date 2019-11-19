@@ -35,17 +35,17 @@ public class Repo {
 
 	private int numberofCommits;
 
-	public Repo(String repoURI, String dir_projeto) {
+	public Repo(String repoURI, String dir_projeto) throws NoFilepatternException, GitAPIException {
 
 		this.URI = repoURI;
 		this.name = repoURI.substring(repoURI.lastIndexOf("/") + 1).replace(".git", "");
-		 this.localPath = new File(System.getProperty("user.dir") +
-		 System.getProperty("file.separator") + "repo" +
-		 System.getProperty("file.separator") + name);
+//		 this.localPath = new File(System.getProperty("C:Projeto/") +
+//		 System.getProperty("file.separator") + "repo" +
+//		 System.getProperty("file.separator") + name);
 
 		this.localPath = new File(dir_projeto + System.getProperty("file.separator") + name);
-		// this.localPath = new File("C:" + System.getProperty("file.separator") +
-		// dir_projeto + System.getProperty("file.separator") + name);
+//		 this.localPath = new File("C:" + System.getProperty("file.separator") +
+//		 dir_projeto + System.getProperty("file.separator") + name);
 
 		this.commitList = new HashMap<String, Commit>();
 		this.numberofCommits = 0;
@@ -71,15 +71,15 @@ public class Repo {
 
 	}
 
-	private void openRepo() throws IOException {
+	private void openRepo() throws IOException, NoFilepatternException, GitAPIException {
 
 		System.out.print("Opening " + getName() + "...");
-		Git.open(getLocalPath());
+		Git g = Git.open(getLocalPath());
+		setGit(g);
+		g.close();
 		setRepo(getGit().getRepository());
-		System.out.println(" OK!");
-	
-		Runtime.getRuntime().runFinalization();
-		Runtime.getRuntime().gc();
+		
+		System.out.println(" OK2!");
 
 	}
 
@@ -173,8 +173,8 @@ public class Repo {
 		Ref head = null;
 		RevCommit commit = null;
 
-		//ArrayList<Commit> chronologicalorderCommits = new ArrayList<Commit>();
-			chronologicalorderCommits = new ArrayList<Commit>();
+		// ArrayList<Commit> chronologicalorderCommits = new ArrayList<Commit>();
+		chronologicalorderCommits = new ArrayList<Commit>();
 		try {
 			head = getRepo().exactRef("refs/heads/master");
 
@@ -192,11 +192,11 @@ public class Repo {
 
 		for (RevCommit rev : walk) {
 			chronologicalorderCommits.add(getCommit(rev.getName()));
-			
-			}
+
+		}
 
 		setNumberofCommits(chronologicalorderCommits.size());
-		 
+
 		return chronologicalorderCommits;
 
 	}

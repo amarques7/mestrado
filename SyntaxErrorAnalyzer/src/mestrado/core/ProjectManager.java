@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoFilepatternException;
 
 import analysis.core.AstLogger;
 import analysis.core.Project;
@@ -55,6 +56,7 @@ public class ProjectManager {
 	private String lastCommitAnalysed = "";
 	private String logAst;
 
+	//data 18/11 -1
 	public String getCurrentFile() {
 		return currentFile;
 	}
@@ -219,7 +221,7 @@ public class ProjectManager {
 		this.analyseThisTime = analyseThisTime;
 	}
 
-	public void loadRepos() {
+	public void loadRepos() throws NoFilepatternException, GitAPIException {
 		ArrayList<String> repos = ManipulationUtils.loadRepos(repoList);
 
 		for (String repoURI : repos) {
@@ -227,9 +229,10 @@ public class ProjectManager {
 				Repo a = new Repo(repoURI, dirProject);
 				listofRepos.add(a);
 			} catch (Exception e) {
-				System.out.println("Erro add listfRepo: " + e.getMessage());
+				listofRepos.add(new Repo(repoURI, Runner.projectManager.dirProject));
+				// System.out.println("Erro add listfRepo: " + e.getMessage());
 			}
-//			listofRepos.add(new Repo(repoURI, dirProjetct));	
+			// listofRepos.add(new Repo(repoURI, Runner.projectManager.dirProject));
 		}
 	}
 
@@ -254,11 +257,9 @@ public class ProjectManager {
 				numberOfAnalysisOcurred = 0;
 				System.out.println();
 				System.out.println("Analyzing " + r.getName() + "... ");
-				// System.out.println("Number of commits: "+ repo.getNumberofCommits());
+
 				currentProject = r.getName();
 				SampleHandler.PROJECT = r.getName();
-				// CreateDirectory.setWriter(dir_plugin + currentProject);
-
 				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "analysis");
 				CreateDirectory.setWriter(dirPlugin + currentProject + File.separator + "results");
 				CreateDirectory.setWriter(
@@ -269,10 +270,6 @@ public class ProjectManager {
 								+ File.separator + "results" + File.separator,
 						Runner.projectManager.getCurrentProject() + ".csv");
 
-				// ResultsLogger.write("Number of commitsId: " +
-				// Runner.projectManager.repo.getChronologicalorderCommits().size());
-				// System.out.println(" total de commit "+
-				// Runner.projectManager.repo.getNumberofCommits());
 				// essa função cria os arquivos platform.h e stubs.h
 
 				Starter analyser = new Starter(dirPlugin + currentProject + File.separator, false);
@@ -290,7 +287,7 @@ public class ProjectManager {
 					// traz os commit
 					lastCommitAnalysed = "";
 					for (Commit c : r.getCommitList()) {
-
+						deleteAllFromAnalysisFolder();
 						numberOfAnalysisOcurred++;
 						commitAtual = c;
 						AstLogger.write("\nAnalysis number:" + numberOfAnalysisOcurred);
@@ -319,21 +316,7 @@ public class ProjectManager {
 								filesModifiedRightPath = DiffFilesGit.diffFilesInCommits(lastCommitAnalysed,
 										currentCommit);
 
-								// adding only the new files to the analysis directory
-//								for(modFiles:fileModified){
-//									String file = new File(fileModified).getName();
-//									modFiles.add(file);
-//								}
 								List<File> file = contArq.findFiles(fileI, ".*\\.c");
-
-//								for(File k: file) {
-//									System.out.println("k: " + k);
-//									System.out.println("k: " + k.getName());
-//									
-//								
-//								}
-//								System.exit(0);
-
 								for (String x : filesModifiedRightPath) {
 									File y = new File(x);
 
@@ -353,8 +336,6 @@ public class ProjectManager {
 								e.printStackTrace();
 							}
 							lastCommitAnalysed = currentCommit;
-//							filesInAnalysis(downloadPath);
-//							return filesModifiedRightPath;
 						} else {
 
 							List<File> file = contArq.findFiles(fileI, ".*\\.c");
@@ -371,41 +352,10 @@ public class ProjectManager {
 							lastCommitAnalysed = currentCommit;
 						}
 
-						for (RepoFile f : c.getTouchedFiles()) {
-
-							if (f.getExtension().equals("c")) {
-
-								System.out.println("nome Arqu:" + f.getName() + ".c");
-							}
-						}
-//
-//								arquivoMod = f.getPath().replace("/", "\\");
-//								listModFile.add(arquivoMod);
-//			do					File file = new File(f.getPath().replace("/", "\\"));// testar ele comentado
-//							
-//
-//		proffesspor						modFiles.add(dirPlugin + currentProject + System.getProperty("file.separator")
-//										+ "analysis" + System.getProperty("file.separator") + f.getName() + ".c");
-//								System.out.println("arqui mod: " + arquivoMod);
-//								currentFile = f.getName() + ".c";
-//								this.noChangesInCFiles = true;// por causa dessa variavel nao estou entrando no anlayser
-//
-//								MoveFile.copyFileUsingChannel(file, (new File(dirPlugin + currentProject
-//										+ File.separator + "analysis" + File.separator + f.getName() + ".c")));
-//
-//							}
-//
-//						}
-
 						logControl = numberOfAnalysisOcurred + ";" + c.getId();
 						// verificar o pq a copia de arquivo ta dando ruim.
-
-//						if (noChangesInCFiles) {
 						System.out.println("qtd modFiles: " + modFiles.size());
-						System.out.println("Copiado os arquivos do commit: " + numberOfAnalysisOcurred);
-						// MoveFile.copy(modFiles, dir_plugin + "analysis");
-						// ClearDirectory.remover(new File(dir_projeto + r.getName()));
-
+//					
 						if (modFiles.size() == 0) {
 							if (numberOfAnalysisOcurred == 1) {
 								logAst = numberOfAnalysisOcurred + ";" + c.getId() + ";" + " " + ";" + "0" + ";" + "0";
@@ -438,8 +388,6 @@ public class ProjectManager {
 									File y = new File(x);
 									if ((file.getName().equals(y.getName()))) {
 										notModFilesaux.remove(file.getName());
-										// System.out.println("d-> " + file.getName() + " x-> " + y.getName());
-
 									}
 
 								}
@@ -456,19 +404,11 @@ public class ProjectManager {
 							}
 						}
 
-						// Project project = null;
-//						for (String x : modFiles)
-//							System.out.println("modFiles:" + x);
-
 						Project project = analyser.start(modFiles);// esta assim no codigo velho,
-						// será que o project é
-						// um
-						// objeto??
-						// Starter.start(modFiles);
+
 						noChangesInCFiles = false;
 
-						// deleteAllFromAnalysisFolder();
-						listModFile.clear();
+						modFiles.clear();
 						try {
 
 							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
@@ -487,7 +427,7 @@ public class ProjectManager {
 //						}
 						Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
 						Files.delete(new File(dirPlugin + currentProject + "\\include" + "\\stubs.h").toPath());
-
+						System.gc();
 					}
 
 				}
