@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -118,8 +119,8 @@ public class SampleHandler extends AbstractHandler {
 	} 
 	
 
-	
-	public static void analyzeFilesInSrc(ArrayList<String> files) throws Exception{
+	public static void analyzeFilesInSrc(HashSet<String> files) throws Exception{
+	//public static void analyzeFilesInSrc(ArrayList<String> files) throws Exception{
 		ICProject project = CoreModel.getDefault().getCModel().getCProject(SampleHandler.PROJECT);//trocar por Runner.projectManager.getCurrentProject()
 		project.getProject().refreshLocal(IResource.DEPTH_ZERO, null);
 		String thePath = project.getPath().toString();
@@ -277,14 +278,7 @@ public class SampleHandler extends AbstractHandler {
 	  	
 	  	in.close();
 	  	out.close();
-	  	
-//	  	File original = new File(file);
-//	  	
-//	  	File temp2 = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c");
-//	  	
-//	  	Files.copy(temp2.toPath(),original.toPath(),StandardCopyOption.REPLACE_EXISTING);
-	  //	new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c").renameTo((new File(file)));
-
+	  
 	}
 
 	// It finds probable macros in the node.

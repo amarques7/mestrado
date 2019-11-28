@@ -4,6 +4,7 @@ import java.io.File;
 //import java.io.IOException;
 import java.util.ArrayList;
 //import java.util.List;
+import java.util.HashSet;
 
 import analysis.core.Project;
 //import analysis.core.ResultsLogger;
@@ -32,7 +33,7 @@ public class Starter {
 		//file name with extension 
 		CreateFile.create(downloadPath, "platform.h");
 		CreateDirectory.setWriter(downloadPath + "include");
-		//new File(downloadPath + "include").mkdirs();
+	
 		CreateFile.create(downloadPath + File.separator + "include" + File.separator, "stubs.h");
 //	new File(downloadPath + "include/stubs.h").createNewFile();
 		
@@ -46,10 +47,8 @@ public class Starter {
 		project.setName(Runner.projectManager.getCurrentProject());
 	}
 	
-	public static Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
-	//public  Project start(ArrayList<String> filesToAnalyze) throws InterruptedException{
-		//String[] files = filesToAnalyze;
-		
+	public static Project start(HashSet<String> filesToAnalyze) throws InterruptedException{
+
 		//creating include/stubs.h and platform.h
 		if(!noStubs){
 			createStubs(filesToAnalyze);
@@ -59,14 +58,14 @@ public class Starter {
 		return startAnalyser(filesToAnalyze);
 	}
 	
-	public static Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
-//	public  Project startAnalyser(ArrayList<String> filesToAnalyze) throws InterruptedException{
+	public static Project startAnalyser(HashSet<String> filesToAnalyze) throws InterruptedException{
+
 		//start the analyzer
 		project.analyze(filesToAnalyze);
 		return project;
 	}
 	//
-	public static void createStubs(ArrayList<String> files){
+	public static void createStubs(HashSet<String> files){
 		
 		//creating CProject to create include/stubs.h and platform.h
 		CProject.createCProject(Runner.projectManager.getCurrentProject()); // projectManager.getCurrentProject()

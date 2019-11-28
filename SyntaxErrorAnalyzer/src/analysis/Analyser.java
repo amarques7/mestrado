@@ -40,7 +40,7 @@ public class Analyser {
 		System.out.println("-----");
 		if(Runner.projectManager.isNoChangesInCFiles()) {//confirmar aqui
 			//Metrics.write();
-			Reports.Dependencies();
+		//	Reports.Dependencies(); comentei 25/11
 		}
 		else {
 			variabilities.add(new Variability("True")); //set first variability as True
@@ -86,8 +86,8 @@ public class Analyser {
 			Metrics.allDependencies.addAll(dependencies);
 			
 			//Raiza
-			Reports.preservedDependencies = new HashSet<Dependency>(dependencies.size());
-			Reports.changedDependencies = new HashSet<Dependency>(dependencies.size());
+		//	Reports.preservedDependencies = new HashSet<Dependency>(dependencies.size());
+		//	Reports.changedDependencies = new HashSet<Dependency>(dependencies.size());
 			//Adriano
 			Metrics.calls = calls;
 			Metrics.write();

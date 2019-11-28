@@ -12,9 +12,8 @@ public class AstLogger {
 	
 	public static void setWriter(){
 		File pathToError = new File(Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + "/results/errorPath");
-	//	File pathtoError2 =  new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT+ "/results/csv/Variabilities/ProgramWeight");
 		pathToError.mkdirs();
-		//pathtoError2.mkdirs();
+
 	}
 	
 	public static void write(String toWrite){
@@ -29,7 +28,7 @@ public class AstLogger {
 		
 	}
 		
-	public static void writeaST(String toWrite, String path, String nameFile){
+	public static void writeaST(StringBuilder toWrite, StringBuilder path, StringBuilder nameFile){
 		try {
 			PrintWriter writer = new PrintWriter(new FileWriter(path + File.separator + nameFile, true));
 			writer.println(toWrite);

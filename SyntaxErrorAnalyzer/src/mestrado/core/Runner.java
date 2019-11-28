@@ -9,10 +9,7 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 
 public class Runner {
 
-//	public static ProjectManager projectManager;
 	public static ProjectManager projectManager;
-
-
 
 	public static void start(String runTimeWorkspacePath) throws IOException, InterruptedException, NoFilepatternException, GitAPIException {
 
