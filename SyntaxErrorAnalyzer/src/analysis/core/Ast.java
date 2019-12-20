@@ -75,26 +75,32 @@ public class Ast extends Thread{
 			array[i] = 1;
 			return;
 		}
+				
 		System.out.println("OK_1_AST_Trying to parse options for file");
-
-		ParserMain parser = new ParserMain(new CParser(null, false));
-
-		TokenReader<CToken, CTypeContext> in = Lex.lex(myParserOptions);
-		System.out.println("Parsing AST...");
-		AST ast = parser.parserMain(in, myParserOptions);
+		Node myAst = null;
 		
-		Node myAst = new TranslationUnit();
+		ParserMain parser = new ParserMain(new CParser(null, false));
+		TokenReader<CToken, CTypeContext> in = null; 
+		
+		
+		in = Lex.lex(myParserOptions);
+		
+		System.out.println("Parsing AST...");
+		
+						
 		
 		try {
-
+			AST ast = parser.parserMain(in, myParserOptions);
+			myAst = new TranslationUnit();
 			System.out.print("Trying to generate AST for file " + getSource().getName() + "... ");
-		
+			
 			new ASTGenerator().generate(ast, myAst);
 			//OK_AST_generate AST for file = 0
 			logAst.delete(0, logAst.length());
 			logAst.append(Runner.projectManager.getLogControl() + ";" + getSource().getName()+";" + "1"+ ";" +"0");
 			AstLogger.writeaST(logAst, diretorio, nomeArquivo);
 			Runner.projectManager.errorFiles.remove(getSource().getName());
+			Runner.projectManager.fileValidation.add(getSource().getName());
 			
 		} catch (Exception e) {
 			AstLogger.write(getSource().getAbsolutePath());

@@ -19,10 +19,14 @@ public class TransformarSegundaParaHoras {
 		minuto = java.util.concurrent.TimeUnit.SECONDS.toMinutes(segundos);
 		segundos = (int) (segundos - (minuto * 60));
 		seg = segundos;
-
-		data.append(projeto + ";" + hora + ";" + minuto +" ;" + seg);
+		
+		String hora1 = Double.toString(hora);
+		String minuto1 = Double.toString(minuto);
+		String seg1 = Double.toString(seg);
+		
+		data.append(projeto + ";" + hora1 + ";" + minuto1 +" ;" + seg1);
 		directory.append( "C://error" + File.separator);
-		nameFile.append("Tempo_execução" + ".csv");
+		nameFile.append("Tempo_execução.csv");
 		AstLogger.writeaST(data, directory, nameFile);
 
 	}

@@ -1,15 +1,9 @@
 package main;
 
 import java.io.File;
-//import java.io.IOException;
-import java.util.ArrayList;
-//import java.util.List;
 import java.util.HashSet;
-
 import analysis.core.Project;
-//import analysis.core.ResultsLogger;
 import cdt.handlers.SampleHandler;
-//import git_Deletar.ModifiedFileList;
 import mestrado.core.ProjectManager;
 import mestrado.core.Runner;
 import util.CProject;

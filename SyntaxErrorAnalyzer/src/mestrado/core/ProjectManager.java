@@ -48,7 +48,8 @@ public class ProjectManager {
 	private StringBuilder directory = new StringBuilder();
 	private StringBuilder fileName = new StringBuilder();
 	
-
+	public HashSet<String> fileValidation;
+	public static  List<String> arquivo2;
 	private ArrayList<Repo> listofRepos;
 	private List<String> allCommitsThisAnalysis;
 	private BufferedReader reader;
@@ -62,12 +63,14 @@ public class ProjectManager {
 	private long startTime2;
 	private int totalArqPro;
 	private int numberOfAnalysisOcurred;
-	private HashSet<String> listModFile;
+	public HashSet<String> listModFile;
 	public HashSet<String> errorFiles;
 	private HashSet<String> notModFilesaux;
 	private HashSet<String> notModFiles;
 	private HashSet<String> modFiles;
 
+	
+	
 	private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
 	public ProjectManager(String pathFrom, String runTimeWorkspacePath) {
@@ -94,6 +97,9 @@ public class ProjectManager {
 		notModFilesaux = new HashSet<String>();
 		modFiles = new HashSet<String>();
 		notModFiles = new HashSet<String>();
+		fileValidation = new HashSet<String>();
+		arquivo2 = new ArrayList<String>();
+		
 		try {
 			generateReader(pathFrom);
 		} catch (Exception e) {
@@ -138,9 +144,7 @@ public class ProjectManager {
 
 //		commitsIdToAnalyse = new HashSet<String>();
 		CreatLogs create = new CreatLogs();
-		
-		
-		
+				
 
 		if (!listaRepositorioVazia()) {
 			for (Repo r : listofRepos) {
@@ -196,9 +200,8 @@ public class ProjectManager {
 							// get the difference between the last commit and the new
 							try {
 								filesModifiedRightPath.clear();
-								filesModifiedRightPath = DiffFilesGit.diffFilesInCommits(lastCommitAnalysed,
-										currentCommit);
-
+								filesModifiedRightPath = DiffFilesGit.diffFilesInCommits("c:\\Projeto"+ File.separator+Runner.projectManager.getCurrentProject());
+						
 								List<File> file = contArq.findFiles(fileI, ".*\\.c");
 
 								if (!filesModifiedRightPath.isEmpty()) {
@@ -217,6 +220,7 @@ public class ProjectManager {
 												MoveFile.copyFileUsingChannel(k, (new File(dirPlugin + currentProject
 														+ File.separator + "analysis" + File.separator + y.getName())));
 												currentFile = y.getName();
+												listModFile.add(y.getName());
 												break;
 
 											}
@@ -245,25 +249,24 @@ public class ProjectManager {
 									MoveFile.copyFileUsingChannel(x, (new File(dirPlugin + currentProject
 											+ File.separator + "analysis" + File.separator + x.getName())));
 									currentFile = x.getName();
+									listModFile.add(x.getName());
+									
 								}
 							
 							}
+							
 							this.noChangesInCFiles = true;
 							lastCommitAnalysed = currentCommit;
 						}
 						logControl = numberOfAnalysisOcurred + ";" + c.getId();
-
+						
+		
 						// trata quando nenhum arquivo foi alterado, no primeiro commit
 						if (modFiles.size() == 0) {
 							if (numberOfAnalysisOcurred == 1) {
 								dataText.delete(0,dataText.length());
 								dataText.append(numberOfAnalysisOcurred + ";" + c.getId() + ";" + " " + ";" + " " + ";" + " ");
-								
 								AstLogger.writeaST(dataText, directory, fileName);
-								
-//								AstLogger.writeaST(logAst,
-//										Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
-//												+ File.separator + "results", Runner.projectManager.getCurrentProject() + ".csv");
 							}
 						}
 						// pega do os arquivos em disco para depois retirar os repetidos.
@@ -278,6 +281,8 @@ public class ProjectManager {
 
 						if(modFiles.isEmpty())
 							this.noChangesInCFiles = false;
+//						if(numberOfAnalysisOcurred == 162)
+//							System.out.println("cheguei: " + numberOfAnalysisOcurred);
 						
 						Project project = analyser.start(modFiles);
 
@@ -289,18 +294,12 @@ public class ProjectManager {
 										+ "1");
 								AstLogger.writeaST(dataText, directory, fileName);
 								
-//								AstLogger.writeaST(logAst, Runner.projectManager.getDirPlugin()
-//										+ Runner.projectManager.getCurrentProject() + File.separator + "results",
-//										Runner.projectManager.getCurrentProject() + ".csv");
+								
 						}else {
 									dataText.delete(0,dataText.length());
 									dataText.append(numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "0");
 									AstLogger.writeaST(dataText, directory, fileName);
-									
-//									AstLogger.writeaST(logAst,
-//											Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
-//													+ File.separator + "results",
-//											Runner.projectManager.getCurrentProject() + ".csv");
+									fileValidation.add(f);
 								}
 							}
 						
@@ -308,6 +307,7 @@ public class ProjectManager {
 						modFiles.clear();
 						notModFilesaux.clear();
 						notModFiles.clear();
+						listModFile.clear();
 						try {
 							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
 							System.out.println("//------------------------------//");
@@ -315,18 +315,22 @@ public class ProjectManager {
 							// in case of the file doesnt exist
 							System.out.println("O arquivo não existe: " + e.getMessage());
 						}
-						if (numberOfAnalysisOcurred == 10) {
-							System.exit(0);
-						}
-						Files.delete(new File(dirPlugin + currentProject + "\\platform.h").toPath());
-						Files.delete(new File(dirPlugin + currentProject + "\\include" + "\\stubs.h").toPath());
+//						if (numberOfAnalysisOcurred == 25) {
+//							System.exit(0);
+//						}
+						Files.delete(new File(dirPlugin + currentProject + File.separator +"platform.h").toPath());
+						Files.delete(new File(dirPlugin + currentProject + File.separator +"include" + File.separator+"stubs.h").toPath());
 						
 						long elapsedTimes2 = System.nanoTime() - startTime2;
+						long seg = TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS);
+						
 						System.out.println("Tempo do commit " + TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS)
 								+ " seconds.");
+						
+
+						
 						System.gc();
 					}
-					
 					
 				}
 				long elapsedTime = System.nanoTime() - startTime;
@@ -334,7 +338,7 @@ public class ProjectManager {
 						+ " seconds.");
 				long segundos = TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
 				TransformarSegundaParaHoras x = new TransformarSegundaParaHoras();
-				x.transforma(segundos, Runner.projectManager.currentProject);
+				x.transforma(segundos, Runner.projectManager.getCurrentProject());
 			}
 			System.out.println();
 			System.out.println("Analise dos projetos: " + listaProjetos + ", foi concluido com sucesso!!!");
@@ -538,4 +542,30 @@ public class ProjectManager {
 	public void setModFiles(HashSet<String> modFiles) {
 		this.modFiles = modFiles;
 	}
+
+	public static List<String> getArquivo2() {
+		return arquivo2;
+	}
+
+	public static void setArquivo2(List<String> arquivo2) {
+		ProjectManager.arquivo2 = arquivo2;
+	}
+
+	public HashSet<String> getFileValidation() {
+		return fileValidation;
+	}
+
+	public void setFileValidation(HashSet<String> fileValidation) {
+		this.fileValidation = fileValidation;
+	}
+
+	public HashSet<String> getErrorFiles() {
+		return errorFiles;
+	}
+
+	public void setErrorFiles(HashSet<String> errorFiles) {
+		this.errorFiles = errorFiles;
+	}
+
+	
 }

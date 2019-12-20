@@ -37,13 +37,12 @@
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.25.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-2.3.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/apache-lucene.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/TypeChef-0.3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/commons-beanutils-1.9.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/commons-collections-3.2.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/commons-lang3-3.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/commons-text-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/amarq/lib_ecplise/opencsv-4.1.jar"/>
+	<classpathentry kind="lib" path="C:/lib_ecplise/apache-lucene.jar"/>
+	<classpathentry kind="lib" path="C:/lib_ecplise/commons-beanutils-1.9.3.jar"/>
+	<classpathentry kind="lib" path="C:/lib_ecplise/commons-collections-3.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/lib_ecplise/commons-lang3-3.6.jar"/>
+	<classpathentry kind="lib" path="C:/lib_ecplise/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/lib_ecplise/commons-text-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/lib_ecplise/TypeChef-0.3.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

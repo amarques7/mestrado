@@ -1,7 +1,6 @@
 package cdt;
 
 import java.io.PrintStream;
-import java.util.Date;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -33,14 +32,14 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-//		try {
-//			PrintStream fp = new PrintStream("C:/error/Console.txt");
-//			System.setOut(fp);
-//			System.setErr(fp);
-//
-//		} catch (Exception e) {
-//			System.out.println("Activator.start(): " + e.getMessage());
-//		}
+		try {
+			PrintStream fp = new PrintStream("C:/error/Console.txt");
+			System.setOut(fp);
+			System.setErr(fp);
+
+		} catch (Exception e) {
+			System.out.println("Activator.start(): " + e.getMessage());
+		}
 	}
 
 	/*

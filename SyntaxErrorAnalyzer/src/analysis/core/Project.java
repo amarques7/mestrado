@@ -15,7 +15,6 @@ import java.util.Set;
 
 import analysis.Analyser;
 import analysis.Dependency;
-//import analysis.core.Ast.GenerationStatus;
 import analysis.visitor.FindFunctionCallsVisitor;
 import analysis.visitor.FindFunctionDefVisitor;
 import analysis.visitor.FindFunctionDirectivesVisitor;
@@ -38,7 +37,6 @@ import tree.Id;
 import tree.Node;
 import tree.Opt;
 import tree.PostfixExpr;
-import util.TransformarSegundaParaHoras;
 
 public class Project {
 
@@ -54,6 +52,7 @@ public class Project {
 	public long startTime3;
 	public long startTime4;
 	
+
 	private Map<FunctionDef, Function> functions = new HashMap<FunctionDef, Function>();
 	private List<Variable> globals = new ArrayList<Variable>();
 	private List<Variable> useOfGlobalVariables = new ArrayList<Variable>();
@@ -105,7 +104,9 @@ public class Project {
 	public List<Ast> getAsts() {
 		return asts;
 	}
-
+	public void setAsts(List<Ast> asts) {
+		this.asts = asts;
+	}
 	public Map<FunctionDef, Function> getFunctions() {
 		return functions;
 	}
@@ -190,16 +191,19 @@ public class Project {
 			}
 
 		}
-
-		List<Ast> newAsts = new ArrayList<Ast>(getAsts().size());
-		for (int j = 0; j < getAsts().size(); j++) {
-			if (!allIndexToRemove.contains(j)) {
-				newAsts.add(getAsts().get(j));
+		if(getAsts()!= null) {
+			List<Ast> newAsts = new ArrayList<Ast>(getAsts().size());
+			for (int j = 0; j < getAsts().size(); j++) {
+				if (!allIndexToRemove.contains(j)) {
+					newAsts.add(getAsts().get(j));
+				}
 			}
-		}
+		
 		asts = newAsts;
-
+		}
 	}
+
+
 
 	public void findVariables(Ast ast) {
 
@@ -399,17 +403,18 @@ public class Project {
 	public void analyze(HashSet<String> filesToAnalyze) throws InterruptedException {
 
 
-		if (!Runner.projectManager.isNoChangesInCFiles()) {
-			startTime = System.nanoTime();
-			exportDirectives();
-			
-			long elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Export no if 1: " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
-					+ " seconds.");
-			
-			System.out.println("ExportDirectives");
-			return;
-		}
+//		if (!Runner.projectManager.isNoChangesInCFiles()) {
+//			startTime = System.nanoTime();
+//			this.asts.clear();
+//		//	exportDirectives();
+//			
+//			long elapsedTime = System.nanoTime() - startTime;
+//			System.out.println("Exprot no if 1: " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
+//					+ " seconds.");
+//			
+//			System.out.println("ExportDirectives");
+//			return;
+//		}
 
 		// resetting
 		this.ids = new ArrayList<Id>();
@@ -432,13 +437,12 @@ public class Project {
 
 			findFunctions(ast);
 			findAllFunctionCalls(ast);
-
 			findVariables(ast);
 		}
 
 		findFunctionCalls();
 		findCallsForFunctionsCalls();
-		findCallsForLocalVariables(getFunctions());//olhar esse cara para ganhar tempo
+		findCallsForLocalVariables(getFunctions());//olhar esse cara para ganhar tempo 02/12
 
 		// at this point, in the calls list, it is listed all the calls for local
 		// variables, global variables and functions
@@ -453,6 +457,7 @@ public class Project {
 		
 		startTime2 = System.nanoTime();
 			exportDirectives();
+			this.asts.clear();
 		long elapsedTime = System.nanoTime() - startTime2;
 		System.out.println("Project analyase, fora do if 2: " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
 				+ " seconds.");
@@ -467,6 +472,7 @@ public class Project {
 		}
 
 	}
+
 	public void findAllCallersOnlyPostfixExpr(Node node) {
 		if (node instanceof PostfixExpr) {
 			PostfixExpr postfix = (PostfixExpr) node;
@@ -621,19 +627,24 @@ public class Project {
 
 		setDependencies(new Analyser().setDps(getFunctions(), globals, useOfGlobalVariables, calls));
 		//esse é o meu
-		try {
-			
+		
 			startTime3 = System.nanoTime();
-			exportFunctionCalls.ExportNumberOfCalls.receive(allPairs);
+			
+			try {
+				exportFunctionCalls.ExportNumberOfCalls.receive(allPairs);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+	
+			
 		long elapsedTime = System.nanoTime() - startTime3;
 		System.out.println("chamada para Criar exportCall: 3: " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
 				+ " seconds.");
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+						
+	
 	}
 
 	public void findFunctions(Ast ast) {
@@ -753,7 +764,7 @@ public class Project {
 		this.dependencies = dependencies;
 	}
 
-	private List<Pair> allPairs;
+	public List<Pair> allPairs;
 
 	public class Pair {
 		private List<Function> allFunctionDefs;

@@ -1,16 +1,8 @@
 package util;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import com.opencsv.CSVWriter;
+import java.io.File;
+
 
 import analysis.core.AstLogger;
 import mestrado.core.Runner;
@@ -74,31 +66,6 @@ public class CreatLogs {
 		data.delete(0, data.length());
 		directory.delete(0, directory.length());
 		fileName.delete(0,fileName.length());
-
-//		AstLogger.writeaST("File" + ";" + "Chamador" + ";" + "Chamado" + ";" + "Variabilidade", Runner.projectManager.getPath() + Runner.projectManager.getCurrentProject()
-//		+ "/results/functionCalls/",Runner.projectManager.getNumberOfAnalysisOcurred() + "_" + Runner.projectManager.getCurrentCommit() + ".csv");
-
-	}
-
-	public void createCSVLinhas(String file, String chamador, String chamado, String variabilidade) {
-			
-		data.delete(0, data.length());
-		directory.delete(0, directory.length());
-		fileName.delete(0,fileName.length());
-		
-		data.append(file + ";" + chamador + ";" + chamado + ";" + variabilidade);
-		directory.append(Runner.projectManager.getPath() + Runner.projectManager.getCurrentProject()
-				+ "/results/functionCalls/");
-		fileName.append(Runner.projectManager.getNumberOfAnalysisOcurred() + "_"
-				+ Runner.projectManager.getCurrentCommit() + ".csv");
-
-		AstLogger.writeaST(data, directory, fileName);
-		
-		data.delete(0, data.length());
-		directory.delete(0, directory.length());
-		fileName.delete(0,fileName.length());
-
-
 	}
 
 }
