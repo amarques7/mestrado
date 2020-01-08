@@ -26,7 +26,7 @@ public class TransformarSegundaParaHoras {
 		
 		data.append(projeto + ";" + hora1 + ";" + minuto1 +" ;" + seg1);
 		directory.append( "C://error" + File.separator);
-		nameFile.append("Tempo_execuÃ§Ã£o.csv");
+		nameFile.append("Tempo_execução.csv");
 		AstLogger.writeaST(data, directory, nameFile);
 
 	}

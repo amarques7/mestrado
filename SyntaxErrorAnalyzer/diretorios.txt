@@ -1,3 +1,5 @@
 C:\Projeto\
-C:\Users\amarq\runtime-EclipseApplication\
-C:\Users\amarq\git\mst\SyntaxErrorAnalyzer\repos.txt
+C:\Users\mac-01\runtime-EclipseApplication\
+C:\Users\mac-01\git\mestrado\SyntaxErrorAnalyzer\repos.txt
+1
+550/560

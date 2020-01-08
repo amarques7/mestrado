@@ -40,7 +40,7 @@ public class CreatLogs {
 		 
 		data.append("PROJETO" + ";" + "HORAS" + ";" + "MINUTOS" + ";" + "SEGUNDOS");
 		directory.append("C://error" + File.separator);
-		fileName.append("Tempo_execuÃ§Ã£o" + ".csv");
+		fileName.append("Tempo_execução" + ".csv");
 
 		AstLogger.writeaST(data, directory, fileName);
 		

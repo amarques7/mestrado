@@ -13,7 +13,7 @@ public class Runner {
 
 	public static void start(String runTimeWorkspacePath) throws IOException, InterruptedException, NoFilepatternException, GitAPIException {
 
-		projectManager = new ProjectManager("C:/Users/amarq/git/mst/SyntaxErrorAnalyzer/diretorios.txt",
+		projectManager = new ProjectManager("C:/Users/mac-01/git/mestrado/SyntaxErrorAnalyzer/diretorios.txt",
 				runTimeWorkspacePath);
 		projectManager.loadRepos();
 		projectManager.generateVariabilities();
