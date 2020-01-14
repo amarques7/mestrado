@@ -1,1 +1,1 @@
-https://github.com/lighttpd/lighttpd1.4
+https://github.com/ossec/ossec-hids.git

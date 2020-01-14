@@ -14,7 +14,6 @@ import analysis.core.Function;
 import analysis.core.ProgramElement;
 import analysis.core.Variable;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import finegrained.Reports;
 import mestrado.core.Runner;
 import metrics.Metrics;
 import tree.FunctionCall;

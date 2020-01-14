@@ -2,4 +2,4 @@ C:\Projeto\
 C:\Users\mac-01\runtime-EclipseApplication\
 C:\Users\mac-01\git\mestrado\SyntaxErrorAnalyzer\repos.txt
 1
-550/560
+1/1

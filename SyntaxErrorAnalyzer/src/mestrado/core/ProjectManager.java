@@ -187,17 +187,19 @@ public class ProjectManager {
 				if (!r.getCommitList().isEmpty()) {
 					
 					ArrayList<Commit> getCommitList = new ArrayList<Commit>();
-					int inicio = commitManager.getCommitInicial() - 1;
-					int fim = r.getCommitList().size() -1;
+					int inicio = commitManager.getCommitInicial();
+					int fim = r.getCommitList().size();
 					
 					if( commitManager.getCommitFinal() > 0 ) {
-						fim = commitManager.getCommitFinal() -1;
+						fim = commitManager.getCommitFinal();
 					}
 					
 					getCommitList.addAll(r.getCommitList().subList(inicio, fim));
 
 
 					numberOfAnalysisOcurred = inicio;
+					System.out.println("Analisando pelo commit: " + inicio);
+					System.out.println("Quantidade de commits: " + fim);
 					// traz os commit
 					lastCommitAnalysed = "";
 					for (Commit c : getCommitList) {
