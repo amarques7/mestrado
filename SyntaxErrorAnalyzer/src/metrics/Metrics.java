@@ -12,10 +12,8 @@ import analysis.Dependency;
 import analysis.Link;
 import analysis.Variability;
 import analysis.core.Call;
-//import git_Deletar.AllCommit;
 import mestrado.core.ProjectManager;
 import mestrado.core.Runner;
-import mestrado.git.Commit;
 import mestrado.git.Repo;
 
 public class Metrics {
@@ -33,7 +31,7 @@ public class Metrics {
 	
 	public static List<Call> calls;
 	public static ProjectManager projectManager;
-	public Repo repo;
+	//public Repo repo;
 	
 	
 	public static void write() throws InterruptedException{
@@ -55,7 +53,7 @@ public class Metrics {
 			Runner.projectManager.setAnalyseThisTime(true); 
 			return;
 		}
-		
+
 		try {			//Main.PATH									 Main.currentProject 
 			new File(Runner.projectManager.getDirPlugin() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\dependencies").mkdirs();
 			FileWriter arq = null;
@@ -261,11 +259,11 @@ public class Metrics {
 		}
 	}
 	
-	public static void showDependencies(List<Dependency> dps, PrintWriter gravarArq){
-		for(Dependency dp : dps){
-			gravarArq.println(" 		"+dp.getVariabilityA().getName() + " " +dp.getVariabilityB().getName());
-		}
-	}
+//	public static void showDependencies(List<Dependency> dps, PrintWriter gravarArq){
+//		for(Dependency dp : dps){
+//			gravarArq.println(" 		"+dp.getVariabilityA().getName() + " " +dp.getVariabilityB().getName());
+//		}
+//	}
 	
 	public static HashSet<Dependency> getAllNewDependencies(){
 		boolean sameDependencie = false;

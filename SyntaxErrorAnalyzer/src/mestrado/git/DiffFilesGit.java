@@ -32,7 +32,7 @@ public class DiffFilesGit {
                 .setNewTree(prepareTreeParser(Repo.getGit().getRepository(), newCommitId))
                 .call();
 
-        System.out.println("Found: " + diffs.size() + " differences");
+  //      System.out.println("Found: " + diffs.size() + " differences"); *
         List<String> modifiedFiles = new ArrayList<String>(diffs.size());
    //   	filesToDeleteFromAnalysisFolder = new ArrayList<String>(diffs.size());
         for (DiffEntry diff : diffs) {
@@ -40,7 +40,7 @@ public class DiffFilesGit {
     		if(diff.getChangeType().toString().equals("DELETE")){
         		if(diff.getOldPath().endsWith(".c")){
         			Runner.projectManager.setNoChangesInCFiles(false);
-        			System.out.println(new File(diff.getOldPath()).getName());
+       // 			System.out.println(new File(diff.getOldPath()).getName()); *
             		
             	}
         	}
@@ -75,7 +75,7 @@ public class DiffFilesGit {
             RevTree tree = walk.parseTree(commit.getTree().getId());
             PersonIdent authorIdent = commit.getAuthorIdent();
     		commitDate = authorIdent.getWhen();
-    		System.out.println("Commit DATE --"+ commitDate);
+    	//	System.out.println("Commit DATE --"+ commitDate); *
 
             CanonicalTreeParser treeParser = new CanonicalTreeParser();
             try (ObjectReader reader = repository.newObjectReader()) {

@@ -28,6 +28,7 @@ import mestrado.utils.ListFilesC;
 import mestrado.utils.ManipulationUtils;
 import mestrado.utils.MoveFile;
 import util.CreatLogs;
+import util.LineOfCode;
 import util.TransformarSegundaParaHoras;
 
 public class ProjectManager {
@@ -61,9 +62,10 @@ public class ProjectManager {
 	private Commit commitAtual;
 	public Repo repo;
 	private long startTime;
-	private long startTime2;
+	//private long startTime2; *
 	private int totalArqPro;
 	private int numberOfAnalysisOcurred;
+	private int lineOfCode;
 	public HashSet<String> listModFile;
 	public HashSet<String> errorFiles;
 	private HashSet<String> notModFilesaux;
@@ -151,11 +153,14 @@ public class ProjectManager {
 	}
 
 	public void generateVariabilities() throws IOException, InterruptedException {
-
+		
 //		commitsIdToAnalyse = new HashSet<String>();
 		CreatLogs create = new CreatLogs();
+		LineOfCode locTotal = new LineOfCode(); 
+
 
 		if (!listaRepositorioVazia()) {
+	
 			int posicaoRepositorio = 0;
 			for (Repo r : listofRepos) {
 				CommitManager commitManager = this.listaCommitManager.get(posicaoRepositorio);
@@ -204,7 +209,7 @@ public class ProjectManager {
 					lastCommitAnalysed = "";
 					for (Commit c : getCommitList) {
 
-						startTime2 = System.nanoTime();
+		//				startTime2 = System.nanoTime(); *
 						deleteAllFromAnalysisFolder();
 						numberOfAnalysisOcurred++;
 						commitAtual = c;
@@ -212,18 +217,15 @@ public class ProjectManager {
 						currentCommit = c.getId();
 						r.checkoutCommit(c.getId());
 
-						System.out.println("An·lise commit: " + numberOfAnalysisOcurred);
+			//			System.out.println("An·lise commit: " + numberOfAnalysisOcurred); *
 
 						ListFilesC contArq = new ListFilesC();
 						File fileI = new File(dirProject + currentProject);
 
 						int QtdArqOfCommit = contArq.findFiles(fileI, ".*\\.c").size();
-						System.out.println("A quantidade de arquivo no commit " + numberOfAnalysisOcurred + ", È: "
-								+ QtdArqOfCommit);
-						
-						if(numberOfAnalysisOcurred == 90)
-							System.out.println("cheguei: " + numberOfAnalysisOcurred);
-
+				//		System.out.println("A quantidade de arquivo no commit " + numberOfAnalysisOcurred + ", È: "
+			//					+ QtdArqOfCommit); *
+			
 						if (!lastCommitAnalysed.equals("")) {
 							List<String> filesModifiedRightPath = new ArrayList<String>();
 							// get the difference between the last commit and the new
@@ -284,7 +286,7 @@ public class ProjectManager {
 
 							}
 
-							this.noChangesInCFiles = true;
+					//		this.noChangesInCFiles = true; *
 							lastCommitAnalysed = currentCommit;
 						}
 						logControl = numberOfAnalysisOcurred + ";" + c.getId();
@@ -306,51 +308,55 @@ public class ProjectManager {
 							if (!modFiles.contains(aux))
 								notModFiles.add(f.getName());
 						}
-						System.out.println("qtd modFiles: " + modFiles.size());
-						System.out.println("qtd notModFiles: " + notModFiles.size());
+//						System.out.println("qtd modFiles: " + modFiles.size());
+//						System.out.println("qtd notModFiles: " + notModFiles.size());
+						
+						lineOfCode = locTotal.Loc(modFiles) + lineOfCode;
+						//COMENTAR ATE O FINAL FOR PARA ADQUIR O LOC
+					//	Project project = analyser.start(modFiles);
 
-						Project project = analyser.start(modFiles);
+//						for (String f : notModFiles) {
+//
+//							if (errorFiles.contains(f)) {
+//								dataText.delete(0, dataText.length());
+//								dataText.append(
+//										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "1");
+//								AstLogger.writeaST(dataText, directory, fileName);
+//
+//							} else {
+//								dataText.delete(0, dataText.length());
+//								dataText.append(
+//										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "0");
+//								AstLogger.writeaST(dataText, directory, fileName);
+//								fileValidation.add(f);
+//							}
+//						}
 
-						for (String f : notModFiles) {
-
-							if (errorFiles.contains(f)) {
-								dataText.delete(0, dataText.length());
-								dataText.append(
-										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "1");
-								AstLogger.writeaST(dataText, directory, fileName);
-
-							} else {
-								dataText.delete(0, dataText.length());
-								dataText.append(
-										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "0");
-								AstLogger.writeaST(dataText, directory, fileName);
-								fileValidation.add(f);
-							}
-						}
-
-						noChangesInCFiles = false;
+					
 						modFiles.clear();
 						notModFilesaux.clear();
 						notModFiles.clear();
 						listModFile.clear();
-						try {
-							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
-							System.out.println("//------------------------------//");
-						} catch (Exception e) {
-							// in case of the file doesnt exist
-							System.out.println("O arquivo n√£o existe: " + e.getMessage());
-						}
+						//COMENTAR O TRY PARA ADQUIR O LOC
+//						try {
+//							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
+//							System.out.println("//------------------------------//");
+//						Files.delete(new File(dirPlugin + currentProject + File.separator + "platform.h").toPath());
+//						Files.delete(new File(
+//								dirPlugin + currentProject + File.separator + "include" + File.separator + "stubs.h")
+//										.toPath());
+//
+//						} catch (Exception e) {
+//							// in case of the file doesnt exist
+//							System.out.println("O arquivo n„oo existe: " + e.getMessage());
+//						}
 
-						Files.delete(new File(dirPlugin + currentProject + File.separator + "platform.h").toPath());
-						Files.delete(new File(
-								dirPlugin + currentProject + File.separator + "include" + File.separator + "stubs.h")
-										.toPath());
+						
+					//	long elapsedTimes2 = System.nanoTime() - startTime2;*
+					//long seg = TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS);*
 
-						long elapsedTimes2 = System.nanoTime() - startTime2;
-						long seg = TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS);
-
-						System.out.println("Tempo do commit "
-								+ TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS) + " seconds.");
+					//	System.out.println("Tempo do commit "
+								//+ TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS) + " seconds.");
 
 						System.gc();
 					}
@@ -366,6 +372,7 @@ public class ProjectManager {
 			System.out.println();
 			System.out.println("Analise dos projetos: " + listaProjetos + ", foi concluido com sucesso!!!");
 			System.out.println("acabei");
+			System.out.println("LOC: " + lineOfCode);
 		}
 	}
 
