@@ -14,6 +14,7 @@ import analysis.core.Function;
 import analysis.core.ProgramElement;
 import analysis.core.Variable;
 import de.fosd.typechef.featureexpr.FeatureExpr;
+//import finegrained.Reports;
 import mestrado.core.Runner;
 import metrics.Metrics;
 import tree.FunctionCall;
@@ -39,7 +40,7 @@ public class Analyser {
 		System.out.println("-----");
 		if(Runner.projectManager.isNoChangesInCFiles()) {//confirmar aqui
 			//Metrics.write();
-		//	Reports.Dependencies(); comentei 25/11
+		//	Reports.Dependencies(); //comentei 25/11
 		}
 		else {
 			variabilities.add(new Variability("True")); //set first variability as True
@@ -73,16 +74,15 @@ public class Analyser {
 			
 			System.out.println("Done!");
 			
-			//metrics
-			//Metrics.allVariabilities = new HashSet<Variability>(variabilities.size()); teste
+		//	metrics
+			Metrics.allVariabilities = new HashSet<Variability>(variabilities.size());
+			for(Variability v : variabilities){
+				v.updateNumberOfPE();
+				Metrics.allVariabilities.add(v);
+			 } 
 			
-//			for(Variability v : variabilities){
-//				v.updateNumberOfPE();
-//				Metrics.allVariabilities.add(v);
-//			 } teste
-			
-			//Metrics.allDependencies = new HashSet<Dependency>(dependencies.size()); teste
-			//Metrics.allDependencies.addAll(dependencies); teste
+			Metrics.allDependencies = new HashSet<Dependency>(dependencies.size());
+			Metrics.allDependencies.addAll(dependencies); 
 			
 			//Raiza
 		//	Reports.preservedDependencies = new HashSet<Dependency>(dependencies.size());
@@ -91,7 +91,7 @@ public class Analyser {
 			//Adriano
 			Metrics.calls = calls;
 			Metrics.write();
-			//Reports.Dependencies();
+	//		Reports.Dependencies();
 			//end
 		}
 		

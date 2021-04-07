@@ -62,7 +62,7 @@ public class ProjectManager {
 	private Commit commitAtual;
 	public Repo repo;
 	private long startTime;
-	//private long startTime2; *
+	private long startTime2; 
 	private int totalArqPro;
 	private int numberOfAnalysisOcurred;
 	private int lineOfCode;
@@ -179,7 +179,7 @@ public class ProjectManager {
 						+ File.separator + "results");
 				fileName.append(Runner.projectManager.getCurrentProject() + ".csv");
 
-				// essa funÃ§Ã£o cria os arquivos platform.h e stubs.h
+				// essa funçao cria os arquivos platform.h e stubs.h
 				Starter analyser = new Starter(dirPlugin + currentProject + File.separator, false);
 
 				if (listaProjetos.equals("a")) {
@@ -209,7 +209,7 @@ public class ProjectManager {
 					lastCommitAnalysed = "";
 					for (Commit c : getCommitList) {
 
-		//				startTime2 = System.nanoTime(); *
+						startTime2 = System.nanoTime(); 
 						deleteAllFromAnalysisFolder();
 						numberOfAnalysisOcurred++;
 						commitAtual = c;
@@ -217,7 +217,7 @@ public class ProjectManager {
 						currentCommit = c.getId();
 						r.checkoutCommit(c.getId());
 
-			//			System.out.println("Análise commit: " + numberOfAnalysisOcurred); *
+						System.out.println("Análise commit: " + numberOfAnalysisOcurred); 
 
 						ListFilesC contArq = new ListFilesC();
 						File fileI = new File(dirProject + currentProject);
@@ -313,24 +313,24 @@ public class ProjectManager {
 						
 						lineOfCode = locTotal.Loc(modFiles) + lineOfCode;
 						//COMENTAR ATE O FINAL FOR PARA ADQUIR O LOC
-					//	Project project = analyser.start(modFiles);
+						Project project = analyser.start(modFiles);
 
-//						for (String f : notModFiles) {
-//
-//							if (errorFiles.contains(f)) {
-//								dataText.delete(0, dataText.length());
-//								dataText.append(
-//										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "1");
-//								AstLogger.writeaST(dataText, directory, fileName);
-//
-//							} else {
-//								dataText.delete(0, dataText.length());
-//								dataText.append(
-//										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "0");
-//								AstLogger.writeaST(dataText, directory, fileName);
-//								fileValidation.add(f);
-//							}
-//						}
+						for (String f : notModFiles) {
+
+							if (errorFiles.contains(f)) {
+								dataText.delete(0, dataText.length());
+								dataText.append(
+										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "1");
+								AstLogger.writeaST(dataText, directory, fileName);
+
+							} else {
+								dataText.delete(0, dataText.length());
+								dataText.append(
+										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "0");
+								AstLogger.writeaST(dataText, directory, fileName);
+								fileValidation.add(f);
+							}
+						}
 
 					
 						modFiles.clear();
@@ -338,25 +338,25 @@ public class ProjectManager {
 						notModFiles.clear();
 						listModFile.clear();
 						//COMENTAR O TRY PARA ADQUIR O LOC
-//						try {
-//							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
-//							System.out.println("//------------------------------//");
-//						Files.delete(new File(dirPlugin + currentProject + File.separator + "platform.h").toPath());
-//						Files.delete(new File(
-//								dirPlugin + currentProject + File.separator + "include" + File.separator + "stubs.h")
-//										.toPath());
-//
-//						} catch (Exception e) {
-//							// in case of the file doesnt exist
-//							System.out.println("O arquivo nãoo existe: " + e.getMessage());
-//						}
+						try {
+							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
+							System.out.println("//------------------------------//");
+						Files.delete(new File(dirPlugin + currentProject + File.separator + "platform.h").toPath());
+						Files.delete(new File(
+								dirPlugin + currentProject + File.separator + "include" + File.separator + "stubs.h")
+										.toPath());
+
+						} catch (Exception e) {
+							// in case of the file doesnt exist
+							System.out.println("O arquivo não existe: " + e.getMessage());
+						}
 
 						
-					//	long elapsedTimes2 = System.nanoTime() - startTime2;*
-					//long seg = TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS);*
+					long elapsedTimes2 = System.nanoTime() - startTime2;
+					long seg = TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS);
 
-					//	System.out.println("Tempo do commit "
-								//+ TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS) + " seconds.");
+						System.out.println("Tempo do commit "
+								+ TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS) + " seconds.");
 
 						System.gc();
 					}
@@ -404,6 +404,8 @@ public class ProjectManager {
 		try {
 			FileUtils.cleanDirectory(
 					new File(Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis"));
+			System.out.println("deleteDir: "+ Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis");
+			
 		} catch (IOException e) {
 			System.out.println("Analysis folder not found to delete!");
 		}

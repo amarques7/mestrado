@@ -114,8 +114,13 @@ public class SampleHandler extends AbstractHandler {
 	}
 	
 	private void startdiff() throws Exception {
-	//	Main.start(RUNTIME_WORKSPACE_PATH);
+		try {
 		Runner.start(RUNTIME_WORKSPACE_PATH);
+		}
+		catch (Exception e) {
+			System.out.println("e: " + e);
+		
+		}
 	} 
 	
 
