@@ -139,7 +139,6 @@ public class ProjectManager {
 		try {
 			CreatLogs create = new CreatLogs();
 			LineOfCode locTotal = new LineOfCode();
-			
 
 			repos = ManipulationUtils.loadRepos(repoList);
 			int posicaoCommit = 0;
@@ -328,8 +327,9 @@ public class ProjectManager {
 								}
 //						      
 								for (String elementos : modFiles) {
+								
 									if (arquivosCompilados.contains(elementos)) {
-										cont += 1;
+				
 										continue;
 									}
 									arquivo.add(elementos);
@@ -339,10 +339,10 @@ public class ProjectManager {
 
 									System.out.println("Quantidade de Arquivos: " + modFiles.size());
 									System.out.println("Processados: " + (arquivosCompilados.size()));
-									System.out.println(
-											"Ainda falta: " + (modFiles.size() - (cont + arquivosCompilados.size()))
-													+ "/" + modFiles.size());
-						
+
+									System.out.println("Ainda falta: " + (modFiles.size() - (cont + arquivosCompilados.size()))
+											+ "/" + modFiles.size());
+
 									Project project = analyser.start(arquivo);
 									arquivo.clear();
 									cont += 1;
