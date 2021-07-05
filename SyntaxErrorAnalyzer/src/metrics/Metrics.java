@@ -12,8 +12,9 @@ import analysis.Dependency;
 import analysis.Link;
 import analysis.Variability;
 import analysis.core.Call;
-import git.AllCommit;
-import main.Main;
+import mestrado.core.ProjectManager;
+import mestrado.core.Runner;
+import mestrado.git.Repo;
 
 public class Metrics {
 	
@@ -29,6 +30,9 @@ public class Metrics {
 	public static Set<Variability> previousVariabilitiesList = new HashSet<Variability>(500);
 	
 	public static List<Call> calls;
+	public static ProjectManager projectManager;
+
+	
 	
 	public static void write() throws InterruptedException{
 		System.out.println("Writing dependencies.txt...");
@@ -38,39 +42,49 @@ public class Metrics {
 	//DEPENDENCIES
 	public static void createDependenciesTxt() throws InterruptedException{
 		
-		if(!Main.analyseThisTime){
+		if(!Runner.projectManager.isAnalyseThisTime()){
 			//adding the current dps to previous dps
 			previousDependenciesList = new HashSet<Dependency>(allDependencies.size());
 			for(Dependency currentDp : allDependencies){
 				previousDependenciesList.add(currentDp);
 			}
-			index = Main.getIndexOfPastAnalysis() + 1;
+			index = Runner.projectManager.getIndexOfPastAnalysis() + 1;
 			exportFunctionCalls.ExportNumberOfCalls.i = index - 1;
-			Main.analyseThisTime = true;
+			Runner.projectManager.setAnalyseThisTime(true); 
 			return;
 		}
-		
-		try {
-			new File(Main.PATH + "\\" + Main.currentProject + "\\results\\dependencies").mkdirs();
+
+		try {			//Main.PATH									 Main.currentProject 
+			new File(Runner.projectManager.getDirPlugin() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\dependencies").mkdirs();
 			FileWriter arq = null;
-			if(AllCommit.currentTag.size() == 0)
-				arq = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\dependencies\\"+index+"_dependencies_" + Main.allCommitsThisAnalysis.get(index-1) + ".txt",true);
-			else
-				arq = new FileWriter(Main.PATH + "\\" + Main.currentProject + "\\results\\dependencies\\"+index+"_dependencies_" + AllCommit.currentTag.get(index-1) + ".txt",true);
+			//if(AllCommit.currentTag.size() == 0)
+										//Main.PATH									 Main.currentProject
+				//arq = new FileWriter(Runner.projectManager.getDirPlugin() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\dependencies\\"+index+"_dependencies_" + Main.allCommitsThisAnalysis.get(index-1) + ".txt",true);
+			arq = new FileWriter(Runner.projectManager.getDirPlugin() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\dependencies\\"+index+"_dependencies_" + Runner.projectManager.getCurrentCommit() + ".txt",true);
+//			else						//Main.PATH									 Main.currentProject
+//				arq = new FileWriter(Runner.projectManager.getDirPlugin() + "\\" + Runner.projectManager.getCurrentProject() + "\\results\\dependencies\\"+index+"_dependencies_" + AllCommit.currentTag.get(index-1) + ".txt",true);
 			
 			PrintWriter writer = new PrintWriter(arq);
+		
 			
-			writer.println(index + "/" + (AllCommit.commitsIdToAnalyse.size() + Main.numberOfAnalysisOcurred - 1));
+//		int x = Runner.projectManager.repo.getChronologicalorderCommits().size();
+		
+//			System.out.println(index + "/" + (x + Runner.projectManager.getNumberOfAnalysisOcurred() - 1));
+			
+	//		writer.println(index + "/" + (Runner.projectManager.repo.getChronologicalorderCommits().size() + Runner.projectManager.getNumberOfAnalysisOcurred() - 1)); resolver isso..
+
 			writer.println("	Variabilities: " + allVariabilities.size());
-			
+		//	System.out.println("	Variabilities: " + allVariabilities.size());
 			int totalVars = 0, totalFunc = 0, totalPE = 0;
 			for(Variability v : allVariabilities){
 				writer.println("		"+v.getName() + " vars: " + v.getNumberOfVariables() + " funcs: " + v.getNumberOfFunctions() + " local vars: " + v.getNumberOfLocalVariables());
 				totalVars+= v.getNumberOfVariables() + v.getNumberOfLocalVariables();
 				totalFunc+= v.getNumberOfFunctions();
+	//			System.out.println("		"+v.getName() + " vars: " + v.getNumberOfVariables() + " funcs: " + v.getNumberOfFunctions() + " local vars: " + v.getNumberOfLocalVariables());
 			}
 			totalPE = totalVars + totalFunc;
 			writer.println("		"+"vars: " + totalVars + " funcs: " + totalFunc + " " + "pe: " + totalPE);
+	//		System.out.println("		"+"vars: " + totalVars + " funcs: " + totalFunc + " " + "pe: " + totalPE);
 			
 			writer.println();
 			HashSet<Dependency> newDependencies = null, deadDependencies = null;
@@ -247,11 +261,11 @@ public class Metrics {
 		}
 	}
 	
-	public static void showDependencies(List<Dependency> dps, PrintWriter gravarArq){
-		for(Dependency dp : dps){
-			gravarArq.println(" 		"+dp.getVariabilityA().getName() + " " +dp.getVariabilityB().getName());
-		}
-	}
+//	public static void showDependencies(List<Dependency> dps, PrintWriter gravarArq){
+//		for(Dependency dp : dps){
+//			gravarArq.println(" 		"+dp.getVariabilityA().getName() + " " +dp.getVariabilityB().getName());
+//		}
+//	}
 	
 	public static HashSet<Dependency> getAllNewDependencies(){
 		boolean sameDependencie = false;

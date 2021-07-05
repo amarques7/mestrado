@@ -80,27 +80,27 @@ import tree.WhileStatement;
 import tree.visitor.Visitor;
 import de.fosd.typechef.featureexpr.FeatureExpr;
 
-public class PresenceConditionVisitor implements Visitor{
+public class PresenceConditionVisitor implements Visitor {
 
 	@Override
 	public void run(Choice node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
 	}
@@ -109,1801 +109,1805 @@ public class PresenceConditionVisitor implements Visitor{
 	public void run(AtomicNamedDeclarator node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ElifStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(CompoundStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DeclIdentifierList node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
+
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
+
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(TranslationUnit node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ExprList node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DeclParameterDeclList node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ParameterDeclarationD node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(StructDeclaration node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(StructDeclarator node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(AtomicAbstractDeclarator node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Pointer node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ParameterDeclarationAD node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(FunctionDef node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Opt node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
+			
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Initializer node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(InitDeclaratorI node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(TypeName node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(One node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Some node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(SimplePostfixSuffix node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(PostfixExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(AssignExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(IfStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(WhileStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(SizeOfExprT node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(SizeOfExprU node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(NestedNamedDeclarator node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(FunctionCall node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
+
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ExprStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		
-		for (int i = 0; i < node.getChildren().size(); i++){
+
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(TypeDefTypeSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DeclArrayAccess node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ForStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(NAryExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(NArySubExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DoStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(CaseStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(SwitchStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DefaultStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DeclarationStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Declaration node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Constant node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Id node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(VoidSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(IntSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DoubleSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(UnsignedSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(VolatileSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ConstSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ExternSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(TypedefSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(AutoSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(BreakStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(CharSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(VarArgs node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(PointerPostfixSuffix node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(PointerDerefExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(UnaryExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ContinueStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(RegisterSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(StaticSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(FloatSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ReturnStatement node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ShortSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(LongSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(StructOrUnionSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(PointerCreationExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(UnaryOpExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ArrayAccess node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(LcurlyInitializer node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(StringLit node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(ConditionalExpr node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(DefineDirective node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(EnumSpecifier node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
 
 	@Override
 	public void run(Enumerator node) {
 		FeatureExpr fexpr = node.getPresenceCondition();
 		Node parent = node.getParent();
-		while (parent != null){
-			if (parent instanceof Opt){
+		while (parent != null) {
+			if (parent instanceof Opt) {
 				Opt opt = (Opt) parent;
-				
-				if (fexpr == null){
+
+				if (fexpr == null) {
 					fexpr = opt.getConditional();
 				} else {
 					fexpr = fexpr.and(opt.getConditional());
 				}
-				
+
 			}
 			parent = parent.getParent();
 		}
 		node.setPresenceCondition(fexpr);
-		for (int i = 0; i < node.getChildren().size(); i++){
+		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
 		}
-		
+
 	}
-	
+
 }

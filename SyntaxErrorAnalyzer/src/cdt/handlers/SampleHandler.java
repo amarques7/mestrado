@@ -9,52 +9,53 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.cdt.core.CCorePlugin;
-import org.eclipse.cdt.core.dom.IPDOMManager;
+//import org.eclipse.cdt.core.dom.IPDOMManager;
 import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTPreprocessorMacroDefinition;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.index.IIndex;
-import org.eclipse.cdt.core.index.IIndexManager;
+//import org.eclipse.cdt.core.index.IIndexManager;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.model.ITranslationUnit;
-import org.eclipse.cdt.core.settings.model.CSourceEntry;
-import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
-import org.eclipse.cdt.core.settings.model.ICProjectDescription;
-import org.eclipse.cdt.core.settings.model.ICSettingEntry;
-import org.eclipse.cdt.core.settings.model.ICSourceEntry;
+//import org.eclipse.cdt.core.settings.model.CSourceEntry;
+//import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+//import org.eclipse.cdt.core.settings.model.ICProjectDescription;
+//import org.eclipse.cdt.core.settings.model.ICSettingEntry;
+//import org.eclipse.cdt.core.settings.model.ICSourceEntry;
 import org.eclipse.cdt.internal.core.dom.parser.c.CASTTypedefNameSpecifier;
-import org.eclipse.cdt.managedbuilder.core.BuildException;
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
-import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
-import org.eclipse.cdt.managedbuilder.core.IManagedProject;
-import org.eclipse.cdt.managedbuilder.core.IToolChain;
-import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+//import org.eclipse.cdt.managedbuilder.core.BuildException;
+//import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+//import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
+//import org.eclipse.cdt.managedbuilder.core.IManagedProject;
+//import org.eclipse.cdt.managedbuilder.core.IToolChain;
+//import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
+//import org.eclipse.core.resources.IFolder;
+//import org.eclipse.core.resources.IProject;
+//import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
+//import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
+//import org.eclipse.core.runtime.IProgressMonitor;
+//import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import analysis.core.AstLogger;
-import main.Main;
 import mestrado.core.Runner;
+import mestrado.utils.MoveFile;
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
  * @see org.eclipse.core.commands.IHandler
@@ -103,7 +104,6 @@ public class SampleHandler extends AbstractHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//test();
 		
 		MessageDialog.openInformation(
 				window.getShell(),
@@ -113,112 +113,26 @@ public class SampleHandler extends AbstractHandler {
 	}
 	
 	private void startdiff() throws Exception {
-	//	Main.start(RUNTIME_WORKSPACE_PATH);
+		try {
 		Runner.start(RUNTIME_WORKSPACE_PATH);
+		}
+		catch (Exception e) {
+			System.out.println("e: " + e.getMessage());
+		
+		}
 	} 
 	
-//	public static void createCProject(String name){ posso apagar
-//		
-//	
-//		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
-//        
-//		try {
-//			projectHandle.clearHistory(new NullProgressMonitor());
-//			IProgressMonitor monitor = new NullProgressMonitor();
-//			//projectHandle.open(monitor);
-//			IProjectDescription description = projectHandle.getWorkspace().newProjectDescription(name);
-//			description.setLocationURI(projectHandle.getLocationURI() );
-//			
-//			IProject project = CCorePlugin.getDefault().createCDTProject(description, projectHandle, monitor);
-//			IManagedBuildInfo buildInfo = ManagedBuildManager.createBuildInfo(project);
-//			try {
-//				IManagedProject projectManaged = ManagedBuildManager
-//				    .createManagedProject(project, 
-//				                          ManagedBuildManager.getExtensionProjectType("cdt.managedbuild.target.gnu.mingw.exe"));
-//				 
-//			    List<IConfiguration> configs = getValidConfigsForPlatform();
-//			    IConfiguration config = 
-//				        projectManaged.createConfiguration(
-//				                configs.get(0), 
-//				                ManagedBuildManager.calculateChildId(configs.get(0).getId(), null));
-//			    
-//			    ICProjectDescription cDescription = 
-//				        CoreModel.getDefault().getProjectDescriptionManager().createProjectDescription(project, false);
-//			    
-//			    ICConfigurationDescription cConfigDescription = 
-//				        cDescription.createConfiguration(ManagedBuildManager.CFG_DATA_PROVIDER_ID, config.getConfigurationData());
-//			    
-//			    cDescription.setActiveConfiguration(cConfigDescription);
-//			    cConfigDescription.setSourceEntries(null);
-//			    IFolder srcFolder = project.getFolder("analysis");
-//			    
-//			    ICSourceEntry srcFolderEntry = new CSourceEntry(srcFolder, null, ICSettingEntry.RESOLVED);
-//			    cConfigDescription.setSourceEntries(new ICSourceEntry[] { srcFolderEntry });
-//			
-//			    buildInfo.setManagedProject(projectManaged);
-//			
-//			    cDescription.setCdtProjectCreated();
-//			
-//			    IIndexManager indexMgr = CCorePlugin.getIndexManager();
-//			    ICProject cProject = CoreModel.getDefault().getCModel().getCProject(project.getName() );
-//			    indexMgr.setIndexerId(cProject, IPDOMManager.ID_FAST_INDEXER);
-//			
-//			    CoreModel.getDefault().setProjectDescription(project, cDescription);
-//			
-//			    ManagedBuildManager.setDefaultConfiguration(project, config );
-//			    ManagedBuildManager.setSelectedConfiguration(project, config );
-//			
-//			    ManagedBuildManager.setNewProjectVersion(project);
-//			
-//			    ManagedBuildManager.saveBuildInfo(project, true);
-//			} catch (BuildException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		   
-//		    
-//		} catch (CoreException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		} 
-//	}
-//	
-//	public static List<IConfiguration> getValidConfigsForPlatform() {
-//	    List<IConfiguration> configurations = 
-//	        new ArrayList<IConfiguration>();
-//	
-//	    for (IConfiguration cfg : ManagedBuildManager.getExtensionConfigurations() ) {
-//	        IToolChain currentToolChain =
-//	            cfg.getToolChain();
-//	
-//	        if ( (currentToolChain != null )                           && 
-//	             (ManagedBuildManager.isPlatformOk(currentToolChain) ) &&
-//	             (currentToolChain.isSupported() )                     ) {
-//	        	configurations.add(cfg);
-//	        }
-//	    }
-//	    return configurations;
-//	}
-	
-	public static void analyzeFilesInSrc(ArrayList<String> files) throws Exception{
-		ICProject project = CoreModel.getDefault().getCModel().getCProject(SampleHandler.PROJECT);
+
+	public static void analyzeFilesInSrc(HashSet<String> files) throws Exception{
+	//public static void analyzeFilesInSrc(ArrayList<String> files) throws Exception{
+		ICProject project = CoreModel.getDefault().getCModel().getCProject(SampleHandler.PROJECT);//trocar por Runner.projectManager.getCurrentProject()
 		project.getProject().refreshLocal(IResource.DEPTH_ZERO, null);
 		String thePath = project.getPath().toString();
-		System.out.println(thePath);
+
 		
 		IIndex index = CCorePlugin.getIndexManager().getIndex(project);
 		
-//		for(IIndexFile a :  index.getAllFiles()){
-//			System.out.println("* " + a.getLocation());
-//			for(IIndexInclude i : index.findIncludedBy(a, IIndex.DEPTH_INFINITE)){
-//				System.out.println(i.getIncludesLocation());
-//				System.out.println(i.isResolved());
-//			}
-//			for(IIndexMacro x : a.getMacros()){
-//				System.out.println(x.getName());
-//			}
-//		}
-		
+
 		// It gets all C files from the ANALYSIS path to analyze.
 		List<File> filesInSrcArray = new ArrayList<File>(files.size());
 		for(String file : files){
@@ -233,8 +147,7 @@ public class SampleHandler extends AbstractHandler {
 		// For each C file in the ANALYSIS folder..
 		for (String file : filesInSrc){
 			String completeFilePath = file.replace(SampleHandler.RUNTIME_WORKSPACE_PATH.replace("\\", "/"), "");
-			System.out.println(completeFilePath);
-			//editDirectives(file);
+		
 			
 			IPath iFilePath = new Path(completeFilePath);
 			IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFile(iFilePath);
@@ -252,7 +165,7 @@ public class SampleHandler extends AbstractHandler {
 			
 			toTheNextFile = false;
 		}
-		
+		//Preenche as plataform.h e stub.h
 		writeTypesToPlatformHeader();
 		
 		macros = new ArrayList<String>(macros.size());
@@ -283,7 +196,7 @@ public class SampleHandler extends AbstractHandler {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("ANALYSIS ERROR. TRYING AGAIN");
+			System.out.println("ANALYSIS ERROR. TRYING AGAIN : " + e.getMessage());
 			index.releaseReadLock();
 			return ERROR;
 		}finally {
@@ -298,7 +211,7 @@ public class SampleHandler extends AbstractHandler {
 		FileWriter fstreamout = new FileWriter(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c");
 		BufferedWriter out = new BufferedWriter(fstreamout);
 		  
-		//out.write("#include \"stubs.h\"\n");
+	//	out.write("#include \"stubs.h\"\n");
 		
 		FileInputStream fstream = new FileInputStream(file);
 		// Get the object of DataInputStream
@@ -329,7 +242,7 @@ public class SampleHandler extends AbstractHandler {
 	  	
 	  	File temp2 = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c");
 	  	
-	  	main.Main.copyFileUsingChannel(temp2, original);
+	  	MoveFile.copyFileUsingChannel(temp2, original);
 	  	
 //	  	Files.copy(temp2.toPath(),original.toPath(),StandardCopyOption.REPLACE_EXISTING);
 		  
@@ -368,14 +281,7 @@ public class SampleHandler extends AbstractHandler {
 	  	
 	  	in.close();
 	  	out.close();
-	  	
-//	  	File original = new File(file);
-//	  	
-//	  	File temp2 = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c");
-//	  	
-//	  	Files.copy(temp2.toPath(),original.toPath(),StandardCopyOption.REPLACE_EXISTING);
-	  //	new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "temp2.c").renameTo((new File(file)));
-
+	  
 	}
 
 	// It finds probable macros in the node.
@@ -429,8 +335,9 @@ public class SampleHandler extends AbstractHandler {
 			platform.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
+			System.out.println("erro ao criar platmor.h em samplehander: " + e1.getMessage());
 		}
-		
+		//comentar essa linha a pasta include ja existe
 		new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "include").mkdir();
 		File header = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "include" + File.separator + "stubs.h");
 		File headerPlatform = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + File.separator + "platform.h");
@@ -470,6 +377,7 @@ public class SampleHandler extends AbstractHandler {
 			writerPlatform.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("erro ao escrever em platmor.h em samplehander: " + e.getMessage());
 		}
 		
 	}

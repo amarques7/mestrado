@@ -6,19 +6,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import cdt.handlers.SampleHandler;
+import mestrado.core.Runner;
 
 public class AstLogger {
 	
 	public static void setWriter(){
-		File pathToError = new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + "/results/errorPath");
-	//	File pathtoError2 =  new File(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT+ "/results/csv/Variabilities/ProgramWeight");
+		File pathToError = new File(Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + "/results/errorPath");
 		pathToError.mkdirs();
-		//pathtoError2.mkdirs();
+
 	}
 	
 	public static void write(String toWrite){
 		try {
-			PrintWriter writer = new PrintWriter(new FileWriter(SampleHandler.RUNTIME_WORKSPACE_PATH + SampleHandler.PROJECT + "/results/errorPath/errorTxt.txt", true));
+			PrintWriter writer = new PrintWriter(new FileWriter(Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject() + "/results/errorPath/errorTxt.txt", true));
 			writer.println(toWrite);
 			writer.close();
 		} catch (IOException e) {
@@ -27,5 +27,16 @@ public class AstLogger {
 		}
 		
 	}
-	
+		
+	public static void writeaST(StringBuilder toWrite, StringBuilder path, StringBuilder nameFile){
+		try {
+			PrintWriter writer = new PrintWriter(new FileWriter(path + File.separator + nameFile, true));
+			writer.println(toWrite);
+			writer.close();
+			System.gc();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

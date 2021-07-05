@@ -1,0 +1,6 @@
+https://github.com/tgl-dogg/BCC-2s13-PI2-Codigo-de-Honra.git
+https://github.com/robol/MPSolve.git
+https://github.com/hexchat/hexchat.git
+https://github.com/libexpat/libexpat.git
+https://github.com/libusb/libusb.git
+https://github.com/OpenSC/OpenSC.git

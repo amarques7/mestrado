@@ -13,7 +13,9 @@ public final class Lex {
 	public static TokenReader<CToken, CTypeContext> lex(FrontendOptions opt) {
 		List<LexerToken> tokens;
 		try {
-			tokens = new Main().run(opt, opt.parse);
+			Main obj = new Main();
+			
+			tokens = obj.run(opt, opt.parse);
 			TokenReader<CToken, CTypeContext> in = CLexer.prepareTokens(tokens);
 
 			return in;

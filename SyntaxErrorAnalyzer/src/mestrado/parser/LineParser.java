@@ -1,23 +1,7 @@
 package mestrado.parser;
 
 import java.util.Arrays;
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.IOException;
-//import java.io.PrintWriter;
-//import java.io.UnsupportedEncodingException;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.Scanner;
 import java.util.Stack;
-
-//import org.eclipse.jgit.api.Git;
-//import org.eclipse.jgit.internal.storage.file.FileRepository;
-//import org.eclipse.jgit.lib.Repository;
-
-//import br.ufms.facom.cafeo.git.Commit;
-//import br.ufms.facom.cafeo.git.Repo;
-//import br.ufms.facom.cafeo.git.RepoFile;
 
 
 public class LineParser {

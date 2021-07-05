@@ -133,6 +133,7 @@ public class FindFunctionCallArgumentsVisitor implements Visitor {
 	public void run(TranslationUnit node) {
 		for (int i = 0; i < node.getChildren().size(); i++) {
 			node.getChildren().get(i).accept(this);
+
 		}
 
 	}

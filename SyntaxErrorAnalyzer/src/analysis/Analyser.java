@@ -14,7 +14,8 @@ import analysis.core.Function;
 import analysis.core.ProgramElement;
 import analysis.core.Variable;
 import de.fosd.typechef.featureexpr.FeatureExpr;
-import finegrained.Reports;
+//import finegrained.Reports;
+import mestrado.core.Runner;
 import metrics.Metrics;
 import tree.FunctionCall;
 import tree.FunctionDef;
@@ -37,9 +38,9 @@ public class Analyser {
 	
 	public List<Dependency> setDps(Map<FunctionDef, Function> functions, List<Variable> globals, List<Variable> useOfGlobals, List<Call> calls) throws InterruptedException{
 		System.out.println("-----");
-		if(main.Main.noChangesInCFiles) {
-			//Metrics.write();
-			Reports.Dependencies();
+		if(Runner.projectManager.isNoChangesInCFiles()) {//confirmar aqui
+			Metrics.write();
+		//	Reports.Dependencies(); //comentei 25/11
 		}
 		else {
 			variabilities.add(new Variability("True")); //set first variability as True
@@ -73,23 +74,24 @@ public class Analyser {
 			
 			System.out.println("Done!");
 			
-			//metrics
+		//	metrics
 			Metrics.allVariabilities = new HashSet<Variability>(variabilities.size());
-			
 			for(Variability v : variabilities){
 				v.updateNumberOfPE();
 				Metrics.allVariabilities.add(v);
-			}
+			 } 
 			
 			Metrics.allDependencies = new HashSet<Dependency>(dependencies.size());
-			Metrics.allDependencies.addAll(dependencies);
+			Metrics.allDependencies.addAll(dependencies); 
 			
 			//Raiza
-			//Reports.preservedDependencies = new HashSet<Dependency>(dependencies.size());
-			//Reports.changedDependencies = new HashSet<Dependency>(dependencies.size());
+		//	Reports.preservedDependencies = new HashSet<Dependency>(dependencies.size());
+		//	Reports.changedDependencies = new HashSet<Dependency>(dependencies.size());
+			
+			//Adriano
 			Metrics.calls = calls;
 			Metrics.write();
-			//Reports.Dependencies();
+	//		Reports.Dependencies();
 			//end
 		}
 		

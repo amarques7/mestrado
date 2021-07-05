@@ -70,7 +70,7 @@ public class MoveFile {
 		System.out.println("count: "+ count);
 	}
 	
-	public static void copyFileUsingChannel(File source, File dest) throws IOException {
+	public static  void copyFileUsingChannel(File source, File dest) throws IOException {
 		FileChannel sourceChannel = null;
 		FileChannel destChannel = null;
 		try {
