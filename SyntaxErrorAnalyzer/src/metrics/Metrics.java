@@ -31,7 +31,7 @@ public class Metrics {
 	
 	public static List<Call> calls;
 	public static ProjectManager projectManager;
-	//public Repo repo;
+
 	
 	
 	public static void write() throws InterruptedException{
@@ -74,15 +74,17 @@ public class Metrics {
 	//		writer.println(index + "/" + (Runner.projectManager.repo.getChronologicalorderCommits().size() + Runner.projectManager.getNumberOfAnalysisOcurred() - 1)); resolver isso..
 
 			writer.println("	Variabilities: " + allVariabilities.size());
-			
+		//	System.out.println("	Variabilities: " + allVariabilities.size());
 			int totalVars = 0, totalFunc = 0, totalPE = 0;
 			for(Variability v : allVariabilities){
 				writer.println("		"+v.getName() + " vars: " + v.getNumberOfVariables() + " funcs: " + v.getNumberOfFunctions() + " local vars: " + v.getNumberOfLocalVariables());
 				totalVars+= v.getNumberOfVariables() + v.getNumberOfLocalVariables();
 				totalFunc+= v.getNumberOfFunctions();
+	//			System.out.println("		"+v.getName() + " vars: " + v.getNumberOfVariables() + " funcs: " + v.getNumberOfFunctions() + " local vars: " + v.getNumberOfLocalVariables());
 			}
 			totalPE = totalVars + totalFunc;
 			writer.println("		"+"vars: " + totalVars + " funcs: " + totalFunc + " " + "pe: " + totalPE);
+	//		System.out.println("		"+"vars: " + totalVars + " funcs: " + totalFunc + " " + "pe: " + totalPE);
 			
 			writer.println();
 			HashSet<Dependency> newDependencies = null, deadDependencies = null;

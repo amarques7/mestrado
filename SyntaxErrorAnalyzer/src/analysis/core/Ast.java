@@ -92,6 +92,7 @@ public class Ast extends Thread{
 		try {
 			AST ast = parser.parserMain(in, myParserOptions);
 			myAst = new TranslationUnit();
+			
 			System.out.print("Trying to generate AST for file " + getSource().getName() + "... ");
 			
 			new ASTGenerator().generate(ast, myAst);

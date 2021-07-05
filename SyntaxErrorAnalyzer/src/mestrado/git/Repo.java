@@ -26,17 +26,22 @@ public class Repo {
 	private String URI;
 	private File localPath;
 	private String name;
-
+	private String caminhoRepo = "refs/heads/next";
 	private Repository repositorio;
 	private static Git git;
+	
 
 	private HashMap<String, Commit> commitList;
 	ArrayList<Commit> chronologicalorderCommits;// = new ArrayList<Commit>();
 
 	private int numberofCommits;
+	private int commitInicial;
+	private int commitFinal;
 
-	public Repo(String repoURI, String dir_projeto) throws NoFilepatternException, GitAPIException {
+	public Repo(String repoURI, String dir_projeto, int commitInicial, int commitFinal) throws NoFilepatternException, GitAPIException {
 
+		this.commitInicial = commitInicial;
+		this.commitFinal = commitFinal;
 		this.URI = repoURI;
 		this.name = repoURI.substring(repoURI.lastIndexOf("/") + 1).replace(".git", "");
 //		 this.localPath = new File(System.getProperty("C:Projeto/") +
@@ -65,20 +70,21 @@ public class Repo {
 				e.printStackTrace();
 			}
 
-		// retrieveCommits();
 
-		createCommitsHistory();
+
+	createCommitsHistory();
+
 
 	}
 
 	private void openRepo() throws IOException, NoFilepatternException, GitAPIException {
 
-		System.out.print("Opening " + getName() + "...");
+		System.out.println("Opening " + getName() + "...");
 		Git g = Git.open(getLocalPath());
 		setGit(g);
 		g.close();
 		setRepo(getGit().getRepository());
-		
+		System.gc();
 		System.out.println(" OK2!");
 
 	}
@@ -90,7 +96,7 @@ public class Repo {
 		setGit(g);
 		g.close();
 		setRepo(getGit().getRepository());
-
+		System.gc();
 		System.out.println(" OK!");
 
 	}
@@ -114,12 +120,11 @@ public class Repo {
 		RevCommit commit = null;
 
 		try {
-			head = getRepo().exactRef("refs/heads/master");
-
-			walk = new RevWalk(getRepo());
+			head = getRepo().exactRef(caminhoRepo);
+		    walk = new RevWalk(getRepo());
 
 			commit = walk.parseCommit(head.getObjectId());
-
+		//	System.out.println(commit);
 			walk.markStart(commit);
 		} catch (IOException e1) {
 
@@ -127,11 +132,20 @@ public class Repo {
 		}
 
 		walk.sort(RevSort.REVERSE);
-
+		
+		int cont = 0;
+		int quantidadeCommits = commitFinal;
 		for (RevCommit rev : walk) {
+			cont+=1;
+			
+			if( !(cont >= commitInicial)) {		
+				continue;
+			}
+			System.out.println("commit: "+ cont +"-" +"rev: "+ rev);
 			Commit tempCommit = new Commit(rev.name(), rev.getCommitterIdent().getName(),
 					rev.getCommitterIdent().getWhen());
-
+			//System.gc();
+			
 			RevTree tree = rev.getTree();
 
 			TreeWalk treeWalk = new TreeWalk(getRepo());
@@ -162,6 +176,7 @@ public class Repo {
 			}
 
 			addCommit(rev.name(), tempCommit);
+			quantidadeCommits--;
 		}
 		walk = null;
 
@@ -176,8 +191,9 @@ public class Repo {
 		// ArrayList<Commit> chronologicalorderCommits = new ArrayList<Commit>();
 		chronologicalorderCommits = new ArrayList<Commit>();
 		try {
-			head = getRepo().exactRef("refs/heads/master");
-
+			
+			head = getRepo().exactRef(caminhoRepo);
+	
 			walk = new RevWalk(getRepo());
 
 			commit = walk.parseCommit(head.getObjectId());
@@ -188,7 +204,7 @@ public class Repo {
 			e1.printStackTrace();
 		}
 
-		walk.sort(RevSort.REVERSE);
+		//walk.sort(RevSort.REVERSE);
 
 		for (RevCommit rev : walk) {
 			chronologicalorderCommits.add(getCommit(rev.getName()));

@@ -104,7 +104,6 @@ public class SampleHandler extends AbstractHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//test();
 		
 		MessageDialog.openInformation(
 				window.getShell(),
@@ -118,7 +117,7 @@ public class SampleHandler extends AbstractHandler {
 		Runner.start(RUNTIME_WORKSPACE_PATH);
 		}
 		catch (Exception e) {
-			System.out.println("e: " + e);
+			System.out.println("e: " + e.getMessage());
 		
 		}
 	} 
@@ -129,7 +128,7 @@ public class SampleHandler extends AbstractHandler {
 		ICProject project = CoreModel.getDefault().getCModel().getCProject(SampleHandler.PROJECT);//trocar por Runner.projectManager.getCurrentProject()
 		project.getProject().refreshLocal(IResource.DEPTH_ZERO, null);
 		String thePath = project.getPath().toString();
-		System.out.println(thePath);
+
 		
 		IIndex index = CCorePlugin.getIndexManager().getIndex(project);
 		
@@ -148,8 +147,7 @@ public class SampleHandler extends AbstractHandler {
 		// For each C file in the ANALYSIS folder..
 		for (String file : filesInSrc){
 			String completeFilePath = file.replace(SampleHandler.RUNTIME_WORKSPACE_PATH.replace("\\", "/"), "");
-			System.out.println(completeFilePath);
-			//editDirectives(file);
+		
 			
 			IPath iFilePath = new Path(completeFilePath);
 			IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFile(iFilePath);

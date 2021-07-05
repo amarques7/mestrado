@@ -39,7 +39,7 @@ public class Analyser {
 	public List<Dependency> setDps(Map<FunctionDef, Function> functions, List<Variable> globals, List<Variable> useOfGlobals, List<Call> calls) throws InterruptedException{
 		System.out.println("-----");
 		if(Runner.projectManager.isNoChangesInCFiles()) {//confirmar aqui
-			//Metrics.write();
+			Metrics.write();
 		//	Reports.Dependencies(); //comentei 25/11
 		}
 		else {

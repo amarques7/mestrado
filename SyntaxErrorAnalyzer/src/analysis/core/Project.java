@@ -51,7 +51,6 @@ public class Project {
 	public long startTime2;
 	public long startTime3;
 	public long startTime4;
-	
 
 	private Map<FunctionDef, Function> functions = new HashMap<FunctionDef, Function>();
 	private List<Variable> globals = new ArrayList<Variable>();
@@ -104,9 +103,11 @@ public class Project {
 	public List<Ast> getAsts() {
 		return asts;
 	}
+
 	public void setAsts(List<Ast> asts) {
 		this.asts = asts;
 	}
+
 	public Map<FunctionDef, Function> getFunctions() {
 		return functions;
 	}
@@ -124,28 +125,30 @@ public class Project {
 	}
 
 	public void createAst(HashSet<String> filesToAnalyze) {
-		int[] VECTOR = new int [filesToAnalyze.size()];
-		Ast[] vetorAST = new Ast [filesToAnalyze.size()];
+		int[] VECTOR = new int[filesToAnalyze.size()];
+		Ast[] vetorAST = new Ast[filesToAnalyze.size()];
 		int i = 0;
-		
+
 		for (String file : filesToAnalyze) {
 			Ast ast = new Ast(new File(file), new File(getStubsPath()), VECTOR, i);
-			//GenerationStatus generationStatus = null;
+			// GenerationStatus generationStatus = null;
 
-		//		generationStatus = ast.generate();
+			// generationStatus = ast.generate();
 			vetorAST[i] = ast;
+			//gera ast
 			ast.start();
 			i++;
 		}
 		try {
-		for(i = 0 ; i < filesToAnalyze.size(); i++) {
-			vetorAST[i].join();
-		}}catch (Exception e) {
+			for (i = 0; i < filesToAnalyze.size(); i++) {
+				vetorAST[i].join();
+			}
+		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		for(i = 0 ; i < filesToAnalyze.size(); i++) {
-			
-			//if (generationStatus == GenerationStatus.OK) {
+		for (i = 0; i < filesToAnalyze.size(); i++) {
+
+			// if (generationStatus == GenerationStatus.OK) {
 			if (VECTOR[i] == 0) {
 				setTotalSuccessfulFiles(getTotalSuccessfulFiles() + 1);
 
@@ -158,7 +161,9 @@ public class Project {
 				boolean replaced = false;
 				int indexToRemove = 0;
 				for (Ast astFromAstsDuplicated : astsDuplicated) {
-					//if (astFromAstsDuplicated.getSource().getName().equals(ast.getSource().getName())) {
+					// if
+					// (astFromAstsDuplicated.getSource().getName().equals(ast.getSource().getName()))
+					// {
 					if (astFromAstsDuplicated.getSource().getName().equals(vetorAST[i].getSource().getName())) {
 						asts.set(indexToRemove, vetorAST[i]);
 						replaced = true;
@@ -174,11 +179,11 @@ public class Project {
 	}
 
 	public void cleanAst(HashSet<String> filesToRemove) {
-	//public void cleanAst(ArrayList<String> filesToRemove) {
+		// public void cleanAst(ArrayList<String> filesToRemove) {
 		// removing all the deleted files from ast list
 		int indexToRemove = 0;
 		List<Integer> allIndexToRemove = new ArrayList<Integer>(filesToRemove.size());
-	
+
 		for (String fileToClean : Runner.projectManager.getlistModFile()) {
 			indexToRemove = 0;
 			for (Ast ast : getAsts()) {
@@ -191,19 +196,17 @@ public class Project {
 			}
 
 		}
-		if(getAsts()!= null) {
+		if (getAsts() != null) {
 			List<Ast> newAsts = new ArrayList<Ast>(getAsts().size());
 			for (int j = 0; j < getAsts().size(); j++) {
 				if (!allIndexToRemove.contains(j)) {
 					newAsts.add(getAsts().get(j));
 				}
 			}
-		
-		asts = newAsts;
+
+			asts = newAsts;
 		}
 	}
-
-
 
 	public void findVariables(Ast ast) {
 
@@ -402,16 +405,10 @@ public class Project {
 
 	public void analyze(HashSet<String> filesToAnalyze) throws InterruptedException {
 
-
 //		if (!Runner.projectManager.isNoChangesInCFiles()) {
 //			startTime = System.nanoTime();
 //			this.asts.clear();
-//		//	exportDirectives();
-//			
-//			long elapsedTime = System.nanoTime() - startTime;
-//			System.out.println("Exprot no if 1: " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
-//					+ " seconds.");
-//			
+//			exportDirectives();
 //			System.out.println("ExportDirectives");
 //			return;
 //		}
@@ -425,11 +422,12 @@ public class Project {
 		this.functions = new HashMap<FunctionDef, Function>(this.functions.size());
 
 		cleanAst(filesToAnalyze);
-		
+
 		startTime4 = System.nanoTime();
 		createAst(filesToAnalyze);
 		long elapsedTime4 = System.nanoTime() - startTime4;
-		System.out.println("Teste tempo Crate ASTs : "	+ TimeUnit.SECONDS.convert(elapsedTime4, TimeUnit.NANOSECONDS) + " seconds.");
+		System.out.println("Teste tempo Crate ASTs : " + TimeUnit.SECONDS.convert(elapsedTime4, TimeUnit.NANOSECONDS)
+				+ " seconds.");
 
 		this.allPairs = new ArrayList<Pair>();
 		for (Ast ast : this.asts) {
@@ -442,25 +440,23 @@ public class Project {
 
 		findFunctionCalls();
 		findCallsForFunctionsCalls();
-		findCallsForLocalVariables(getFunctions());//olhar esse cara para ganhar tempo 02/12
+		findCallsForLocalVariables(getFunctions());// olhar esse cara para ganhar tempo 02/12
 
 		// at this point, in the calls list, it is listed all the calls for local
 		// variables, global variables and functions
 
 		System.out.println(asts.size() + " " + Starter.numberOfCFiles);
 
-		//float percentage = (((float) asts.size() / (float) Starter.numberOfCFiles) * 100);
-
-	//	ResultsLogger.write("	ASTs: " + asts.size() + "/" + Starter.numberOfCFiles + " " + percentage + "%");
 
 		System.out.println("Exporting directives");
-		
-		startTime2 = System.nanoTime();
+
+		try {
+	
 			exportDirectives();
 			this.asts.clear();
-		long elapsedTime = System.nanoTime() - startTime2;
-		System.out.println("Project analyase, fora do if 2: " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
-				+ " seconds.");
+		} catch (Exception e) {
+			System.out.println("erro " + e);
+		}
 
 	}
 
@@ -509,10 +505,12 @@ public class Project {
 
 	public void resolvePair(Id node, Function fdef) {
 		for (Pair pair : allPairs) {
-			if (pair.getFunction().getName().equals(node.getName())) {
-				pair.getAllFunctionDefs().add(fdef);
-				return;
-			}
+//			
+//			if (pair.getFunction().getName().equals(node.getName())) {
+//				pair.getAllFunctionDefs().add(fdef);
+//
+//				return;
+//			}
 		}
 
 		allPairs.add(new Pair(fdef, node));
@@ -587,7 +585,7 @@ public class Project {
 							try {
 								parent = parent.getParent();
 							} catch (Exception e) {
-								System.out.println("A");
+						
 							}
 						}
 						runTree(parent.getChildren().get(1));
@@ -623,28 +621,28 @@ public class Project {
 	}
 
 	public void exportDirectives() throws InterruptedException {
-		
 
-		setDependencies(new Analyser().setDps(getFunctions(), globals, useOfGlobalVariables, calls));
-		//esse é o meu
-		
-			startTime3 = System.nanoTime();
-			
-			try {
-				exportFunctionCalls.ExportNumberOfCalls.receive(allPairs);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-	
-			
+		try {
+
+			setDependencies(new Analyser().setDps(getFunctions(), globals, useOfGlobalVariables, calls));
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		// esse é o meu
+
+		startTime3 = System.nanoTime();
+
+		try {
+			exportFunctionCalls.ExportNumberOfCalls.receive(allPairs);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		long elapsedTime = System.nanoTime() - startTime3;
-		System.out.println("chamada para Criar exportCall: 3: " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
-				+ " seconds.");
-						
-	
+		System.out.println("chamada para Criar exportCall: 3: "
+				+ TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS) + " seconds.");
+
 	}
 
 	public void findFunctions(Ast ast) {
@@ -786,6 +784,10 @@ public class Project {
 
 		public List<Function> getAllFunctionDefs() {
 			return this.allFunctionDefs;
+		}
+
+		public Function getFunctionByIndex(int index) {
+			return this.allFunctionDefs.get(index);
 		}
 
 	}

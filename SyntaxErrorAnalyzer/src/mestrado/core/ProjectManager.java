@@ -6,15 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoFilepatternException;
 
 import analysis.core.AstLogger;
 import analysis.core.Project;
@@ -29,7 +29,6 @@ import mestrado.utils.ManipulationUtils;
 import mestrado.utils.MoveFile;
 import util.CreatLogs;
 import util.LineOfCode;
-import util.TransformarSegundaParaHoras;
 
 public class ProjectManager {
 
@@ -43,41 +42,47 @@ public class ProjectManager {
 	private String currentFile;
 	private String data = "";
 	private String logControl;
-
 	private String lastCommitAnalysed = "";
+	String repeated = new String(new char[50]).replace("\0", "-*");
 
 	private StringBuilder dataText = new StringBuilder();
 	private StringBuilder directory = new StringBuilder();
 	private StringBuilder fileName = new StringBuilder();
+	private StringBuilder elem = new StringBuilder();
 
 	public HashSet<String> fileValidation;
 	public static List<String> arquivo2;
 	private ArrayList<Repo> listofRepos;
 	private List<String> allCommitsThisAnalysis;
+	public HashSet<String> listModFile;
+	public HashSet<String> errorFiles;
+	private HashSet<String> notModFilesaux;
+	private HashSet<String> notModFiles;
+	private HashSet<String> modFiles;
+
 	private BufferedReader reader;
+
+	private long startTime;
+	private long startTime2;
+	private int totalArqPro;
+	private int numberOfAnalysisOcurred;
+	private int lineOfCode;
+	public static int validador;
 
 	private boolean noChangesInCFiles;
 	private boolean analyseThisTime;
 
 	private Commit commitAtual;
 	public Repo repo;
-	private long startTime;
-	private long startTime2; 
-	private int totalArqPro;
-	private int numberOfAnalysisOcurred;
-	private int lineOfCode;
-	public HashSet<String> listModFile;
-	public HashSet<String> errorFiles;
-	private HashSet<String> notModFilesaux;
-	private HashSet<String> notModFiles;
-	private HashSet<String> modFiles;
+
+	// private HashSet<String> arquivo;
+	public ArrayList<String> repos;
 	private List<CommitManager> listaCommitManager;
 	private int numeroProjetosGit;
 
-	private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-
 	public ProjectManager(String pathFrom, String runTimeWorkspacePath) {
 		super();
+
 		listofRepos = new ArrayList<Repo>();
 		currentProject = null;
 		listaProjetos = "a";
@@ -101,7 +106,7 @@ public class ProjectManager {
 		fileValidation = new HashSet<String>();
 		arquivo2 = new ArrayList<String>();
 		listaCommitManager = new ArrayList<CommitManager>();
-		
+
 		try {
 			generateReader(pathFrom);
 
@@ -119,260 +124,318 @@ public class ProjectManager {
 		dirProject = reader.readLine();
 		dirPlugin = reader.readLine();
 		repoList = reader.readLine();
-		
+
 		numeroProjetosGit = Integer.parseInt(reader.readLine());
-		for( int i = 0; i < numeroProjetosGit; i++) {
-			 String elementos = reader.readLine();
-			 String[] listaElementos = elementos.split("/");
-			 Integer inicio = Integer.parseInt(listaElementos[0]);
-			 Integer fim = Integer.parseInt(listaElementos[1]);
+		for (int i = 0; i < numeroProjetosGit; i++) {
+			String elementos = reader.readLine();
+			String[] listaElementos = elementos.split("/");
+			Integer inicio = Integer.parseInt(listaElementos[0]);
+			Integer fim = Integer.parseInt(listaElementos[1]);
 			this.listaCommitManager.add(new CommitManager(inicio, fim, i));
 		}
 	}
 
-	public void loadRepos() throws NoFilepatternException, GitAPIException {
-		ArrayList<String> repos = ManipulationUtils.loadRepos(repoList);
-
-		for (String repoURI : repos) {
-			try {
-				Repo a = new Repo(repoURI, dirProject);
-				listofRepos.add(a);
-			} catch (Exception e) {
-				listofRepos.add(new Repo(repoURI, Runner.projectManager.dirProject));
-			}
-		}
-	}
-
-	public boolean listaRepositorioVazia() {
-		return listofRepos.isEmpty();
-	}
-
-	public ArrayList<Repo> getListaRepos() {
-		// TODO Auto-generated method stub
-		return listofRepos;
-	}
-
-	public void generateVariabilities() throws IOException, InterruptedException {
-		
-//		commitsIdToAnalyse = new HashSet<String>();
-		CreatLogs create = new CreatLogs();
-		LineOfCode locTotal = new LineOfCode(); 
-
-
-		if (!listaRepositorioVazia()) {
-	
-			int posicaoRepositorio = 0;
-			for (Repo r : listofRepos) {
-				CommitManager commitManager = this.listaCommitManager.get(posicaoRepositorio);
-				posicaoRepositorio++;
-				
-				startTime = System.nanoTime();
-				numberOfAnalysisOcurred = 0;
-				System.out.println();
-				System.out.println("Analyzing " + r.getName() + "... ");
-
-				currentProject = r.getName();
-				SampleHandler.PROJECT = r.getName();
-
-				create.CreateLog();
-				directory.append(Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
-						+ File.separator + "results");
-				fileName.append(Runner.projectManager.getCurrentProject() + ".csv");
-
-				// essa funçao cria os arquivos platform.h e stubs.h
-				Starter analyser = new Starter(dirPlugin + currentProject + File.separator, false);
-
-				if (listaProjetos.equals("a")) {
-					listaProjetos = r.getName();
-				} else {
-					listaProjetos = listaProjetos + r.getName();
-				}
-				System.out.println();
-
-				if (!r.getCommitList().isEmpty()) {
-					
-					ArrayList<Commit> getCommitList = new ArrayList<Commit>();
-					int inicio = commitManager.getCommitInicial();
-					int fim = r.getCommitList().size();
-					
-					if( commitManager.getCommitFinal() > 0 ) {
-						fim = commitManager.getCommitFinal();
-					}
-					
-					getCommitList.addAll(r.getCommitList().subList(inicio, fim));
-
-
-					numberOfAnalysisOcurred = inicio;
-					System.out.println("Analisando pelo commit: " + inicio);
-					System.out.println("Quantidade de commits: " + fim);
-					// traz os commit
-					lastCommitAnalysed = "";
-					for (Commit c : getCommitList) {
-
-						startTime2 = System.nanoTime(); 
-						deleteAllFromAnalysisFolder();
-						numberOfAnalysisOcurred++;
-						commitAtual = c;
-
-						currentCommit = c.getId();
-						r.checkoutCommit(c.getId());
-
-						System.out.println("Análise commit: " + numberOfAnalysisOcurred); 
-
-						ListFilesC contArq = new ListFilesC();
-						File fileI = new File(dirProject + currentProject);
-
-						int QtdArqOfCommit = contArq.findFiles(fileI, ".*\\.c").size();
-				//		System.out.println("A quantidade de arquivo no commit " + numberOfAnalysisOcurred + ", é: "
-			//					+ QtdArqOfCommit); *
+	public void generateVariabilities() {
+		try {
+			CreatLogs create = new CreatLogs();
+			LineOfCode locTotal = new LineOfCode();
 			
-						if (!lastCommitAnalysed.equals("")) {
-							List<String> filesModifiedRightPath = new ArrayList<String>();
-							// get the difference between the last commit and the new
-							try {
-								filesModifiedRightPath.clear();
-								filesModifiedRightPath = DiffFilesGit.diffFilesInCommits(lastCommitAnalysed, currentCommit);
 
-								List<File> file = contArq.findFiles(fileI, ".*\\.c");
+			repos = ManipulationUtils.loadRepos(repoList);
+			int posicaoCommit = 0;
+			validador = 0;
+			for (String repoURI : repos) {
+				try {
+					CommitManager commitManager = listaCommitManager.get(posicaoCommit);
+					Repo2 resp = new Repo2(repoURI, dirProject, commitManager.getCommitInicial(),
+							commitManager.getCommitFinal());
+					validador++;
+					startTime = System.nanoTime();
+					numberOfAnalysisOcurred = 0;
 
-								if (!filesModifiedRightPath.isEmpty()) {
-									for (File k : file) {
-										for (String x : filesModifiedRightPath) {
-											File y = new File(x);
+					System.out.println(repeated);
+					System.out.println("Analyzing....");
 
-											if (y.getName().equals(k.getName())
-													&& !modFiles.contains(dirPlugin + currentProject + File.separator
-															+ "analysis" + File.separator + y.getName())) {
-												this.noChangesInCFiles = true;
+					currentProject = resp.getName();
+					SampleHandler.PROJECT = resp.getName();
 
-												modFiles.add(dirPlugin + currentProject + File.separator + "analysis"
-														+ File.separator + y.getName());
+					create.CreateLog();
+					directory.append(Runner.projectManager.getDirPlugin() + Runner.projectManager.getCurrentProject()
+							+ File.separator + "results");
+					fileName.append(Runner.projectManager.getCurrentProject() + ".csv");
 
-												MoveFile.copyFileUsingChannel(k, (new File(dirPlugin + currentProject
-														+ File.separator + "analysis" + File.separator + y.getName())));
-												currentFile = y.getName();
-												listModFile.add(y.getName());
-												break;
+					// essa funçao cria os arquivos platform.h e stubs.h
+					Starter analyser = new Starter(dirPlugin + currentProject + File.separator, false);
 
+					if (listaProjetos.equals("a")) {
+						listaProjetos = resp.getName();
+					} else {
+						listaProjetos = listaProjetos + resp.getName();
+					}
+					System.out.println();
+					System.gc();
+					for (int i = commitManager.getCommitInicial(); i <= commitManager.getCommitFinal(); i++) {
+						resp = new Repo2(repoURI, dirProject, commitManager.getCommitInicial(),
+								commitManager.getCommitFinal());
+						HashMap<String, Commit> retorno = resp.retornaCommitByIndex(i);
+
+						if (!resp.getCommitList().isEmpty()) {
+
+							numberOfAnalysisOcurred = i;
+							System.out.println("Quantidade de commits: " + resp.getTotalCommit());
+							// traz os commit
+							lastCommitAnalysed = "";
+							for (Commit c : resp.getCommitList()) {
+								if (c == null)
+									continue;
+								startTime2 = System.nanoTime();
+								deleteAllFromAnalysisFolder();
+
+								commitAtual = c;
+
+								currentCommit = c.getId();
+								resp.checkoutCommit(c.getId());
+
+								System.out.println("Análise do commit: " + numberOfAnalysisOcurred);
+
+								ListFilesC contArq = new ListFilesC();
+								File fileI = new File(dirProject + currentProject);
+
+								int QtdArqOfCommit = contArq.findFiles(fileI, ".*\\.c").size();
+								System.out.println("A quantidade de arquivo no commit " + numberOfAnalysisOcurred
+										+ ", é: " + QtdArqOfCommit);
+
+								if (!lastCommitAnalysed.equals("")) {
+									System.out.println("entrei..");
+									List<String> filesModifiedRightPath = new ArrayList<String>();
+									// get the difference between the last commit and the new
+									try {
+										filesModifiedRightPath.clear();
+										filesModifiedRightPath = DiffFilesGit.diffFilesInCommits(lastCommitAnalysed,
+												currentCommit);
+
+										List<File> file = contArq.findFiles(fileI, ".*\\.c");
+										System.out.println("File: " + file);
+										if (!filesModifiedRightPath.isEmpty()) {
+											for (File k : file) {
+												for (String x : filesModifiedRightPath) {
+													File y = new File(x);
+
+													if (y.getName().equals(k.getName()) && !modFiles
+															.contains(dirPlugin + currentProject + File.separator
+																	+ "analysis" + File.separator + y.getName())) {
+														this.noChangesInCFiles = true;
+
+														modFiles.add(dirPlugin + currentProject + File.separator
+																+ "analysis" + File.separator + y.getName());
+
+														MoveFile.copyFileUsingChannel(k,
+																(new File(dirPlugin + currentProject + File.separator
+																		+ "analysis" + File.separator + y.getName())));
+														currentFile = y.getName();
+														listModFile.add(y.getName());
+														break;
+
+													}
+												}
 											}
 										}
+
+									} catch (GitAPIException e) {
+										e.printStackTrace();
+									}
+
+									lastCommitAnalysed = currentCommit;
+								}
+								/// trata o primeiro commit
+								else {
+									List<File> file = contArq.findFiles(fileI, ".*\\.c");
+
+									modFiles.clear();
+									notModFiles.clear();
+									errorFiles.clear();
+
+									// adiciona os arquivos modificados do primeiro commit para o modFiles
+									if (!file.isEmpty()) {
+										for (File x : file) {
+											modFiles.add(dirPlugin + currentProject + File.separator + "analysis"
+													+ File.separator + x.getName());
+											MoveFile.copyFileUsingChannel(x, (new File(dirPlugin + currentProject
+													+ File.separator + "analysis" + File.separator + x.getName())));
+											currentFile = x.getName();
+											listModFile.add(x.getName());
+
+										}
+
+									}
+
+									// this.noChangesInCFiles = true; *
+									lastCommitAnalysed = currentCommit;
+								}
+								logControl = numberOfAnalysisOcurred + ";" + c.getId();
+
+								// trata quando nenhum arquivo foi alterado, no primeiro commit
+								if (modFiles.size() == 0) {
+									if (numberOfAnalysisOcurred == 1) {
+										dataText.delete(0, dataText.length());
+										dataText.append(numberOfAnalysisOcurred + ";" + c.getId() + ";" + " " + ";"
+												+ " " + ";" + " ");
+										AstLogger.writeaST(dataText, directory, fileName);
+									}
+								}
+								// pega do os arquivos em disco para depois retirar os repetidos.
+								List<File> file = contArq.findFiles(fileI, ".*\\.c");
+								for (File f : file) {
+									String aux = dirPlugin + currentProject + File.separator + "analysis"
+											+ File.separator + f.getName();
+									if (!modFiles.contains(aux))
+										notModFiles.add(f.getName());
+								}
+//								System.out.println("qtd modFiles: " + modFiles.size());
+//								System.out.println("qtd notModFiles: " + notModFiles.size());
+
+								lineOfCode = locTotal.Loc(modFiles) + lineOfCode;
+								// COMENTAR ATE O FINAL FOR PARA ADQUIR O LOC
+								HashSet<String> arquivo = new HashSet<String>();
+								StringBuilder directory = new StringBuilder();
+								StringBuilder fileName = new StringBuilder();
+								HashSet<String> arquivosCompilados = new HashSet<String>();
+								int cont = 0;
+								directory.append("C:\\Users\\amarq\\runtime-EclipseApplication\\"
+										+ Runner.projectManager.getCurrentProject());
+								fileName.append("log_arquivos.txt");
+								String caminho = "C:\\Users\\amarq\\runtime-EclipseApplication\\"
+										+ Runner.projectManager.getCurrentProject() + "\\analysis\\";
+								String filee = "C:\\Users\\amarq\\runtime-EclipseApplication\\"
+										+ Runner.projectManager.getCurrentProject() + "\\log_arquivos.txt";
+
+								File fi = new File(filee);
+								if (!fi.exists()) {
+									fi.createNewFile();
+								}
+								try {
+									Scanner scan = new Scanner(new File(filee));
+
+									while (scan.hasNextLine()) {
+										String line = scan.nextLine();
+										arquivosCompilados.add(line);
+										System.out.println("Arquivo sendo processado:" + line);
+									}
+
+								} catch (Exception e) {
+									System.out.println("Arquivo vazio");
+
+								}
+//						      
+								for (String elementos : modFiles) {
+									if (arquivosCompilados.contains(elementos)) {
+										cont += 1;
+										continue;
+									}
+									arquivo.add(elementos);
+									elem.append(elementos.toString());
+									AstLogger.writeaST(elem, directory, fileName);
+									elem.delete(0, elem.length());
+
+									System.out.println("Quantidade de Arquivos: " + modFiles.size());
+									System.out.println("Processados: " + (arquivosCompilados.size()));
+									System.out.println(
+											"Ainda falta: " + (modFiles.size() - (cont + arquivosCompilados.size()))
+													+ "/" + modFiles.size());
+						
+									Project project = analyser.start(arquivo);
+									arquivo.clear();
+									cont += 1;
+									System.gc();
+								}
+
+								// Project project = analyser.start(modFiles);
+
+								for (String f : notModFiles) {
+
+									if (errorFiles.contains(f)) {
+										dataText.delete(0, dataText.length());
+										dataText.append(numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0"
+												+ ";" + "1");
+										AstLogger.writeaST(dataText, directory, fileName);
+
+									} else {
+										dataText.delete(0, dataText.length());
+										dataText.append(numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0"
+												+ ";" + "0");
+										AstLogger.writeaST(dataText, directory, fileName);
+										fileValidation.add(f);
 									}
 								}
 
-							} catch (GitAPIException e) {
-								e.printStackTrace();
-							}
+								modFiles.clear();
+								notModFilesaux.clear();
+								notModFiles.clear();
+								listModFile.clear();
+								// COMENTAR O TRY PARA ADQUIR O LOC
+								try {
+									Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
 
-							lastCommitAnalysed = currentCommit;
-						}
-						/// trata o primeiro commit
-						else {
-							List<File> file = contArq.findFiles(fileI, ".*\\.c");
-							modFiles.clear();
-							notModFiles.clear();
-							errorFiles.clear();
-
-							// adiciona os arquivos modificados do primeiro commit para o modFiles
-							if (!file.isEmpty()) {
-								for (File x : file) {
-									modFiles.add(dirPlugin + currentProject + File.separator + "analysis"
-											+ File.separator + x.getName());
-									MoveFile.copyFileUsingChannel(x, (new File(dirPlugin + currentProject
-											+ File.separator + "analysis" + File.separator + x.getName())));
-									currentFile = x.getName();
-									listModFile.add(x.getName());
-
+								} catch (Exception e) {
+									// in case of the file doesnt exist
+									System.out.println("O arquivo não existe: " + e.getMessage());
 								}
-
-							}
-
-					//		this.noChangesInCFiles = true; *
-							lastCommitAnalysed = currentCommit;
-						}
-						logControl = numberOfAnalysisOcurred + ";" + c.getId();
-
-						// trata quando nenhum arquivo foi alterado, no primeiro commit
-						if (modFiles.size() == 0) {
-							if (numberOfAnalysisOcurred == 1) {
-								dataText.delete(0, dataText.length());
-								dataText.append(
-										numberOfAnalysisOcurred + ";" + c.getId() + ";" + " " + ";" + " " + ";" + " ");
-								AstLogger.writeaST(dataText, directory, fileName);
-							}
-						}
-						// pega do os arquivos em disco para depois retirar os repetidos.
-						List<File> file = contArq.findFiles(fileI, ".*\\.c");
-						for (File f : file) {
-							String aux = dirPlugin + currentProject + File.separator + "analysis" + File.separator
-									+ f.getName();
-							if (!modFiles.contains(aux))
-								notModFiles.add(f.getName());
-						}
-//						System.out.println("qtd modFiles: " + modFiles.size());
-//						System.out.println("qtd notModFiles: " + notModFiles.size());
-						
-						lineOfCode = locTotal.Loc(modFiles) + lineOfCode;
-						//COMENTAR ATE O FINAL FOR PARA ADQUIR O LOC
-						Project project = analyser.start(modFiles);
-
-						for (String f : notModFiles) {
-
-							if (errorFiles.contains(f)) {
-								dataText.delete(0, dataText.length());
-								dataText.append(
-										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "1");
-								AstLogger.writeaST(dataText, directory, fileName);
-
-							} else {
-								dataText.delete(0, dataText.length());
-								dataText.append(
-										numberOfAnalysisOcurred + ";" + c.getId() + ";" + f + ";" + "0" + ";" + "0");
-								AstLogger.writeaST(dataText, directory, fileName);
-								fileValidation.add(f);
+								try {
+									Files.delete(new File(dirPlugin + currentProject + File.separator + "platform.h")
+											.toPath());
+								} catch (Exception e) {
+									// in case of the file doesnt exist
+									System.out.println("O arquivo não existe: " + e.getMessage());
+								}
+								try {
+									Files.delete(new File(dirPlugin + currentProject + File.separator + "include"
+											+ File.separator + "stubs.h").toPath());
+								} catch (Exception e) {
+									// in case of the file doesnt exist
+									System.out.println("O arquivo não existe: " + e.getMessage());
+								}
+								try {
+									Files.delete(
+											new File(dirPlugin + currentProject + File.separator + "log_arquivos.txt")
+													.toPath());
+								} catch (Exception e) {
+									// in case of the file doesnt exist
+									System.out.println("O arquivo não existe: " + e.getMessage());
+								}
 							}
 						}
-
-					
-						modFiles.clear();
-						notModFilesaux.clear();
-						notModFiles.clear();
-						listModFile.clear();
-						//COMENTAR O TRY PARA ADQUIR O LOC
-						try {
-							Files.delete(new File(dirPlugin + currentProject + "\\temp2.c").toPath());
-							System.out.println("//------------------------------//");
-						Files.delete(new File(dirPlugin + currentProject + File.separator + "platform.h").toPath());
-						Files.delete(new File(
-								dirPlugin + currentProject + File.separator + "include" + File.separator + "stubs.h")
-										.toPath());
-
-						} catch (Exception e) {
-							// in case of the file doesnt exist
-							System.out.println("O arquivo não existe: " + e.getMessage());
-						}
-
-						
-					long elapsedTimes2 = System.nanoTime() - startTime2;
-					long seg = TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS);
+						numberOfAnalysisOcurred++;
+						long elapsedTimes2 = System.nanoTime() - startTime2;
+						long seg = TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS);
 
 						System.out.println("Tempo do commit "
 								+ TimeUnit.SECONDS.convert(elapsedTimes2, TimeUnit.NANOSECONDS) + " seconds.");
-
+						System.out.println("terminei o Commit");
+						System.out.println(repeated);
+						System.out.println("\n\n");
 						System.gc();
+
 					}
 
+				} catch (Exception e) {
+					// listofRepos.add(new Repo(repoURI, Runner.projectManager.dirProject));
 				}
-				long elapsedTime = System.nanoTime() - startTime;
-				System.out.println("Analysis ended in " + TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS)
-						+ " seconds.");
-				long segundos = TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS);
-				TransformarSegundaParaHoras x = new TransformarSegundaParaHoras();
-				x.transforma(segundos, Runner.projectManager.getCurrentProject());
+				posicaoCommit++;
 			}
-			System.out.println();
-			System.out.println("Analise dos projetos: " + listaProjetos + ", foi concluido com sucesso!!!");
-			System.out.println("acabei");
-			System.out.println("LOC: " + lineOfCode);
+		} catch (Exception e) {
+			System.out.println("Erro" + e.getMessage());
+		}
+	}
+
+	public static void deleteAllFromAnalysisFolder() {
+		try {
+			FileUtils.cleanDirectory(
+					new File(Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis"));
+			// System.out.println("deleteDir: "+ Runner.projectManager.dirPlugin +
+			// Runner.projectManager.currentProject + "/analysis");
+
+		} catch (IOException e) {
+			System.out.println("Analysis folder not found to delete!");
 		}
 	}
 
@@ -385,29 +448,6 @@ public class ProjectManager {
 			return -1;
 		} else {
 			return allAnalysis.length;
-		}
-	}
-
-	public String getReturnCurrentCommit() {
-		data = "";
-
-		try {
-			data = DATE_FORMAT.format(Runner.projectManager.getCommitAtual().getTimestamp());
-		} catch (Exception e) {
-			data = e.getMessage();
-		}
-
-		return data;
-	}
-
-	public static void deleteAllFromAnalysisFolder() {
-		try {
-			FileUtils.cleanDirectory(
-					new File(Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis"));
-			System.out.println("deleteDir: "+ Runner.projectManager.dirPlugin + Runner.projectManager.currentProject + "/analysis");
-			
-		} catch (IOException e) {
-			System.out.println("Analysis folder not found to delete!");
 		}
 	}
 
@@ -597,6 +637,14 @@ public class ProjectManager {
 
 	public void setErrorFiles(HashSet<String> errorFiles) {
 		this.errorFiles = errorFiles;
+	}
+
+	public int getValidador() {
+		return validador;
+	}
+
+	public void setValidador(int validador) {
+		this.validador = validador;
 	}
 
 }
