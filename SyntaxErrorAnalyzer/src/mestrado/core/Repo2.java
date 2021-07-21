@@ -25,7 +25,7 @@ public class Repo2 {
 	private String URI;
 	private File localPath;
 	private String name;
-	private String caminhoRepo = "refs/heads/main";
+	private String caminhoRepo = "refs/heads/master";
 	private Repository repositorio;
 	private static Git git;
 	
@@ -236,7 +236,7 @@ public class Repo2 {
 		}
 		setTotalCommit(valorCommitList.size());
 		walk = null; 
-		System.out.println(getTotalCommit());
+//		System.out.println(getTotalCommit());
 
 	}
 	public void setTotalCommit(int totalCommit) {

@@ -148,7 +148,7 @@ public class ProjectManager {
 					CommitManager commitManager = listaCommitManager.get(posicaoCommit);
 					Repo2 resp = new Repo2(repoURI, dirProject, commitManager.getCommitInicial(),
 							commitManager.getCommitFinal());
-					validador++;
+				
 					startTime = System.nanoTime();
 					numberOfAnalysisOcurred = 0;
 
@@ -177,7 +177,7 @@ public class ProjectManager {
 						resp = new Repo2(repoURI, dirProject, commitManager.getCommitInicial(),
 								commitManager.getCommitFinal());
 						HashMap<String, Commit> retorno = resp.retornaCommitByIndex(i);
-
+						validador++;
 						if (!resp.getCommitList().isEmpty()) {
 
 							numberOfAnalysisOcurred = i;
@@ -338,7 +338,7 @@ public class ProjectManager {
 									elem.delete(0, elem.length());
 
 									System.out.println("Quantidade de Arquivos: " + modFiles.size());
-									System.out.println("Processados: " + (arquivosCompilados.size()));
+									System.out.println("Processados: " + (arquivosCompilados.size()+cont));
 
 									System.out.println("Ainda falta: " + (modFiles.size() - (cont + arquivosCompilados.size()))
 											+ "/" + modFiles.size());
@@ -398,6 +398,7 @@ public class ProjectManager {
 									Files.delete(
 											new File(dirPlugin + currentProject + File.separator + "log_arquivos.txt")
 													.toPath());
+											System.out.println("log_arquivo.tx!!! apagado.." );
 								} catch (Exception e) {
 									// in case of the file doesnt exist
 									System.out.println("O arquivo não existe: " + e.getMessage());
