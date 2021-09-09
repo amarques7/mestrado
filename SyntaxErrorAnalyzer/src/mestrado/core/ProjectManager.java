@@ -24,6 +24,7 @@ import mestrado.git.Commit;
 import mestrado.git.CommitManager;
 import mestrado.git.DiffFilesGit;
 import mestrado.git.Repo;
+import mestrado.git.Repo;
 import mestrado.utils.ListFilesC;
 import mestrado.utils.ManipulationUtils;
 import mestrado.utils.MoveFile;
@@ -42,7 +43,7 @@ public class ProjectManager {
 	private String currentFile;
 	private String data = "";
 	private String logControl;
-	private String lastCommitAnalysed = "";
+	//private String lastCommitAnalysed = "";
 	String repeated = new String(new char[50]).replace("\0", "-*");
 
 	private StringBuilder dataText = new StringBuilder();
@@ -139,14 +140,14 @@ public class ProjectManager {
 		try {
 			CreatLogs create = new CreatLogs();
 			LineOfCode locTotal = new LineOfCode();
-
+			String lastCommitAnalysed = "";
 			repos = ManipulationUtils.loadRepos(repoList);
 			int posicaoCommit = 0;
 			validador = 0;
 			for (String repoURI : repos) {
 				try {
 					CommitManager commitManager = listaCommitManager.get(posicaoCommit);
-					Repo2 resp = new Repo2(repoURI, dirProject, commitManager.getCommitInicial(),
+					Repo resp = new Repo(repoURI, dirProject, commitManager.getCommitInicial(),
 							commitManager.getCommitFinal());
 				
 					startTime = System.nanoTime();
@@ -174,16 +175,15 @@ public class ProjectManager {
 					System.out.println();
 					System.gc();
 					for (int i = commitManager.getCommitInicial(); i <= commitManager.getCommitFinal(); i++) {
-						resp = new Repo2(repoURI, dirProject, commitManager.getCommitInicial(),
+						resp = new Repo(repoURI, dirProject, commitManager.getCommitInicial(),
 								commitManager.getCommitFinal());
 						HashMap<String, Commit> retorno = resp.retornaCommitByIndex(i);
 						validador++;
 						if (!resp.getCommitList().isEmpty()) {
-
 							numberOfAnalysisOcurred = i;
 							System.out.println("Quantidade de commits: " + resp.getTotalCommit());
 							// traz os commit
-							lastCommitAnalysed = "";
+							//lastCommitAnalysed = "";
 							for (Commit c : resp.getCommitList()) {
 								if (c == null)
 									continue;
@@ -191,8 +191,8 @@ public class ProjectManager {
 								deleteAllFromAnalysisFolder();
 
 								commitAtual = c;
-
 								currentCommit = c.getId();
+						
 								resp.checkoutCommit(c.getId());
 
 								System.out.println("Análise do commit: " + numberOfAnalysisOcurred);
@@ -208,7 +208,9 @@ public class ProjectManager {
 									System.out.println("entrei..");
 									List<String> filesModifiedRightPath = new ArrayList<String>();
 									// get the difference between the last commit and the new
+					
 									try {
+										
 										filesModifiedRightPath.clear();
 										filesModifiedRightPath = DiffFilesGit.diffFilesInCommits(lastCommitAnalysed,
 												currentCommit);
@@ -290,11 +292,12 @@ public class ProjectManager {
 									if (!modFiles.contains(aux))
 										notModFiles.add(f.getName());
 								}
-//								System.out.println("qtd modFiles: " + modFiles.size());
-//								System.out.println("qtd notModFiles: " + notModFiles.size());
+								System.out.println("qtd modFiles: " + modFiles.size());
+								System.out.println("qtd notModFiles: " + notModFiles.size());
 
 								lineOfCode = locTotal.Loc(modFiles) + lineOfCode;
 								// COMENTAR ATE O FINAL FOR PARA ADQUIR O LOC
+								
 								HashSet<String> arquivo = new HashSet<String>();
 								StringBuilder directory = new StringBuilder();
 								StringBuilder fileName = new StringBuilder();
@@ -348,8 +351,6 @@ public class ProjectManager {
 									cont += 1;
 									System.gc();
 								}
-
-								// Project project = analyser.start(modFiles);
 
 								for (String f : notModFiles) {
 

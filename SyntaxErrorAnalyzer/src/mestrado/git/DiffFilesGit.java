@@ -32,7 +32,7 @@ public class DiffFilesGit {
                 .setNewTree(prepareTreeParser(Repo.getGit().getRepository(), newCommitId))
                 .call();
 
-  //      System.out.println("Found: " + diffs.size() + " differences"); *
+
         List<String> modifiedFiles = new ArrayList<String>(diffs.size());
    //   	filesToDeleteFromAnalysisFolder = new ArrayList<String>(diffs.size());
         for (DiffEntry diff : diffs) {
@@ -40,7 +40,6 @@ public class DiffFilesGit {
     		if(diff.getChangeType().toString().equals("DELETE")){
         		if(diff.getOldPath().endsWith(".c")){
         			Runner.projectManager.setNoChangesInCFiles(false);
-       // 			System.out.println(new File(diff.getOldPath()).getName()); *
             		
             	}
         	}
@@ -52,16 +51,7 @@ public class DiffFilesGit {
             	modifiedFiles.add(diff.getNewPath());
             }
         }
-
-//        for(String fileToDelete : filesToDeleteFromAnalysisFolder){
-//        	try{
-//        		Files.delete(new File(downloadPath + "/analysis/" + fileToDelete).toPath());
-//        	}
-//        	catch(Exception e){
-//        		//do nothing
-//        	}
-        	      
-        
+      
         return (ArrayList<String>) modifiedFiles;
 	}
 	

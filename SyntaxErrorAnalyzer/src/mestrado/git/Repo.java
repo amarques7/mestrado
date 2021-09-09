@@ -1,10 +1,10 @@
 package mestrado.git;
 
+import java.awt.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -16,27 +16,28 @@ import org.eclipse.jgit.revwalk.RevSort;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
-//import org.eclipse.jgit.util.FileUtils;
 
-//import mestrado.core.Runner;
-import mestrado.utils.*;
+import mestrado.core.Runner;
+import mestrado.utils.FilenameUtils;
 
 public class Repo {
-
 	private String URI;
 	private File localPath;
 	private String name;
-	private String caminhoRepo = "refs/heads/next";
+	private String caminhoRepo = "refs/heads/main";
 	private Repository repositorio;
 	private static Git git;
 	
 
 	private HashMap<String, Commit> commitList;
+
 	ArrayList<Commit> chronologicalorderCommits;// = new ArrayList<Commit>();
 
 	private int numberofCommits;
 	private int commitInicial;
 	private int commitFinal;
+	public int totalCommit;
+	
 
 	public Repo(String repoURI, String dir_projeto, int commitInicial, int commitFinal) throws NoFilepatternException, GitAPIException {
 
@@ -70,51 +71,14 @@ public class Repo {
 				e.printStackTrace();
 			}
 
-
-
-	createCommitsHistory();
-
-
-	}
-
-	private void openRepo() throws IOException, NoFilepatternException, GitAPIException {
-
-		System.out.println("Opening " + getName() + "...");
-		Git g = Git.open(getLocalPath());
-		setGit(g);
-		g.close();
-		setRepo(getGit().getRepository());
-		System.gc();
-		System.out.println(" OK2!");
+			if(Runner.projectManager.getValidador() == 0) {
+				System.out.println();
+				createCommitsHistory();
+			}
 
 	}
-
-	public void cloneRepo() throws IOException, NoFilepatternException, GitAPIException {
-
-		System.out.println("Cloning " + getName() + "...");
-		Git g = Git.cloneRepository().setURI(getURI()).setDirectory(getLocalPath()).call();
-		setGit(g);
-		g.close();
-		setRepo(getGit().getRepository());
-		System.gc();
-		System.out.println(" OK!");
-
-	}
-
-	public void checkoutCommit(String commitID) {
-
-		try {
-			getGit().checkout().setName(commitID).call();
-		} catch (GitAPIException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-		}
-
-	}
-
-	private void createCommitsHistory() {
-
+	
+	public  HashMap<String, Commit> retornaCommitByIndex(int index)	{
 		RevWalk walk = null;
 		Ref head = null;
 		RevCommit commit = null;
@@ -122,25 +86,24 @@ public class Repo {
 		try {
 			head = getRepo().exactRef(caminhoRepo);
 		    walk = new RevWalk(getRepo());
-
 			commit = walk.parseCommit(head.getObjectId());
-		//	System.out.println(commit);
 			walk.markStart(commit);
 		} catch (IOException e1) {
 
 			e1.printStackTrace();
 		}
-
+	
 		walk.sort(RevSort.REVERSE);
 		
 		int cont = 0;
 		int quantidadeCommits = commitFinal;
+		HashMap<String, Commit> retorno = new HashMap<String, Commit>();
 		for (RevCommit rev : walk) {
-			cont+=1;
-			
-			if( !(cont >= commitInicial)) {		
+						
+			if( cont != index) {
+				cont+=1;
 				continue;
-			}
+			}						
 			System.out.println("commit: "+ cont +"-" +"rev: "+ rev);
 			Commit tempCommit = new Commit(rev.name(), rev.getCommitterIdent().getName(),
 					rev.getCommitterIdent().getWhen());
@@ -175,48 +138,114 @@ public class Repo {
 				e.printStackTrace();
 			}
 
+		
+			retorno.put(rev.name(), tempCommit);
 			addCommit(rev.name(), tempCommit);
-			quantidadeCommits--;
+			break;
 		}
-		walk = null;
-
+	
+		return retorno;
+	}
+	
+	private void openRepo() throws IOException, NoFilepatternException, GitAPIException {
+	
+		if(Runner.projectManager.getValidador() == 0) {
+			System.out.println("Opening " + getName() + "...");
+		}
+		Git g = Git.open(getLocalPath());
+		setGit(g);
+		g.close();
+		setRepo(getGit().getRepository());
+		System.gc();
+		
+		if(Runner.projectManager.getValidador() == 0) {
+			System.out.println("Finalizado");
+		}
+		
 	}
 
+	public void cloneRepo() throws IOException, NoFilepatternException, GitAPIException {
+
+		if(Runner.projectManager.getValidador() == 0) {
+			System.out.println("Cloning " + getName() + "...");
+		}
+		
+		Git g = Git.cloneRepository().setURI(getURI()).setDirectory(getLocalPath()).call();
+		setGit(g);
+		g.close();
+		setRepo(getGit().getRepository());
+		System.gc();
+		
+		if(Runner.projectManager.getValidador() == 0) {
+			System.out.println("Finalizado");
+		}
+
+	}
+	
 	public ArrayList<Commit> getCommitList() {
+		
+		ArrayList<Commit> lista = new ArrayList<Commit>();  
+		for (String key : commitList.keySet()) {
+            //Capturamos o valor a partir da chave
+            Commit value = commitList.get(key);
+            lista.add(value);
+     }
+		return lista;
+
+	}
+	public void checkoutCommit(String commitID) {
+
+		try {
+			getGit().checkout().setName(commitID).call();
+		} catch (GitAPIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+
+	}
+	
+	
+	private void createCommitsHistory() {
 
 		RevWalk walk = null;
 		Ref head = null;
 		RevCommit commit = null;
-
-		// ArrayList<Commit> chronologicalorderCommits = new ArrayList<Commit>();
-		chronologicalorderCommits = new ArrayList<Commit>();
+		ArrayList<Commit> valorCommitList = new ArrayList<Commit>();	
 		try {
-			
 			head = getRepo().exactRef(caminhoRepo);
-	
-			walk = new RevWalk(getRepo());
+		    walk = new RevWalk(getRepo());
 
 			commit = walk.parseCommit(head.getObjectId());
-
+		//	System.out.println(commit);
 			walk.markStart(commit);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
 
-		//walk.sort(RevSort.REVERSE);
+		walk.sort(RevSort.REVERSE);
 
 		for (RevCommit rev : walk) {
-			chronologicalorderCommits.add(getCommit(rev.getName()));
-
+			Commit tempCommit = new Commit(rev.name(), rev.getCommitterIdent().getName(),
+					rev.getCommitterIdent().getWhen());
+			//System.gc();
+			valorCommitList.add(tempCommit);
+			
 		}
-
-		setNumberofCommits(chronologicalorderCommits.size());
-
-		return chronologicalorderCommits;
+		setTotalCommit(valorCommitList.size());
+		walk = null; 
+//		System.out.println(getTotalCommit());
 
 	}
+	public void setTotalCommit(int totalCommit) {
+		this.totalCommit = totalCommit;
+	}
 
+	public ArrayList<Commit> getvalorCommitList(){
+		return getvalorCommitList();
+	}
+	
 	public ArrayList<Commit> getChronologicalorderCommits() {
 		return chronologicalorderCommits;
 	}
@@ -287,6 +316,10 @@ public class Repo {
 
 	public String toString() {
 		return getName() + " - " + getURI() + " - " + getLocalPath();
+	}
+	
+	public int getTotalCommit() {
+		return totalCommit;
 	}
 
 }
